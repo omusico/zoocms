@@ -41,13 +41,6 @@ class ZfApplication
     public static $_data_path;
 
     /**
-     * Microtimestamp for startup time
-     *
-     * @var int
-     */
-    public static $started;
-
-    /**
      * Sets the environment to load from configuration file
      *
      * @param string $environment - The environment to set
@@ -75,10 +68,8 @@ class ZfApplication
      */
     public function bootstrap($called_from = "")
     {
-        self::$started = microtime(true);
         // Ensure that cookies don't overwrite request parameters
         $_REQUEST = array_merge($_GET, $_POST);
-
 
         /**
          * Basic definitions
