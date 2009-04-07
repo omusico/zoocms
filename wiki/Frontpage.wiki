@@ -1,0 +1,32 @@
+#summary ZooCMS Manual
+
+= Introduction =
+
+This guide will help you through installing, configuring and developing for ZooCMS.
+
+<wiki:toc max_depth="2" />
+
+= Installation =
+content to come...
+  * [InstRequirements Installation requirements]
+  * [InstPreparations Preparations]
+  * [InstSetup Initial setup]
+
+= Configuration =
+content to come...
+  * [ConfBasic Basic setup]
+  * [ConfModuleInst Module installation]
+  * [ConfModuleConf Module configuration]
+
+
+= Developing for ZooCMS =
+content to come...
+== Core development ==
+  * [DevZoo 
+  * [DevDefault Default module]
+  * [DevUtility Utility module]
+
+== 3rd Party Development ==
+  * [DevModule Modules]
+  * [DevPlugin Plugins]
+  * [DevService Services]
