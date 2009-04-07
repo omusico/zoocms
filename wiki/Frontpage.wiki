@@ -1,4 +1,5 @@
 #summary ZooCMS Manual
+#labels Featured
 
 = Introduction =
 
