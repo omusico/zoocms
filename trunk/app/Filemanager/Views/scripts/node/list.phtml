@@ -1,0 +1,28 @@
+<div class="content-item">
+    <h2>
+        <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
+            <?php echo $this->item['title'];?>
+        </a>
+    </h2>
+    <?php if ($this->item->hooks['filemanager_file']->isImage()):
+            /**
+             * @todo: Change to use thumbnail function
+             * @todo: CREATE thumbnail function
+             */
+        ?>
+        <p>
+            <img src="<?php echo $this->item->hooks['filemanager_file']->getUrl();?>" 
+                 alt="<?php echo $this->translate('Billede: ').$this->item['title'];?>"
+                 width="590" />
+        </p>
+    <?php endif;?>
+    <p><?php echo nl2br($this->escape(substr($this->item['content'], 0, 350))); ?></p>
+    <?php if($this->item->hooks) {
+      foreach ($this->item->hooks as $name => $hook) {
+          if ($name != "filemanager_file") {
+              echo $hook;
+          }
+      }
+    }
+    ?>
+</div>

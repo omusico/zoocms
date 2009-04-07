@@ -1,0 +1,33 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZooCMS 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-06 22:37+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Jan <jkp@cusix.dk>\n"
+"Language-Team: ZooCrew\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: DENMARK\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: e:\\dokumenter\\xoops\\webserver\\ZooCMS\\app\\modules\n"
+"X-Poedit-KeywordsList: translate;setLabel;Zend_Controller_Action_Exception;addMessage;setLegend;_\n"
+"X-Poedit-SearchPath-0: Default\\Controllers\n"
+
+#: Default\Controllers/ErrorController.php:45
+msgid "The page you requested was not found."
+msgstr "The requested page was not found, please check the address bar and/or navigation links that lead you here."
+
+#: Default\Controllers/ErrorController.php:56
+msgid "An unexpected error occurred with your request. Please try again later."
+msgstr "An unexpected error occurred with your request. Please try again later."
+
+#: Default\Controllers/IndexController.php:24
+msgid "Hello hey"
+msgstr "Welcome to your website"
+
+#: Default\Controllers/InstallController.php:33
+msgid "Install"
+msgstr "Install"

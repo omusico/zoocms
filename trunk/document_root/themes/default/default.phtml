@@ -1,0 +1,86 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><?php echo $this->sitename. ($this->pagetitle ? " - ".$this->pagetitle : "")?></title>
+    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->themeurl;?>/css/style.css" />
+</head>
+<body>
+<div id="maincontainer">
+  <div id="logo" onclick="window.location.href='http://www.cusix.dk';"></div>
+  <div id="navcontainer">
+    <div id="navleftfloat"></div>
+
+    <div id="navrightfloat"></div>
+    <div id="navigation">
+        <?php echo $this->partial('zoo/navmenu_en.phtml'); ?>
+    </div>
+  </div>
+  <!--MAINCONTENT-->
+  <div id="contentcontainer">
+
+    <?php if ($this->lblocks): ?>
+        <div class="rccenter">
+            <?php foreach ($this->lblocks as $block): ?>
+                <?php if ($block.title):
+                        echo "<h3>".$block['title']."</h3>";
+                      endif;?>
+               	<?php echo $block['content']?>
+            <?php endforeach; ?>
+    	</div>
+	<?php endif; ?>
+
+    <div id="maincontent">
+      <?php echo $this->layout()->content;
+      if ($this->ccblocks):
+        foreach ($this->ccblocks as $block):
+            if ($block.title):
+                echo "<h3>".$block['title']."</h3>";
+            endif;
+            echo $block['content'];
+        endforeach;
+      endif;?>
+    </div>
+    <!--RIGHT COLUM-->
+
+    <div id="rightcolumcont">
+        <?php if ($this->rblocks):
+                foreach ($this->rblocks as $block):
+                    if ($block.title):
+                        echo '<div class="rcleftcontent"><h3>'.$block['title']."</h3>";
+                    endif;
+                    echo $block['content']."</div>";
+                endforeach;
+              endif;?>
+      <div class="rcleft">
+        <?php if ($this->clblocks):
+                foreach ($this->clblocks as $block):
+                    if ($block.title):
+                        echo '<div class="rcleftcontent"><h3>'.$block['title']."</h3>";
+                    endif;
+                    echo $block['content']."</div>";
+                endforeach;
+              endif;?>
+        &nbsp;
+      </div>
+      <div class="rcright">
+        <?php if ($this->crblocks):
+                foreach ($this->crblocks as $block):
+                    if ($block.title):
+                        echo '<div class="rcrightcontent"><h3>'.$block['title']."</h3>";
+                    endif;
+                    echo $block['content']."</div>";
+                endforeach;
+              endif;?>
+         &nbsp;
+      </div>
+      <div class="clear"></div>
+    </div>
+    <div style="clear: both;">&nbsp;</div>
+  </div>
+  <div id="footer"><?php echo $this->footer;?></div>
+</div>
+</body>
+</html>

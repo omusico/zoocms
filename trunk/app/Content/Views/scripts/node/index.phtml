@@ -1,0 +1,9 @@
+<h1><?php echo $this->escape($this->item['title']);?></h1>
+<a href="<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'edit', 'id' => $this->item['id']), 'default', true);?>"><?php echo $this->translate('Edit');?></a>
+<div class="content-node-item"><?php echo $this->escape($this->item);?></div>
+<?php if($this->item->hooks) {
+  foreach ($this->item->hooks as $hook) {
+      echo $hook;
+  }
+}
+?>
