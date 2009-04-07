@@ -10,7 +10,7 @@
  * @subpackage Form
  *
  */
-class Default_Form_Modules extends Zend_Form_SubForm {
+class Zoo_Form_Modules extends Zend_Form_SubForm {
     /**
      * Create a module selection form for system installation
      *
