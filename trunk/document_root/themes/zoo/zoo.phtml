@@ -88,6 +88,6 @@
     echo "<div class='debug'>".$this->debug.'</div>';
 }
 ?>
-<div class="generation-time">Page generated in <?php echo (round((microtime(true)-ZfApplication::$started), 4));?> seconds</div>
+<div class="generation-time">Page generated in <?php echo (round((microtime(true)-$_SERVER['REQUEST_TIME']), 4));?> seconds</div>
 </body>
 </html>
