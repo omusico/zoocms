@@ -124,12 +124,12 @@ class ZfApplication
         * Create an instance of the frontcontroller
         */
         $frontController = Zend_Controller_Front::getInstance();
-        if (file_exists(self::$_base_path . '/data/etc/config.ini')) {
+        if (file_exists(self::$_data_path . '/etc/config.ini')) {
             /*
             * Load the given stage from our configuration file,
             * and store it into the registry for later usage.
             */
-            $config = new Zend_Config_Ini(self::$_base_path . '/data/etc/config.ini');
+            $config = new Zend_Config_Ini(self::$_data_path . '/etc/config.ini');
             Zend_Registry::set('config', $config);
 
             $frontController->throwExceptions((bool) $config->mvc->exceptions);
@@ -148,8 +148,8 @@ class ZfApplication
             }
 
             // Add plugins from plugins.ini
-            if (file_exists(self::$_base_path . '/data/etc/plugins.ini')) {
-                $pluginconfig = new Zend_Config_Ini(self::$_base_path . '/data/etc/plugins.ini', self::$_environment);
+            if (file_exists(self::$_data_path . '/etc/plugins.ini')) {
+                $pluginconfig = new Zend_Config_Ini(self::$_data_path . '/etc/plugins.ini', self::$_environment);
                 foreach ($pluginconfig->plugins as $name => $plugin) {
                     $pluginClass = $plugin->class;
                     $frontController->registerPlugin(new $pluginClass(), $plugin->priority);
