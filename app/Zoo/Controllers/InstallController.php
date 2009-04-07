@@ -18,9 +18,9 @@ class InstallController extends Zend_Controller_Action
      */
     public function indexAction()
     {
-        $settingsform = new Default_Form_Settings();
+        $settingsform = new Zoo_Form_Settings();
 
-        $modulesform = new Default_Form_Modules();
+        $modulesform = new Zoo_Form_Modules();
 
         $form = new Zend_Form();
         $form->setSubFormDecorators(array(

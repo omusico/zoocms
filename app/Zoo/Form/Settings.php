@@ -10,7 +10,7 @@
  * @subpackage Form
  *
  */
-class Default_Form_Settings extends Zend_Form_SubForm {
+class Zoo_Form_Settings extends Zend_Form_SubForm {
     /**
      * Create system settings configuration form
      *
