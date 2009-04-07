@@ -19,13 +19,12 @@ content to come...
   * [ConfModuleInst Module installation]
   * [ConfModuleConf Module configuration]
 
-
 = Developing for ZooCMS =
 content to come...
 == Core development ==
-  * [DevZoo 
-  * [DevDefault Default module]
+  * [DevZoo Zoo module]
   * [DevUtility Utility module]
+  * [DevZooLib Zoo library]
 
 == 3rd Party Development ==
   * [DevModule Modules]
