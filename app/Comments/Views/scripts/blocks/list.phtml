@@ -1,0 +1,8 @@
+<a name="comments"></a>
+<?php
+if (count($this->comments) > 0) {
+    foreach ($this->comments as $comment) {
+        echo $this->partial('comment.phtml', null, array('comment' => $comment, 'authors' => $this->authors));
+    }
+}
+echo $this->form;

@@ -1,0 +1,46 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Zoo Content Module\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-11-06 22:36+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Jan <jkp@cusix.dk>\n"
+"Language-Team: ZooCrew\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: English\n"
+"X-Poedit-Country: DENMARK\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: E:\\Dokumenter\\Xoops\\webserver\\ZooCMS\\app\\modules\n"
+"X-Poedit-KeywordsList: setLegend;translate;_;setLabel;Zend_Controller_Action_Exception;addMessage\n"
+"X-Poedit-SearchPath-0: Content\\Controllers\n"
+"X-Poedit-SearchPath-1: Content\\Node\n"
+"X-Poedit-SearchPath-2: Content\\Views\n"
+"X-Poedit-SearchPath-3: Content\n"
+
+#: Content\Controllers/NodeController.php:19
+#: Content/Controllers/NodeController.php:19
+msgid "Content not found"
+msgstr "The content with that ID was not found in the database"
+
+#: Content/Node.php:19
+msgid "Title"
+msgstr "Headline"
+
+#: Content/Node.php:23
+msgid "Content"
+msgstr "Body text"
+
+#: Content/Node.php:26
+msgid "save"
+msgstr "Save content"
+
+#: Content/Node.php:30
+msgid "Edit item"
+msgstr "Edit content"
+
+#: Content/Node.php:30
+msgid "Add item"
+msgstr "Add content"
+

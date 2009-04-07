@@ -1,0 +1,13 @@
+<div class="content-item">
+    <h2>
+        <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
+            <?php echo $this->escape($this->item['title']);?>
+        </a>
+    </h2>
+    <p><?php echo nl2br($this->escape(substr($this->item['content'], 0, 350))); ?></p>
+    <?php
+    foreach ($this->item->hooks as $hook) {
+        echo $hook;
+    }
+    ?>
+</div>
