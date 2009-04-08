@@ -33,7 +33,7 @@ class Utility_Service_Translator extends Zoo_Service
             Zend_Translate::setCache(Zoo::getService('cache')->getCache('translate'));
 
             $this->service = new Zend_Translate('gettext',
-                                                ZfApplication::$_base_path."/app/Default/Language",
+                                                ZfApplication::$_base_path."/app/Zoo/Language",
                                                 null,
                                                 array(
                                                       'scan' => Zend_Translate::LOCALE_FILENAME,
