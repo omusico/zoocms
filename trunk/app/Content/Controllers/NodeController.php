@@ -182,6 +182,7 @@ class Content_NodeController extends Zoo_Controller_Action
      * @param string $module
      */
     function emulateModule($module) {
+        $module = ucfirst($module);
         if (strcasecmp($module, "content") != 0) {
             $layout = Zend_Layout::getMvcInstance();
             // Add module paths to view scripts
