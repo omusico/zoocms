@@ -196,13 +196,14 @@ class Content_Service_Content extends Zoo_Service {
      * @param Zoo_Block_Abstract $block
      */
     private function resetView($module) {
+        $module = ucfirst($module);
         $layout = Zend_Layout::getMvcInstance();
         // Reset view script paths
         $this->view->setScriptPath(null);
 
         // Build new ones for blocks
         $this->view->addBasePath(ZfApplication::$_base_path."/app/$module/Views", $module."_View");
-        $this->view->addScriptPath(ZfApplication::$_base_path."/app/content/Views/scripts/node");
+        $this->view->addScriptPath(ZfApplication::$_base_path."/app/Content/Views/scripts/node");
         $this->view->addScriptPath(ZfApplication::$_base_path."/app/$module/Views/scripts/node");
         $this->view->addScriptPath($layout->getLayoutPath()."default/templates/$module/node");
         $this->view->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/$module/node");
