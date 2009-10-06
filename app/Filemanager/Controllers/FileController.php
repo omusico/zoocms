@@ -26,6 +26,7 @@ class Filemanager_FileController extends Zend_Controller_Action
          * @todo Add last-modified, check access permissions etc.
          */
 //        header("Last-Modified: ".Wed, 15 Nov 1995 04:58:08 GMT);
+
         if (!$file->isImage()) {
             header("Content-Type: ".$file->mimetype);
             echo file_get_contents($file->getPath());
@@ -81,10 +82,16 @@ class Filemanager_FileController extends Zend_Controller_Action
                 //Output
                 echo file_get_contents($thumbpath);
             }
+            else {
+                // Content type
+                header('Content-type: image/png');
+                //Output
+                echo file_get_contents($file->getPath());
+            }
         }
-        die;
 //        $this->getHelper('layout')->disableLayout();
 //        $this->getHelper('viewRenderer')->setNoRender();
+        die;
     }
 
     public function gettypeimageAction() {

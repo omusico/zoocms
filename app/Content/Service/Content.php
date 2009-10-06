@@ -57,6 +57,9 @@ class Content_Service_Content extends Zoo_Service {
      * @return array
      */
     function getContent($options = array(), $start=0, $limit = 20) {
+        if (!isset($options['viewtype'])) {
+            $options['viewtype'] = "List";
+        }
         $this_table_name = $this->getFactory()->info(Zend_Db_Table_Abstract::NAME);
         $select = $this->getFactory()->select()->from(array('c' => $this_table_name));
         if (isset($options['active']) && $options['active'] == true) {
@@ -87,11 +90,14 @@ class Content_Service_Content extends Zoo_Service {
         }
         $items = $this->fetchAll($select);
         if (!isset($options['render']) || $options['render'] == false) {
+            // Call hooks for items
+            try {
+                Zoo::getService("hook")->trigger("Node", ucfirst($options['viewtype']), $items);
+            }
+            catch (Zoo_Exception_Service $e) {
+                // Hook service not available - log? Better not, some people may live happily without a hook service
+            }
             return $items;
-        }
-
-        if (!isset($options['viewtype'])) {
-            $options['viewtype'] = "List";
         }
 
         $ids = array();
