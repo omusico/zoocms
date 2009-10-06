@@ -99,6 +99,6 @@ class Zoo_View_Php extends Zend_View_Abstract {
         if (strpos($name, ".") === false) {
             $name .= ".phtml";
         }
-        return parent::_script($name);
+        return parent::_script(strtolower($name));
     }
 }
