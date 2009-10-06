@@ -4,7 +4,7 @@
             <?php echo $this->escape($this->item['title']);?>
         </a>
     </h2>
-    <p><?php echo nl2br($this->escape(substr($this->item['content'], 0, 350))); ?></p>
+    <p><?php echo $this->filter($this->item, 'content', 350); ?></p>
     <?php
     foreach ($this->item->hooks as $hook) {
         echo $hook;

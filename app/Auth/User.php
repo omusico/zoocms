@@ -32,4 +32,11 @@ class Auth_User extends Zend_Db_Table_Row_Abstract{
         }
         return $this->groups;
     }
+
+    /**
+     * Logout the user
+     */
+    public function logout() {
+        unset($_SESSION['user_groups']);
+    }
 }

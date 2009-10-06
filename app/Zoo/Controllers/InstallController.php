@@ -22,7 +22,7 @@ class InstallController extends Zend_Controller_Action
 
         $modulesform = new Zoo_Form_Modules();
 
-        $form = new Zend_Form();
+        $form = new Zend_Form(array('name' => 'installForm'));
         $form->setSubFormDecorators(array(
                                         'FormElements',
                                         'Fieldset'
@@ -31,8 +31,7 @@ class InstallController extends Zend_Controller_Action
         $form->addSubForm($modulesform, 'modules');
         if ($this->_request->isPost()) {
             $formData = $this->_request->getPost();
-            var_dump($formData);
-            if ($form->isValid($formData)) {
+            if ($settingsform->isValid($formData)) {
 //                $this->_forward('install');
             }
             $form->populate($formData);

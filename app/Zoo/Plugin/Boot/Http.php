@@ -97,5 +97,8 @@ class Zoo_Plugin_Boot_Http extends Zoo_Plugin_Boot
         $viewRenderer->view->setEncoding("UTF-8");
         $doctypeHelper = new Zend_View_Helper_Doctype();
         $doctypeHelper->doctype('XHTML1_STRICT');
+
+        // Add core module's view helper path
+        $viewRenderer->view->addHelperPath(ZfApplication::$_base_path."/app/Zoo/Views/helpers");
     }
 }

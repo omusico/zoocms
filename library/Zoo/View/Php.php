@@ -19,7 +19,7 @@ class Zoo_View_Php extends Zend_View_Abstract {
     public function init()
     {
         $layout = Zend_Layout::getMvcInstance();
-        $module = Zend_Controller_Front::getInstance()->getRequest()->getModuleName();
+        $module = ucfirst(Zend_Controller_Front::getInstance()->getRequest()->getModuleName());
         $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
         if ($layout) {
 
@@ -39,12 +39,12 @@ class Zoo_View_Php extends Zend_View_Abstract {
                 $this->assign(Zend_Registry::get("config")->site->toArray() );
             }
 
-            $this->addBasePath(ZfApplication::$_base_path."/app/modules/$module/Views", $module."_View");
+            $this->addBasePath(ZfApplication::$_base_path."/app/$module/Views", $module."_View");
             $this->addScriptPath($layout->getLayoutPath()."default/templates/$module/");
             $this->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/$module/");
         }
         else {
-            $this->addBasePath(ZfApplication::$_base_path."/app/modules/$module/Views", $module."_View");
+            $this->addBasePath(ZfApplication::$_base_path."/app/$module/Views", $module."_View");
         }
     }
 

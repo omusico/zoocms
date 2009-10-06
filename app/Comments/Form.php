@@ -29,7 +29,7 @@ class Comments_Form extends Zend_Form {
         $content->setRequired(true)->setLabel('Comment')->setAttrib('rows', 10)->setAttrib('cols', 50);
 
         $submit = new Zend_Form_Element_Submit('save');
-        $submit->setLabel('save');
+        $submit->setLabel('Save');
 
         $this->addElements(array($title, $content));
 

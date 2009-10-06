@@ -34,7 +34,8 @@ class Content_NodeController extends Zoo_Controller_Action
             throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
         }
 
-        $cacheid = get_class($this)."_".$id;
+        $can_edit = $this->checkAccess($item, 'edit');
+        $cacheid = get_class($this)."_".$id.($can_edit ? "_edit" : "");
         $content = $this->checkCache($cacheid);
         if (!$content) {
             try {
@@ -44,6 +45,7 @@ class Content_NodeController extends Zoo_Controller_Action
                 // Hook service not available - log? Better not, some people may live happily without a hook service
             }
 
+            $this->view->assign('can_edit', $can_edit);
             $this->view->assign('item', $item);
 
             // Emulate
@@ -51,7 +53,7 @@ class Content_NodeController extends Zoo_Controller_Action
             $this->emulateModule($module);
 
             $content = $this->getContent();
-            $this->cache($content, $cacheid, array('node', 'node_'.$item->type));
+            $this->cache($content, $cacheid, array('node', 'node_'.$item->type, 'node_'.$item->id));
         }
 
         $this->view->assign('pagetitle', $item->title);
@@ -68,11 +70,15 @@ class Content_NodeController extends Zoo_Controller_Action
         if ($type = $this->getRequest()->getParam("type")) {
             $item->type = $type;
         }
-
-        if (!$this->checkAccess($item, 'add')) {
-            throw new Exception(Zoo::_("Acess denied - insufficient privileges"), 403);
+        else {
+            $item->type = "content_node";
         }
 
+        if (!$this->checkAccess($item, 'add')) {
+            throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
+        }
+        $this->view->item = $item;
+        $this->view->type = Zoo::getService('content')->getType($item->type);
         $this->view->form = $item->getForm($this->_helper->getHelper('url')
                                                     ->direct('save', 'node', 'content'));
         $this->render("form");
@@ -87,8 +93,10 @@ class Content_NodeController extends Zoo_Controller_Action
         $item = Zoo::getService('content')->find($id)->current();
         if ($item) {
             if (!$this->checkAccess($item, 'edit') && !$this->checkAccess($item, 'editown')) {
-                throw new Exception(Zoo::_("Acess denied - insufficient privileges"), 403);
+                throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
             }
+            $this->view->item = $item;
+            $this->view->type = Zoo::getService('content')->getType($item->type);
             $this->view->form = $item->getForm($this->_helper->getHelper('url')
                                                     ->direct('save', 'node', 'content'));
             $this->render("form");
@@ -107,14 +115,14 @@ class Content_NodeController extends Zoo_Controller_Action
         if (@$_REQUEST['id'] > 0) {
             $item = Zoo::getService('content')->find($_REQUEST['id'])->current();
             if (!$this->checkAccess($item, 'edit') && !$this->checkAccess($item, 'editown')) {
-                throw new Exception(Zoo::_("Acess denied - insufficient privileges"), 403);
+                throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
             }
         }
         else {
             $item = Zoo::getService('content')->createRow();
             $item->type = isset($_REQUEST['type']) && $_REQUEST['type'] != "" ? $_REQUEST['type'] : 'content_node';
             if (!$this->checkAccess($item, 'add')) {
-                throw new Exception(Zoo::_("Acess denied - insufficient privileges"), 403);
+                throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
             }
         }
 
@@ -151,11 +159,13 @@ class Content_NodeController extends Zoo_Controller_Action
              * Invalidate cache
              */
             Zoo::getService('cache')->remove(get_class($this)."_".$item->id);
+            Zoo::getService('cache')->remove(get_class($this)."_".$item->id."_edit");
             Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('node_'.$item->id));
 
             if ($item->pid > 0) {
                 // Clear cache for immediate parent
                 Zoo::getService('cache')->remove(get_class($this)."_".$item->pid);
+                Zoo::getService('cache')->remove(get_class($this)."_".$item->pid."_edit");
                 Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('node_'.$item->pid));
             }
 

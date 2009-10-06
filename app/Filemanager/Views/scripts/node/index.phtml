@@ -11,7 +11,12 @@
 ?>
     <img src="<?php echo $this->item->hooks['filemanager_file']->getUrl();?>" alt="<?php echo $this->translate('Billede: ').$this->item['title'];?>" />
 <?php else:?>
-    <a href="<?php echo $this->item->hooks['filemanager_file']->getUrl();?>"><?php echo $this->translate("Download");?></a>
+    <a href="<?php echo $this->item->hooks['filemanager_file']->getUrl();?>">
+        <img src="<?php echo $this->getTypeImage($this->item->hooks['filemanager_file']->mimetype);?>"
+             alt="<?php echo $this->translate('Download')." ".$this->item['title'];?>"
+             title="<?php echo $this->translate('Download')." ".$this->item['title'];?>" />
+        <?php echo $this->translate('Download')." ".$this->item['title'];?>
+    </a>
 <?php endif;?>
 
 <p><?php echo $this->escape($this->item);?></p>

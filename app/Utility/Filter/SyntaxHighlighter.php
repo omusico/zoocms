@@ -76,6 +76,11 @@ class Utility_Filter_SyntaxHighlighter {
 
             $this->addScriptsAndStyles($langs);
         }
+        // Remove code start tag where end tag is truncated
+        $last_bracket = strrpos($text, "[");
+        if ($last_bracket > 0) {
+            $text = substr($text, 0, $last_bracket);
+        }
 
         return $text;
     }
