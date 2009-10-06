@@ -29,7 +29,8 @@ class Estate_IndexController extends Zoo_Controller_Action
                                                                   'render' => true));
             $this->view->assign('items', $items);
             $content = $this->getContent();
-            $this->cache($content, $cacheid, array('nodelist', 'node_estate_node'), 60); //60 Seconds set - should be dynamic? Should it invalidate, whenever a node is saved?
+            //60 seconds cache set - should be dynamic? Should it invalidate, whenever a node is saved? How?
+            $this->cache($content, $cacheid, array('nodelist', 'node_estate_node'), 60); 
         }
         $this->renderContent($content);
     }

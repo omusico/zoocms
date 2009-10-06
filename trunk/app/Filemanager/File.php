@@ -23,8 +23,14 @@ class Filemanager_File extends Zend_Db_Table_Row_Abstract {
      *
      * @return string
      */
-    function getUrl() {
-        $urlOptions = array('module' => 'filemanager', 'controller' => 'file', 'action' => 'show', 'id' => $this->nid);
+    function getUrl($width = 0, $height = 0, $max = true) {
+        $urlOptions = array('module' => 'filemanager', 
+                            'controller' => 'file',
+                            'action' => 'show',
+                            'id' => $this->nid,
+                            'width' => $width,
+                            'height' => $height,
+                            'max' => intval($max));
         return Zend_Controller_Front::getInstance()->getRouter()->assemble($urlOptions, 'default');
     }
 

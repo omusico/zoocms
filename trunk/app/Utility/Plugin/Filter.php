@@ -22,6 +22,6 @@ class Utility_Plugin_Filter extends Zend_Controller_Plugin_Abstract {
     public function preDispatch(Zend_Controller_Request_Abstract $request)
     {
         $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
-        $view->setEscape(array('Utility_Filter_Helper', 'filter'));
+        $view->setEscape(array('Utility_Service_Filter', 'filter'));
     }
 }

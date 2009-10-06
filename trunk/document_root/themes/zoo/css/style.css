@@ -1,7 +1,10 @@
+a img {
+    border: 0px;
+}
 body {
 	text-align: left;
 	/*font-family: Arial, Helvetica, sans-serif;*/
-	font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+	font-family: Trebuchet MS, Verdana, Geneva, Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 	color: #474747;
 }
@@ -112,6 +115,7 @@ div#navigation {
 	height: 40px;
 	margin-left: 10px;
 	margin-right: 10px;
+    font-family: Georgia;
 }
 div#navigation a{
 	font-size: 12pt;
@@ -345,4 +349,14 @@ div.content-item h2 {
 div.content-item .comment-count {
     text-align: right;
     width: 100%;
+}
+
+/* FILEMANAGER */
+div.filemanager_file_list {
+    float: left;
+    width: 150px;
+}
+
+div.filemanager_file_list img {
+    max-width: 145px;
 }

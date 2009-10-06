@@ -61,16 +61,18 @@ class Zoo {
     }
 
     /**
-     * Get configuration object for a plugin
+     * Get configuration object
      *
-     * @param string $name name of plugin
+     * @param string $name name of ini file to load
+     * @param string $type type of ini file - corresponds to subdirectories to data/etc/
      *
      * @return Zend_Config|false
      */
-    public static function getConfig($name, $type = "") {
+    public static function getConfig($name, $type = "", $options = array()) {
         $filename = ZfApplication::$_data_path . '/etc/'.($type != "" ? $type.'/' : "").strtolower($name).'.ini';
         if (file_exists($filename)) {
-            return new Zend_Config_Ini($filename, ZfApplication::$_environment, array('allowModifications' => true));
+            $options['allowModifications'] = true;
+            return new Zend_Config_Ini($filename, ZfApplication::$_environment, $options);
         }
         return false;
     }

@@ -34,7 +34,7 @@ $estate = $this->item->hooks['estate_node'];
           <td><?php echo $this->translate('Built Year')."<br />".$this->escape($estate['year']);?></td>
         </tr>
     </table>
-    <p><?php echo nl2br($this->escape(substr($this->item['content'], 0, 350))); ?></p>
+    <p><?php echo $this->filter($this->item, 'content', 350); ?></p>
     <?php if($this->item->hooks) {
       foreach ($this->item->hooks as $name => $hook) {
           if ($name != "estate_node") {

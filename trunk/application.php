@@ -21,6 +21,13 @@ class ZfApplication
     public static $_environment;
 
     /**
+     * Timestamp of initialization start
+     *
+     * @var int
+     */
+    public static $_started;
+
+    /**
      * The path to this file's directory
      *
      * @var string
@@ -68,6 +75,7 @@ class ZfApplication
      */
     public function bootstrap($called_from = "")
     {
+        self::$_started = microtime(true);
         // Ensure that cookies don't overwrite request parameters
         $_REQUEST = array_merge($_GET, $_POST);
 
@@ -114,8 +122,9 @@ class ZfApplication
             . get_include_path()
         );
 
-        require_once "Zend/Loader.php";
-        Zend_Loader::registerAutoLoad('ZfApplication');
+        require_once "Zend/Loader/Autoloader.php";
+        $autoloader = Zend_Loader_Autoloader::getInstance();
+        $autoloader->setFallbackAutoloader(true);
 
         $locale = new Zend_Locale();
         Zend_Registry::set('Zend_Locale', $locale);

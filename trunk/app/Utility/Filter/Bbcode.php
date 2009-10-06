@@ -53,6 +53,13 @@ class Utility_Filter_Bbcode {
 		$patterns[] = "/a{$c}b{$c}o{$c}u{$c}t{$c}:/si";
 		$replacements[] = "about :";
 
-		return preg_replace($patterns, $replacements, $text);
+		$ret = preg_replace($patterns, $replacements, $text);
+
+        // Remove BBCode start tag where end tag is truncated
+        $last_bracket = strrpos($ret, "[");
+        if ($last_bracket > 0) {
+            $ret = substr($txt, 0, $last_bracket);
+        }
+        return $ret;
 	}
 }

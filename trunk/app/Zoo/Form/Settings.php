@@ -10,7 +10,7 @@
  * @subpackage Form
  *
  */
-class Zoo_Form_Settings extends Zend_Form_SubForm {
+class Zoo_Form_Settings extends Zend_Form_Subform {
     /**
      * Create system settings configuration form
      *
@@ -26,13 +26,18 @@ class Zoo_Form_Settings extends Zend_Form_SubForm {
         $mod_dir = ZfApplication::$_doc_root."/themes";
         $iterator = new DirectoryIterator($mod_dir);
         foreach ($iterator as $file) {
-            if ($file->isDir() && $file->getFilename() != "." && $file->getFilename() != "..") {
+            if ($file->isDir() && $file->getFilename() != "." 
+                && $file->getFilename() != ".."
+                && substr($file->getFilename(), 0, 1) != ".") {
                 $options[$file->getFilename()] = $file->getFilename();
             }
         }
         $theme->addMultiOptions($options);
 
-        $this->addElement(new Zend_Form_Element_Text('sitename', array('label' => "Site name")));
+        $sitename = new Zend_Form_Element_Text('sitename', array('label' => "Site name",) );
+        $sitename->addValidator('stringLength', false, array(6, 20));
+        $sitename->setRequired();
+        $this->addElement($sitename );
 
 
         $this->addElement($theme, 'theme');
