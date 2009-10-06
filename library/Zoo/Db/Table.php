@@ -60,7 +60,7 @@ class Zoo_Db_Table extends Zend_Db_Table_Abstract {
     protected function _setupTableName()
     {
         if ($this->getRowClass()) {
-            $this->_name = strtolower($this->getRowClass());
+            $this->_name = $this->getRowClass();
         }
         parent::_setupTableName();
     }
