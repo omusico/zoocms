@@ -95,12 +95,12 @@ class Utility_Filter_SyntaxHighlighter {
     protected function addScriptsAndStyles($langs = array()) {
         if (count($langs) > 0) {
             $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
-            $view->headLink()->appendStylesheet('/js/SyntaxHighlighter/Styles/shCore.css');
-            $view->headLink()->appendStylesheet('/js/SyntaxHighlighter/Styles/shThemeDefault.css');
-            $view->headScript()->appendFile('/js/SyntaxHighlighter/Scripts/shCore.js', 'text/javascript');
+            $view->headLink()->appendStylesheet('/js/SyntaxHighlighter/styles/shCore.css');
+            $view->headLink()->appendStylesheet('/js/SyntaxHighlighter/styles/shThemeDefault.css');
+            $view->headScript()->appendFile('/js/SyntaxHighlighter/scripts/shCore.js', 'text/javascript');
             foreach ($langs as $lang) {
                 if ($lang = $this->getAlias($lang)) {
-                    $view->headScript()->appendFile('/js/SyntaxHighlighter/Scripts/shBrush'.ucfirst($lang).'.js',
+                    $view->headScript()->appendFile('/js/SyntaxHighlighter/scripts/shBrush'.ucfirst($lang).'.js',
                                                     'text/javascript');
                 }
             }
