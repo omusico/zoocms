@@ -25,8 +25,7 @@ class Filemanager_IndexController extends Zoo_Controller_Action
         if (!$content) {
             $items = Zoo::getService('content')->getContent(array('active' => true,
                                                                   'nodetype' => 'filemanager_file',
-                                                                  'viewtype' => 'list',
-                                                                  'render' => true));
+                                                                  'render' => false));
             $this->view->assign('items', $items);
             $content = $this->getContent();
             $this->cache($content, $cacheid, array('nodelist', 'node_filemanager_file'), 60); //60 Seconds set - should be dynamic? Should it invalidate, whenever a node is saved?
