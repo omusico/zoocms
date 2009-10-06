@@ -57,6 +57,9 @@ class Zoo_Plugin_Boot_Http extends Zoo_Plugin_Boot
                 $options = $config->toArray();
                 if (isset($options['save_path'])) {
                     $options['save_path'] = ZfApplication::$_data_path.$options['save_path'];
+                    if (!file_exists($options['save_path'])) {
+                        mkdir($options['save_path']);
+                    }
                 }
                 Zend_Session::setOptions($options);
                 //            $savehandlerClass = $config->session.save_handler;
