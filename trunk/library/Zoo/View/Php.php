@@ -23,7 +23,7 @@ class Zoo_View_Php extends Zend_View_Abstract {
         $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
         if ($layout) {
 
-            $pagetitle = $module != "default" ? ucwords($module." ".$controller) : ($controller != "index" ? ucfirst($controller) : "" );
+            $pagetitle = $module != "Default" ? ucwords($module." ".$controller) : ($controller != "index" ? ucfirst($controller) : "" );
 
             $sitename = Zend_Registry::isRegistered('config') ? Zend_Registry::get('config')->site->sitename : "ZooCMS";
             $this->assign( array(
