@@ -94,11 +94,12 @@ class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
         // Reset view script paths
         $view->setScriptPath(null);
 
+        $module = ucfirst($block->module);
         // Build new ones for blocks
-        $view->addBasePath(ZfApplication::$_base_path."/app/$block->module/Views", $block->module."_View");
-        $view->addScriptPath(ZfApplication::$_base_path."/app/$block->module/Views/scripts/blocks");
-        $view->addScriptPath($layout->getLayoutPath()."default/templates/$block->module/blocks");
-        $view->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/$block->module/blocks");
+        $view->addBasePath(ZfApplication::$_base_path."/app/$module/Views", $module."_View");
+        $view->addScriptPath(ZfApplication::$_base_path."/app/$module/Views/scripts/blocks");
+        $view->addScriptPath($layout->getLayoutPath()."default/templates/$module/blocks");
+        $view->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/$module/blocks");
     }
 
     /**
@@ -110,7 +111,7 @@ class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
     function addLanguage($module) {
         try {
             Zoo::getService("translator")->addTranslation(
-                                                ZfApplication::$_base_path."/app/".$module."/Language",
+                                                ZfApplication::$_base_path."/app/".ucfirst($module)."/Language",
                                                 null,
                                                 array('scan' => Zend_Translate::LOCALE_FILENAME ));
         }
