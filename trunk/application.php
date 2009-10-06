@@ -168,7 +168,7 @@ class ZfApplication
                 $frontController->setDefaultModule($config->module->default);
             }
             else {
-                $frontController->setDefaultModule('zoo');
+                $frontController->setDefaultModule('Zoo');
             }
         }
         else {
@@ -177,9 +177,9 @@ class ZfApplication
              * and register the Http boot plugin
              */
             self::$_environment = "staging";
-            $frontController->addControllerDirectory(self::$_base_path . "/app/Zoo/Controllers", "zoo");
+            $frontController->addControllerDirectory(self::$_base_path . "/app/Zoo/Controllers", "Zoo");
             $frontController->registerPlugin(new Zoo_Plugin_Boot_Http(), 1);
-            $frontController->setDefaultModule('zoo');
+            $frontController->setDefaultModule('Zoo');
         }
         return $frontController;
     }
