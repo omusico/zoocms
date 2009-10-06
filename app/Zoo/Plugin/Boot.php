@@ -25,7 +25,7 @@ class Zoo_Plugin_Boot extends Zend_Controller_Plugin_Abstract
             // Read installed modules list from modules.ini
             $moduleconfig = new Zend_Config_Ini(ZfApplication::$_data_path . '/etc/modules.ini', ZfApplication::$_environment);
             foreach ($moduleconfig->modules as $module => $folder) {
-                $frontController->addControllerDirectory(ZfApplication::$_base_path . "$folder", ucfirst($module));
+                $frontController->addControllerDirectory(ZfApplication::$_base_path . "$folder", $module);
             }
 
             // Set error handler
