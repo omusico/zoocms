@@ -80,7 +80,7 @@ class Content_NodeController extends Zoo_Controller_Action
         $this->view->item = $item;
         $this->view->type = Zoo::getService('content')->getType($item->type);
         $this->view->form = $item->getForm($this->_helper->getHelper('url')
-                                                    ->direct('save', 'node', 'content'));
+                                                    ->direct('save', 'node', 'Content'));
         $this->render("form");
     }
 
@@ -98,7 +98,7 @@ class Content_NodeController extends Zoo_Controller_Action
             $this->view->item = $item;
             $this->view->type = Zoo::getService('content')->getType($item->type);
             $this->view->form = $item->getForm($this->_helper->getHelper('url')
-                                                    ->direct('save', 'node', 'content'));
+                                                    ->direct('save', 'node', 'Content'));
             $this->render("form");
         }
         else {
@@ -127,7 +127,7 @@ class Content_NodeController extends Zoo_Controller_Action
         }
 
         $form = $item->getForm($this->_helper->getHelper('url')
-                                                    ->direct('save', 'node', 'content'));
+                                                    ->direct('save', 'node', 'Content'));
 
         if ($form->isValid($_REQUEST)) {
             $values = $form->getValues();

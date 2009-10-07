@@ -1,0 +1,24 @@
+<h1>Galleries</h1>
+<?php
+foreach ($this->items as $item) {?>
+    <div class="content-item filemanager_file_list">
+    
+    <p>
+        <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
+            <?php echo $this->item['title'];?>
+        </a>
+    </p>
+    
+    <?php
+    if($item->hooks) {
+        foreach ($item->hooks as $name => $hook) {
+            if ($name != "gallery_nodes") {
+                echo $hook;
+            }
+        }
+    }
+    ?>
+    </div>
+<?php
+}
+?>

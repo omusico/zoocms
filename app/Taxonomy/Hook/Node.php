@@ -35,10 +35,6 @@ class Taxonomy_Hook_Node extends Zoo_Hook_Abstract {
             $category->setLabel('Category');
         }
 
-        /**
-         * @todo: Change to use content service
-         * @todo: Change to not create select directly
-         */
         $categories = Zoo::getService('content')->getContent(
                                                     array('group' => 'category',
                                                           'order' => 'title'),

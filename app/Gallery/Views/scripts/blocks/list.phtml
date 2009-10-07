@@ -1,0 +1,8 @@
+<div class="gallery_block_list">
+    <ul>
+        <?php foreach ($this->galleries as $gallery) {
+            echo "<li><a href='".$this->url(array('id' => $gallery['id']), $gallery['type'])."'>$gallery->title</a></li>";
+        }
+        ?>
+    </ul>
+</div>

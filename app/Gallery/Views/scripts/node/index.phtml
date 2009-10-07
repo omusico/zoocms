@@ -1,0 +1,25 @@
+<h1><?php echo $this->escape($this->item['title']);?></h1>
+<?php if ($this->can_edit) {?>
+    <a href="<?php echo $this->url(array('module' => 'Content', 'controller' => 'node', 'action' => 'edit', 'id' => $this->item['id']), 'default', true);?>"><?php echo $this->translate('Edit');?></a>
+<?php }?>
+<div class="content-node-item"><?php echo $this->escape($this->item);?></div>
+<?php
+if ($this->item->hooks['gallery_nodes']) {
+    foreach ($this->item->hooks['gallery_nodes'] as $image) {?>
+        <p>
+            <a href="<?php echo $this->url(array('id' => $image['id']), $image['type']);?>">
+                <img src="<?php echo $image->hooks['filemanager_file']->getUrl(145);?>"
+                     alt="<?php echo $this->translate('Billede: ').$image['title'];?>" />
+            </a>
+        </p>
+    <?php }
+}
+
+if($this->item->hooks) {
+  foreach ($this->item->hooks as $name => $hook) {
+      if ($name != "gallery_nodes") {
+            echo $hook;
+        }
+  }
+}
+?>
