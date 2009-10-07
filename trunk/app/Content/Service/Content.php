@@ -31,7 +31,7 @@ class Content_Service_Content extends Zoo_Service {
      * @staticvar Content_Node_Factory $factory
      * @return Content_Node_Factory
      */
-    protected function getFactory() {
+    public function getFactory() {
         static $factory;
         $factory = new Content_Node_Factory();
         return $factory;

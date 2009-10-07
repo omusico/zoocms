@@ -68,7 +68,7 @@ class Utility_HookController extends Zend_Controller_Action
             $item->save();
 
             $this->_helper->redirector->gotoRoute(
-                                        array(  'module' => 'utility',
+                                        array(  'module' => 'Utility',
                                                 'controller' => 'hook',
                                                 'action' => 'index'));
         }
