@@ -25,7 +25,8 @@ class Filemanager_FileController extends Zend_Controller_Action
         /**
          * @todo Add last-modified, check access permissions etc.
          */
-//        header("Last-Modified: ".Wed, 15 Nov 1995 04:58:08 GMT);
+        header("Last-Modified: ".date('r', filemtime($file->getPath())));
+        header("Expires: ".date('r', strtotime("+ 1 year")));
 
         if (!$file->isImage()) {
             header("Content-Type: ".$file->mimetype);

@@ -75,6 +75,7 @@ class ZfApplication
      */
     public function bootstrap($called_from = "")
     {
+        ini_set("memory_limit", "32M");
         self::$_started = microtime(true);
         // Ensure that cookies don't overwrite request parameters
         $_REQUEST = array_merge($_GET, $_POST);
