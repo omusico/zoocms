@@ -24,6 +24,17 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             // Find files connected to the gallery
             $factory = new Gallery_Node_Factory();
             $item->hooks['gallery_nodes'] = $factory->getGalleryImages($item);
+            
+            // Add Lightbox JS
+            $layout = Zend_Layout::getMvcInstance();
+            $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
+
+            $theme_folder = Zend_Controller_Front::getInstance()->getBaseUrl()."/themes/".$layout->getLayout();
+
+            $view->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js', 'text/javascript');
+            $view->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.1/scriptaculous.js?load=effects,builder', 'text/javascript');
+            $view->headScript()->appendFile($theme_folder.'/js/lightbox.js', 'text/javascript');
+            $view->headLink()->appendStylesheet($theme_folder."/css/lightbox.css");
         }
     }
 

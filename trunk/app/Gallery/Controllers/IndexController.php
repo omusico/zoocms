@@ -13,7 +13,7 @@
  * @version    1.0
  * @author ZooCMS
  */
-class IndexController {
+class Gallery_IndexController {
     /**
      * Display gallery front page
      *
