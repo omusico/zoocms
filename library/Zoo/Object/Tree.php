@@ -175,4 +175,16 @@ class Zoo_Object_Tree {
 	    return $ret;
 	}
 
+	function toArray($key = 0, &$ret = array()) {
+		$children = $this->getFirstChild ( $key );
+		if ($this->getByKey ( $key )) {
+			$ret [$key] ['element'] = $this->getByKey ( $key );
+		}
+		if ($children) {
+			foreach ( $children as $child ) {
+				$this->toArray($child->{$this->_myId}, $ret[$key]['children']);
+			}
+		}
+		return $ret;
+	}
 }

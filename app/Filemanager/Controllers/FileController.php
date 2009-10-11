@@ -10,7 +10,13 @@
  * @subpackage Controllers
  *
  */
-class Filemanager_FileController extends Zend_Controller_Action {
+class Filemanager_FileController extends Zoo_Controller_Action {
+	public function init() {
+		$ajaxContext = $this->_helper->getHelper ( 'AjaxContext' );
+		$ajaxContext->addActionContext ( 'categories', 'html' )
+					->addActionContext ( 'list', 'html')
+					->initContext ();
+	}
 	/**
 	 * Echo file contents
 	 *
@@ -113,63 +119,121 @@ class Filemanager_FileController extends Zend_Controller_Action {
 		die ();
 	}
 	
-	/**
-	 * Upload zip file and extract contents, creating content nodes for each file 
-	 */
-	public function zipuploadAction() {
-		$form = new FilemanagerZipForm ( );
-		if ($form->zipfile->isUploaded ()) {
-			if ($form->zipfile->receive ()) {
-				// Update physical file
-				$location = $form->zipfile->getFileName ();
-				
-				$zip = new ZipArchive ( );
-				$res = $zip->open ( $location );
-				if ($res === true) {
-					// loop through all the files in the archive
-					for($i = 0; $i < $zip->numFiles; $i ++) {
-						$entry = $zip->statIndex ( $i );
-						var_dump($entry);
-						die;
-						if ($entry ['size'] > 0) {
-							$file = $zip->getFromIndex ( $i );
-							if ($file) {
-								// Create Content + File objects
-								
-								// Write file to data path
-								file_put_contents($file_obj->getPath(), $file);
-								$file_obj->size = $entry['size'];
-								$file_obj->mimetype = $entry['type']; // Exists?
-								$file_obj->save();
-							}
-						}
-					}
-					$zip->close ();
-				} else {
-				
-				}
-				unlink($location);
-			
-			} else {
-				print "Error receiving the file";
-			/**
-			 * @todo: Change this to exception/debug message
-			 */
-			}
-		}
-	}
-	
 	public function uploadAction() {
+		//Zoo::getService('cache')->remove("HeadScript_".md5($_SERVER['REQUEST_URI']));
+		//Zoo::getService('cache')->remove("HeadLink_".md5($_SERVER['REQUEST_URI']));
+		//Zoo::getService('cache')->remove("HeadMeta_".md5($_SERVER['REQUEST_URI']));
+		
+
+		/*
 		$this->view->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js', 'text/javascript');
 		$this->view->headScript()->appendFile('/js/infusion/framework/core/js/ProgressiveEnhancement.js', 'text/javascript');
 		$this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
 
 		$this->view->headLink()->appendStylesheet('/js/infusion/components/uploader/css/Uploader.css', 'text/javascript');
 		$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css', 'text/javascript');
+		*/
 		
+		$this->view->headLink ()->appendStylesheet ( '/js/infusion/framework/fss/css/fss-reset.css' );
+		$this->view->headLink ()->appendStylesheet ( '/js/infusion/framework/fss/css/fss-layout.css' );
+		$this->view->headLink ()->appendStylesheet ( '/js/infusion/components/uploader/css/Uploader.css' );
+		
+		$this->view->headScript ()->appendFile ( '/js/infusion/lib/jquery/core/js/jquery.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/lib/jquery/ui/js/ui.core.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/framework/core/js/jquery.keyboard-a11y.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/lib/swfobject/js/swfobject.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/lib/swfupload/js/swfupload.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/framework/core/js/Fluid.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/framework/core/js/ProgressiveEnhancement.js', 'text/javascript' );
+		
+		$this->view->headScript ()->appendFile ( '/js/infusion/components/uploader/js/FileQueue.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/components/uploader/js/DemoUploadManager.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/components/uploader/js/SWFUploadManager.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/components/uploader/js/Scroller.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/components/progress/js/Progress.js', 'text/javascript' );
+		$this->view->headScript ()->appendFile ( '/js/infusion/components/uploader/js/Uploader.js', 'text/javascript' );
 	}
 	
 	public function performuploadAction() {
+		$factory = new Filemanager_File_Factory ( );
 		
+		// Insert image in category with $id and $array['texts'][$k]
+		$image = Zoo::getService ( 'content' )->createRow ();
+		$image->type = 'filemanager_file';
+		$image->title = substr ( $this->getRequest ()->getParam ( 'Filename' ), 0, strrpos ( $this->getRequest ()->getParam ( 'Filename' ), '.' ));
+		$image->status = 1;
+		$image->published = time ();
+		$image->save ();
+		
+		$file = $factory->createRow ();
+		$file->nid = $image->id;
+		$file->mimetype = $this->getMimetype ( $_FILES ['Filedata'] ['name'] );
+		
+		$file->size = $_FILES ['Filedata'] ['size'];
+		$file->save ();
+		
+		rename ( $_FILES ['Filedata'] ['tmp_name'], $file->getPath () );
+
+		echo $file->getUrl(200,200);
+		die;
+	}
+	
+	/**
+	 * List categories - should be in another controller, but which?
+	 * @todo move to another controller
+	 */
+	public function categoriesAction() {
+		$categories = Zoo::getService('content')->getContent(
+                                                    array('group' => 'category',
+                                                          'order' => 'title'),
+                                                    0,
+                                                    0);
+        $tree = new Zoo_Object_Tree($categories, 'id', 'pid');
+        $this->view->assign('tree', $tree->toArray());
+	}
+	
+	/**
+	 * List files in a category - should be in another controller, but which? Probably Filemanager/IndexController
+	 * @todo move to another controller
+	 */
+	public function listAction() {
+		$method = __METHOD__;
+        $cacheid = str_replace("::", "_", $method).intval($this->getRequest()->getParam('id'));;
+
+        $content = $this->checkCache($cacheid);
+        if (!$content) {
+            $found = Zoo::getService('content')->find($this->_request->getParam('id'));
+            if ($found->count() == 0) {
+                throw new Zend_Controller_Action_Exception(Zoo::_("Category does not exist"), 404);
+            }
+            $category = $found->current();
+            $items = Zoo::getService('content')->getContent(array('active' => true,
+                                                                  'nodetype' => 'filemanager_file',
+                                                                  'parent' => $category->id,
+                                                                  'render' => false));
+            $this->view->assign('items', $items);
+            $this->view->assign('category', $category);
+
+
+            $content = $this->getContent();
+            $this->cache($content, $cacheid, array('nodelist'), 60); //60 Seconds set - should be dynamic? Should it invalidate, whenever any node is saved?
+        }
+        $this->renderContent($content);
+	}
+	
+	protected function getMimetype($filename) {
+		$fileext = substr ( strrchr ( $filename, '.' ), 1 );
+		if (empty ( $fileext ))
+			return (false);
+		$regex = "/^([\w\+\-\.\/]+)\s+(\w+\s)*($fileext\s)/i";
+		$lines = file ( ZfApplication::$_base_path.DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."Filemanager".DIRECTORY_SEPARATOR."mime.types", FILE_IGNORE_NEW_LINES );
+		foreach ( $lines as $line ) {
+			if (substr ( $line, 0, 1 ) == '#')
+				continue; // skip comments
+			if (! preg_match ( $regex, $line, $matches ))
+				continue; // no match to the extension
+			return ($matches [1]);
+		}
+		return (false); // no match at all
 	}
 }

@@ -1,9 +1,10 @@
-<h1>Files</h1>
+<h1><?php echo $this->category['title'];?></h1>
 <?php
 $i = 0;
 foreach ($this->items as $item) {?>
     <div class="content-item filemanager_file_list<?php if (($i % 4) == 0) {echo " clear";} ?>">
-    <?php if ($item->hooks['filemanager_file']->isImage()):?>
+    <?php
+    if ($item->hooks['filemanager_file']->isImage()):?>
     <p>
         <a href="<?php echo $this->url(array('id' => $item['id']), $item['type']);?>">
             <img src="<?php echo $item->hooks['filemanager_file']->getUrl(145);?>"

@@ -88,6 +88,14 @@ class Content_Service_Content extends Zoo_Service {
         else {
             $select->order("published DESC");
         }
+        
+        if (isset($options['limit'])) {
+        	$select->limit($options['limit']);	
+        }
+        else {
+        	$select->limit(50);
+        }
+        
         $items = $this->fetchAll($select);
         if (!isset($options['render']) || $options['render'] == false) {
             // Call hooks for items
