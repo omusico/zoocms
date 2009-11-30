@@ -27,9 +27,13 @@ class Taxonomy_Hook_Node extends Zoo_Hook_Abstract {
         }
 
         $category = new Zend_Form_Element_Select('category');
-        if ($item->type == "taxonomy_category"){
-            $category->setLabel('Parent category');
-            $category->addMultiOption(0, Zoo::_('Root category'));
+        $content_type = Zoo::getService('content')->getType($item->type);
+        if ($content_type->group == "category"){
+        	/**
+        	 * @todo change to look at the content type's group instead of hard-coded types
+        	 */
+            $category->setLabel('Parent');
+            $category->addMultiOption(0, Zoo::_('Root'));
         }
         else {
             $category->setLabel('Category');

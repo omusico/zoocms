@@ -16,11 +16,11 @@
 </table>
 
 <p><?php echo $this->escape($this->item);?></p>
-<?php if($this->item->hooks) {
+<?php 
+unset ($this->item->hooks['estate_node']);
+
+if($this->item->hooks) {
   foreach ($this->item->hooks as $name => $hook) {
-      if ($name != "estate_node") {
-          echo $hook;
-      }
+      echo $hook;
   }
 }
-?>

@@ -14,7 +14,7 @@ class Gallery_Module extends Zoo_Module {
      *
      * @var array
      */
-    protected $dependencies = array('db', 'content');
+    protected $dependencies = array('db', 'content', 'link');
     /**
      * Routes supplied by the module
      *
@@ -27,7 +27,7 @@ class Gallery_Module extends Zoo_Module {
                                                      'reqs'     => array('id' => "\d+")
                                                    ),
                               'gallery_list' => array('route' => "galleri",
-                                                       'deafults' => array('module'     => "Gallery",
+                                                       'defaults' => array('module'     => "Gallery",
                                                                            'controller' => "index",
                                                                            'action'     => "index"))
                              );

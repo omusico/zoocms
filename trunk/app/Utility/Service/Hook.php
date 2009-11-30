@@ -42,6 +42,7 @@ class Utility_Service_Hook extends Zoo_Service {
                     /**
                      * Log failed hook call
                      */
+                	echo $e->getMessage().$e->getTraceAsString();
                 }
             }
             return;

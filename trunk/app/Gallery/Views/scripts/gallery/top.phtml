@@ -1,0 +1,7 @@
+<div class="gallery_edit_navigation">
+	<a href="<?php echo $this->url(array('module' => 'Content', 'controller' => 'node', 'action' => 'edit', 'id' => $this->item['id']), 'default', true);?>"><?php echo $this->translate('Edit');?></a>
+	    | 
+	<a href="<?php echo $this->url(array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'reorder', 'id' => $this->item['id']), 'default', true);?>"><?php echo $this->translate('Reorder');?></a>
+	    | 
+	<a href="<?php echo $this->url(array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'images', 'id' => $this->item['id']), 'default', true);?>"><?php echo $this->translate('Images');?></a>
+</div>

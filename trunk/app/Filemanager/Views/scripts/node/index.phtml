@@ -17,15 +17,15 @@
              title="<?php echo $this->translate('Download')." ".$this->item['title'];?>" />
         <?php echo $this->translate('Download')." ".$this->item['title'];?>
     </a>
-<?php endif;?>
+<?php 
+endif;
+unset ($this->item->hooks['filemanager_file']);
+?>
 
 <p><?php echo $this->escape($this->item);?></p>
 
 <?php if($this->item->hooks) {
   foreach ($this->item->hooks as $name => $hook) {
-      if ($name != "filemanager_file") {
-          echo $hook;
-      }
+      echo $hook;
   }
 }
-?>

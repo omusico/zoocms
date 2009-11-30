@@ -13,7 +13,7 @@
  * @version    1.0
  * @author ZooCMS
  */
-class Gallery_IndexController {
+class Gallery_IndexController extends Zoo_Controller_Action {
     /**
      * Display gallery front page
      *

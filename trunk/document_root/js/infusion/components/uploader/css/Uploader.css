@@ -1,4 +1,4 @@
-.fl-uploader{width:434px;position:relative;display:block;clear:both;padding:1em 2em;}
+.fl-uploader{width:434px;position:relative;display:block;clear:both;}
 .fl-uploader-manually-degrade,.fl-uploader-manually-enhance{display:block;width:434px;clear:both;float:none;text-align:center;padding:1em;}
 .fl-ProgEnhance-basic div input{margin-top:.6em;}
 .fl-ProgEnhance-enhanced{display:none;}
@@ -21,7 +21,8 @@
 html>body .fl-uploader a.fl-uploader-browse{padding:3px 6px 3px 25px;border:1px solid transparent;}
 .fl-uploader a.fl-uploader-browse:hover{border:1px solid #CCC;background-color:#FFF;}
 .fl-uploader a.fl-uploader-browse:focus,.fl-uploader a.fl-uploader-browse.focus{outline:2px solid #142B8C;background-color:#FFF;}
-.fl-uploader .fl-uploader-browse-overlay{position:absolute;z-index:1;}
+.fl-uploader-browse-overlay{position:absolute;bottom:50px;left:325px;z-index:7;}
+.fl-uploader-flash10-wrapper{position:relative;float:left;}
 .fl-uploader-queue-wrapper caption{display:none;}
 .fl-uploader-queue-header{background-color:transparent;color:#666;}
 .fl-uploader-queue-header th{text-align:left;font-size:.94em;font-weight:normal;padding:6px;}
@@ -56,10 +57,10 @@ html>body .fl-uploader-queue{width:100%;}
 .fl-uploader-queue-wrapper td.fl-uploader-file-actions,.fl-uploader-queue-wrapper th.fl-uploader-file-actions{white-space:nowrap;text-align:center;}
 .fl-uploader-queue td.fileStatus{white-space:nowrap;}
 .fl-uploader-queue-wrapper .fl-uploader-browse-instructions{background-color:#F0F9FF;color:#666;text-align:center;border-left:1px solid #999;border-right:1px solid #999;padding:6px;}
-.fl-uploader-btns{margin-top:1em;}
+.fl-uploader-btns{margin-top:1em;text-align:right;}
 .fl-uploader-btns .fl-uploader-upload,.fl-uploader-btns .fl-uploader-resume,.fl-uploader-btns .fl-uploader-pause{width:8.4em;}
 .fl-uploader-btns .fl-uploader-done,.fl-uploader-btns .fl-uploader-cancel{width:7.6em;}
-.fl-uploader-btns button{float:right;padding:0;}
+.fl-uploader-btns button{padding:0;}
 button span.fl-uploader-button-text-hidden{display:none;}
 .fl-uploader-disabled,.fl-uploader-dim{cursor:auto;}
 .fl-uploader-disabled{background-color:#CCC!important;border-color:#999!important;}

@@ -42,16 +42,20 @@ class Content_Plugin_Headcache extends Zend_Controller_Plugin_Abstract {
         $update_cache = false;
         $headscript = $view->$type();
         $to_cache = array();
-        foreach ($headscript as $item) {
-            $to_cache[] = $item;
-            $update_cache = true;
+        if ($headscript) {
+        	foreach ($headscript as $item) {
+	            $to_cache[] = $item;
+	            $update_cache = true;
+        	}
         }
 
         $from_cache = Zoo::getService('cache')->load($cacheid);
         if ($from_cache) {
             foreach ($from_cache as $item) {
-                $view->$type()->append($item);
-                $to_cache[] = $item;
+                if (!in_array($item, $to_cache)) {
+                	$view->$type()->append($item);
+                	$to_cache[] = $item;
+                }
             }
         }
 

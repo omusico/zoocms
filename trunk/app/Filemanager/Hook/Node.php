@@ -51,7 +51,7 @@ class Filemanager_Hook_Node extends Zoo_Hook_Abstract {
      */
     public function nodeForm(Zend_Form &$form, &$arguments) {
         $item =& array_shift($arguments);
-        if ($item->type == "filemanager_file") {
+        if (!Zend_Controller_Front::getInstance()->getRequest()->isXmlHttpRequest() && $item->type == "filemanager_file") {
             // Add Filemanager fields
             $form->setAttrib('enctype', 'multipart/form-data');
             $file = new Zend_Form_Element_File('filemanager_file');
@@ -103,7 +103,7 @@ class Filemanager_Hook_Node extends Zoo_Hook_Abstract {
     public function nodeSave(&$form, &$arguments) {
         $item = array_shift($arguments);
         $arguments = array_shift($arguments);
-        if ($item->type == "filemanager_file") {
+        if ($item->type == "filemanager_file" && $form->filemanager_file) {
             $factory = new Filemanager_File_Factory();
 
             // Save Filemanager fields

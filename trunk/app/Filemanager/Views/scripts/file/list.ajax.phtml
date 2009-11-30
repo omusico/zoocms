@@ -2,27 +2,21 @@
 <?php
 $i = 0;
 foreach ($this->items as $item) {?>
-    <div class="content-item filemanager_file_list<?php if (($i % 4) == 0) {echo " clear";} ?>">
+    <div id="file-<?php echo $item->id;?>" class="content-item filemanager_file_list<?php if (($i % 3) == 0) {echo " clear";} ?>">
     <?php
     if ($item->hooks['filemanager_file']->isImage()):?>
     <p>
-        <a href="<?php echo $this->url(array('id' => $item['id']), $item['type']);?>">
-            <img src="<?php echo $item->hooks['filemanager_file']->getUrl(145);?>"
+        <img src="<?php echo $item->hooks['filemanager_file']->getUrl(130);?>"
                  alt="<?php echo $this->translate('Billede: ').$item['title'];?>" />
-        </a>
     </p>
     <?php else:?>
     <p>
-        <a href="<?php echo $this->url(array('id' => $item['id']), $item['type']);?>">
-            <img src="<?php echo $this->getTypeImage($item->hooks['filemanager_file']->mimetype);?>"
+        <img src="<?php echo $this->getTypeImage($item->hooks['filemanager_file']->mimetype);?>"
                  alt="<?php echo $this->translate('Fil: ').$item['title'];?>" />
-        </a>
     </p>
     <?php endif;?>
     <h2>
-        <a href="<?php echo $this->url(array('id' => $item['id']), $item['type']);?>">
-            <?php echo $this->escape($item['title']);?>
-        </a>
+        <?php echo $this->escape($item['title']);?>
     </h2>
     <p><?php echo $this->filter($item, 'content', 350); ?></p>
     <?php if($item->hooks) {
@@ -38,3 +32,4 @@ foreach ($this->items as $item) {?>
 	$i++;
 }
 ?>
+<br class="clear" />

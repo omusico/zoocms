@@ -43,13 +43,13 @@ abstract class Zoo_Hook_Abstract {
         // Reset view script paths
         $this->view->setScriptPath(null);
 
-        // Build new ones for blocks
+        // Build new ones for hooks
         $this->view->addBasePath(ZfApplication::$_base_path."/app/$module/Views", $module."_View");
-//        $this->view->addScriptPath(ZfApplication::$_base_path."/app/$module/Views/");
+        //$this->view->addScriptPath(ZfApplication::$_base_path."/app/$module/Views/");
         $this->view->addScriptPath($layout->getLayoutPath()."default/templates/$module");
         $this->view->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/$module");
 
-        return $this->view->render($name);
+        return $this->view->render($controller."/".$name);
     }
 
     /**

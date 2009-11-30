@@ -1,12 +1,11 @@
+<div id="uploader">
+
 <div id="folder-list">
 	
 </div>
 
-<div id="folder-contents">
-
-</div>
 <div id="uploader-contents"><!-- This form will be progressively enhanced by the Fluid Uploader component. -->
-	<form method="post" enctype="multipart/form-data"
+	<form action="#" method="post" enctype="multipart/form-data"
 		class="fl-uploader fl-progEnhance-basic">
 		<p>Browse to upload a file.</p>
 		<input name="fileData" type="file" />
@@ -14,7 +13,7 @@
 	</form>
 	
 	<!-- This is the markup for the Fluid Uploader component itself. -->
-	<form class="flc-uploader fl-uploader fl-progEnhance-enhanced"
+	<form action="#" class="flc-uploader fl-uploader fl-progEnhance-enhanced"
 		method="get" enctype="multipart/form-data"><!-- The file queue -->
 		<div class="fl-uploader-queue-wrapper"><!-- Top of the queue -->
 			<div class="fl-uploader-queue-header">
@@ -48,7 +47,7 @@
 					<td class="fl-uploader-file-actions">
 					<button type="button"
 						class="flc-uploader-file-action fl-uploader-file-action"
-						title="Remove File" tabindex="-1"><span
+						title="Remove File" tabindex="1"><span
 						class="fl-uploader-button-text fl-uploader-hidden">Remove file from
 					queue</span></button>
 					</td>
@@ -102,8 +101,18 @@
 
 </div>
 
+</div>
+<div id="portlet-reorderer-root">
+	<div id="selected">
+	</div>
+	<div id="folder-contents">
+	</div>
+	<br class="clear" />
+</div>
  <script type="text/javascript">
-            jQuery(document).ready(function () {
+ 	var catId = 0;
+ 	
+    function createUploader() {
                 var myUpload = fluid.progressiveEnhanceableUploader(".flc-uploader", ".fl-progEnhance-basic", {
                     uploadManager: {
             		    type: "fluid.swfUploadManager",
@@ -111,6 +120,9 @@
             		    options: {
             		       // Set the uploadURL to the URL for posting files to your server.
             		       uploadURL: "<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'performupload' ), 'default', true );?>",
+
+            		       // Add post parameters
+            		       postParams: {parent: getCatId() },
 
             		       // This option points to the location of the SWFUpload Flash object that ships with Fluid Infusion.
             		       flashURL: "<?php echo Zend_Controller_Front::getInstance()->getBaseUrl();?>/js/infusion/lib/swfupload/flash/swfupload.swf"
@@ -123,15 +135,17 @@
                             jQuery('#image-space').append('<img src="' + serverData + '" alt="' + file.name +'" />');
                         },
 
+                        
                         afterUploadComplete: function () {
-                            var myNextStepURI = "<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'upload' ), 'default', true );?>";
+                            //var myNextStepURI = "<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'upload' ), 'default', true );?>";
 
                             // first check to see if the file queue is empty and there haven't been any errors
                             if (myUpload.uploadManager.queue.getReadyFiles().length === 0 && myUpload.uploadManager.queue.getErroredFiles().length === 0) {
-                                // then go someplace
-                                window.location.href = myNextStepURI;
+                                // Update the category listing
+                                selectCategory(catId);
                             }
                         }
+                        
                     },
 
                     decorators: [{
@@ -142,12 +156,19 @@
                         }
                     }]
                 });
-            });
-</script>
-<script type="text/javascript">
-	$("#folder-list").load("<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'categories', 'format' => 'html' ), 'default', true );?>");
+                
+            };
+
+            $("#folder-list").load("<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'categories', 'format' => 'html' ), 'default', true );?>");
 
 	function selectCategory(id) {
-		$("#folder-contents").load("<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'list', 'format' => 'html' ), 'default', true );?>/id/" + id);		
+		$("#folder-contents").load("<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'list', 'format' => 'html' ), 'default', true );?>/id/" + id);
+		catId = id;
+		createUploader();
+	}
+
+	function getCatId() {
+		return catId;
 	}
 </script>
+<br class="clear" />

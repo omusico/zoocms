@@ -8,7 +8,7 @@
  * @package Content
  * @subpackage Node
  */
-class Content_Node_Form extends Zend_Form {
+class Content_Node_Form extends ZendX_JQuery_Form {
     /**
      * Set form elements for a Content_Node object
      *
@@ -20,6 +20,7 @@ class Content_Node_Form extends Zend_Form {
         parent::__construct($options);
 
         $this->setAction($action)->setMethod('post');
+        $this->setAttrib('id', 'content_form');
 
         $title = new Zend_Form_Element_Text('title', array('class' => 'content_title'));
         $title->setLabel('Title');
@@ -32,12 +33,35 @@ class Content_Node_Form extends Zend_Form {
         $submit->setLabel('Save');
 
         $this->addElements(array($title, $content));
-
+        
         $factory = new Content_Type_Factory();
         $type = $factory->fetchRow($factory->select()->where('type = ?', $target->type));
         $legend = $target->id > 0 ? Zoo::_("Edit %s") : Zoo::_("Add %s");
         $legend = sprintf($legend, $type->name);
         $this->addDisplayGroup(array('title', 'content'), 'content_add', array('legend' => $legend ));
+        
+    	if ($type->has_publishdate_select) {
+        	// Add publish date and approval settings
+        	$status = new Zend_Form_Element_Radio('status', array('class' => 'content_status'));
+        	$status->setLabel('Status');
+        	$status->addMultiOption(0, Zoo::_('Unpublished'));
+        	$status->addMultiOption(1, Zoo::_('Published'));
+        	//$status->addMultiOption(2, Zoo::_('Ready for review'));
+        	
+        	$publishdate = new ZendX_JQuery_Form_Element_DatePicker('published');
+        	$publishdate->setLabel('Publish date');
+        	
+        	$target->published = date('d M y', $target->published);
+        	$this->addElements(array($status, $publishdate));
+        	$this->addDisplayGroup(array('status', 'published'), 'content_publish', array('legend' => Zoo::_("Publish settings")));
+        	
+        	//Workaround for JQuery Theme
+        	/**
+        	 * @todo replace with unified jquery UI theme selector
+        	 */
+        	$view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
+        	$view->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css');
+        }
 
         try {
             Zoo::getService("hook")->trigger("Node", "Form", $this, $target);
@@ -45,7 +69,7 @@ class Content_Node_Form extends Zend_Form {
         catch (Zoo_Exception_Service $e) {
             // Hook service not available - log? Better not, some people may live happily without a hook service
         }
-
+        
         $this->addElement($submit);
         if ($target->id > 0) {
             $id_ele = new Zend_Form_Element_Hidden('id');

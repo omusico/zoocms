@@ -22,8 +22,12 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
     public function nodeDisplay(&$item) {
         if ($item->type == "gallery_node") {
             // Find files connected to the gallery
-            $factory = new Gallery_Node_Factory();
-            $item->hooks['gallery_nodes'] = $factory->getGalleryImages($item);
+            $item->hooks['gallery_nodes'] = Zoo::getService('link')->getLinkedNodes($item, 'gallery_image');
+            
+            $options = array('nodetype' => 'gallery_node', 
+            				 'parent' => $item->id, 
+            				 'render' => true);
+            $item->hooks['subgalleries'] = Zoo::getService('content')->getContent($options, 0, 0);
             
             // Add Lightbox JS
             $layout = Zend_Layout::getMvcInstance();
@@ -60,12 +64,59 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
     public function nodeForm(Zend_Form &$form, &$arguments) {
         $item =& array_shift($arguments);
         if ($item->type == "gallery_node") {
-            // Add image connector
+            // Add Colorpicker JS
+            /**
+             * 
+             * @todo Why is this not part of ZF? They have the view helper, but not the CSS/JS files...
+             */
+            $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
+            $view->jQuery()->addJavascriptFile(Zend_Controller_Front::getInstance()->getBaseUrl().'/js/jquery/colorpicker/js/colorpicker.js', 'text/javascript');
+            $view->jQuery()->addStylesheet(Zend_Controller_Front::getInstance()->getBaseUrl()."/js/jquery/colorpicker/css/colorpicker.css");
+        	
+            /*
+            // Ain't working... param values are parsed as strings, not javascript
+            $params = array('onSubmit' => 'function(hsb, hex, rgb, el) {
+												$(el).val(hex);
+												$(el).ColorPickerHide();
+											}',
+            				'onBeforeShow' => 'function () {$(this).ColorPickerSetColor(this.value);}');
+            				*/
+            $bgcolor = new ZendX_JQuery_Form_Element_ColorPicker('gallery_bgcolor');
+        	$bgcolor->setLabel('Background colour');
+        	//$bgcolor->setJqueryParams($params);
+        	
+        	$topimage = new Zend_Form_Element_Text('gallery_topimage');
+        	$topimage->setLabel('Top image');
+        	
+        	$bgimage = new Zend_Form_Element_Text('gallery_bgimage');
+        	$bgimage->setLabel('Background image');
+        	
+        	$form->addElements(array($bgcolor, $topimage, $bgimage));
+        	
+        	$options = array('legend' => Zoo::_("Gallery extras"));
+        	$form->addDisplayGroup(array('gallery_bgcolor', 'gallery_topimage', 'gallery_bgimage'), 'gallery_node', $options);
+
+            if ($item->id > 0) {
+                // Fetch gallery object
+                /*
+                $factory = new Gallery_Node_Factory();
+                $gnode = $factory->find($item->id)->current();
+                if (!$gnode) {
+                    $gnode = $factory->createRow();
+                }
+                $values = $gnode->toArray();
+                $populate = array();
+                foreach ($values as $key => $value) {
+                    $populate['gallery_'.$key] = $value;
+                }
+                $form->populate($populate);
+                */
+            }
         }
     }
 
     /**
-     * Hook for node save - if type is Gallery Node, save connected images
+     * Hook for node save
      *
      * @param Zend_Form $form
      * @param array $arguments
@@ -75,6 +126,13 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
         $arguments = array_shift($arguments);
         if ($item->type == "gallery_node") {
             
+        }
+        elseif ($item->type == "filemanager_file") {
+        	$connectTo = Zend_Controller_Front::getInstance()->getRequest()->getParam('connectTo');
+        	if ($connectTo) {
+	        	// Connect image to gallery_node
+	        	Zoo::getService('link')->getFactory()->connect($connectTo, $item->id, 'gallery_image');
+        	}
         }
     }
 }

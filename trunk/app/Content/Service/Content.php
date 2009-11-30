@@ -90,7 +90,9 @@ class Content_Service_Content extends Zoo_Service {
         }
         
         if (isset($options['limit'])) {
-        	$select->limit($options['limit']);	
+        	if ($options['limit'] > 0) {
+        		$select->limit($options['limit']);
+        	}	
         }
         else {
         	$select->limit(50);
@@ -151,7 +153,7 @@ class Content_Service_Content extends Zoo_Service {
                     // Hook service not available - log? Better not, some people may live happily without a hook service
                 }
                 // Render content item
-                if (!isset($contentview)) {
+                if (!($this->view)) {
                     $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
                     /* @var $view Zend_View_Abstract */
                     // Don't clone the view until it is needed

@@ -13,164 +13,78 @@
  * @version    1.0
  * @author ZooCMS
  */
-class Gallery_GalleryController extends Zend_Controller_Action {
-    /**
-     * Display gallery
-     *
-     */
-    public function indexAction()
-    {
+class Gallery_GalleryController extends Zoo_Controller_Action {
+	protected $item;
+	
+	public function init() {
+		$id = intval($this->getRequest()->getParam('id'));
+        /**
+         * @todo more generic sanitation than intval??
+         */
+        Zend_Registry::set('content_id', $id);
 
+        $found = Zoo::getService('content')->find($id);
+        if ($found->count() == 0) {
+            throw new Zend_Controller_Action_Exception(Zoo::_("Content not found"), 404);
+        }
+        $item = $found->current();
+        
+        try {
+	    	if (!Zoo::getService('acl')->checkItemAccess($item, 'edit')) {
+	        	throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
+	        }
+        }
+    	catch (Zoo_Exception_Service $e) {
+        	// No acl service installed
+        }
+
+        $this->view->assign('item', $item);
+        $this->item =& $item;
+	}
+       
+    public function imagesAction() {
+        $this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
+		$this->view->headScript()->appendFile('/js/infusion/framework/core/js/ProgressiveEnhancement.js', 'text/javascript');
+
+		$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css');
+		$this->view->headLink()->appendStylesheet('/js/infusion/components/uploader/css/Uploader.css');
     }
-
-    /**
-     * Display image
-     *
-     */
-    public function imageAction()
-    {
-
+    
+    public function reorderAction() {
+		// Find files connected to the gallery
+		$this->item->hooks ['gallery_nodes'] = Zoo::getService('link')->getLinkedNodes($this->item, 'gallery_image');
+		
+		// Add Infusion JS
+		$layout = Zend_Layout::getMvcInstance ();
+		$theme_folder = Zend_Controller_Front::getInstance ()->getBaseUrl () . "/themes/" . $layout->getLayout ();
+		
+		$this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
+		$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css');
+		$this->view->headLink()->appendStylesheet('/js/infusion/components/reorderer/css/Reorderer.css');
+		$this->view->headLink()->appendStylesheet('/js/infusion/components/reorderer/css/ImageReorderer.css');
+		$this->view->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css');
+		
+		$this->view->assign('pagetitle', $this->item->title);
     }
-
-    public function importAction() {
-        ini_set('memory_limit', '1024M');
-        $url = "http://www.123hjemmeside.dk/Raven681";
-        $html = file_get_contents($url);
-        $doc = new DomDocument();
-        @$doc->loadHTML($html);
-
-        $tags2 = $doc->getElementsByTagName('div');
-        foreach ($tags2 as $tag) {
-            if ($tag->getAttribute('class') == "menuitem_photoalbum") {
-                $nodes = $tag->childNodes;
-                foreach ($nodes as $node) {
-                    $href = $node->getAttribute('href');
-                    $cnodes = $tag->childNodes;
-                    $text = "";
-                    foreach ($cnodes as $cnode) {
-                        $cnodes = $tag->childNodes;
-                        foreach ($cnodes as $cnode) {
-                            $text = $cnode->nodeValue;
-                        }
-                    }
-                    $urls[] = array('href' => $href, 'title' => $text);
-                }
-            }
+    
+    public function performreorderAction() {
+    	$gallery = $this->item;
+        // Reorder files
+        //Target is on the form gallery:::gallery-thumbs:::lightbox-cell:[ID]
+        $targetId = intval(substr($this->getRequest()->getParam('target'), strrpos($this->getRequest()->getParam('target'), ":")+1));
+        // -1 = before, 1 = after
+        $position = $this->getRequest()->getParam('position');
+        Zoo::getService('link')->update('gallery_image', $gallery, $this->getRequest()->getParam('movedId'), $targetId, $position);
+        
+        try {
+        	Zoo::getService('cache')->remove(get_class($gallery)."_".$gallery->id);
+        	Zoo::getService('cache')->remove(get_class($gallery)."_".$gallery->id."_edit");
         }
-        unset($doc);
-        header("Content-Type: text/html; charset=utf-8");
-        foreach ($urls as $i => $url) {
-            set_time_limit(60);
-            $html = file_get_contents($url['href']);
-            $doc = new DomDocument();
-            @$doc->loadHTML($html);
-
-            $divs = $doc->getElementsByTagName('div');
-            foreach ($divs as $div) {
-                if (strstr($div->getAttribute('class'), "twoLineSpace")) {
-                    $Document = new DOMDocument();
-                    $Document->appendChild($Document->importNode($div,true));
-                    $urls[$i]['text'] = trim(strip_tags($Document->saveHTML(), "<br>"));
-                    break;
-                }
-            }
-
-            $tags = $doc->getElementsByTagName('table');
-            foreach ($tags as $tag) {
-                if ($tag->getAttribute('class') == "albumphoto") {
-                    $cnodes = $tag->getElementsByTagName('a');
-                    foreach ($cnodes as $cnode) {
-                        $imgurls[$i] = array('href' => $cnode->getAttribute('href'));
-                    }
-                    break;
-                }
-            }
-            unset($doc);
+        catch (Zoo_Exception_Service $e) {
+        	// No caching service installed, nothing to remove
         }
-
-        foreach ($imgurls as $i => $url) {
-            $html = file_get_contents($url['href']);
-            $doc = new DomDocument();
-            @$doc->loadHTML($html);
-            $tags = $doc->getElementsByTagName('input');
-
-            foreach ($tags as $tag) {
-                $v = $tag->getAttribute('value');
-                if (strstr($v, "#*#")) {
-                    if ($tag->getAttribute('class') == "slideshowlist") {
-                        $urls[$i]['ids'] = explode('#*#', $v);
-                    }
-                    elseif ($tag->getAttribute('class') == "slideshowtitleslist") {
-                        $urls[$i]['texts'] = explode('#*#', $v);
-                    }
-                }
-            }
-            unset($doc);
-        }
-
-        $factory = new Filemanager_File_Factory();
-        $galleryfactory = new Gallery_Node_Factory();
-        foreach ($urls as $i => $array) {
-            set_time_limit(60);
-
-            // Insert category with $array['title'] and $array['text']
-            $item = Zoo::getService('content')->createRow();
-            $item->type = 'taxonomy_category';
-            $item->title = $array['title'];
-            $item->status = 1;
-            $item->published = time();
-            $item->save();
-
-            // Create gallery_node content item
-            $gallery = Zoo::getService('content')->createRow();
-            $gallery->type = 'gallery_node';
-            $gallery->title = $array['title'];
-            $gallery->content = $array['text'];
-            $gallery->status = 1;
-            $gallery->published = time();
-            $gallery->save();
-            Zoo::getService('content')->setFilter($gallery, 3, 1);
-            Zoo::getService('content')->setFilter($gallery, 6, 1);
-
-            foreach ($array['ids'] as $k => $id) {
-                set_time_limit(60);
-                
-                // Insert image in category with $id and $array['texts'][$k]
-                $image = Zoo::getService('content')->createRow();
-                $image->type = 'filemanager_file';
-                $image->title = $id;
-                if ($array['texts'][$k]) {
-                    $image->content = $array['texts'][$k];
-                }
-                $image->status = 1;
-                $image->published = time();
-                $image->save();
-
-                Zoo::getService('content')->setFilter($image, 3, 1);
-                Zoo::getService('content')->setFilter($image, 6, 1);
-
-                $file = $factory->createRow();
-                $file->nid = $image->id;
-                $file->mimetype = "image/jpeg";
-
-                // Fetch image from 123hjemmeside.dk
-                $url = "http://www.123hjemmeside.dk/picture.aspx?id=".$id;
-                $jpg = file_get_contents($url);
-                file_put_contents($file->getPath(), $jpg);
-
-                $file->size = filesize($file->getPath());
-                $file->save();
-
-                // Connect image to gallery_node
-                $gnode = $galleryfactory->createRow();
-                $gnode->nid = $gallery->id;
-                $gnode->fid = $image->id;
-                $gnode->weight = $k;
-                $gnode->save();
-
-                unset($image, $file, $jpg, $gnode);
-            }
-            unset($gallery);
-        }
+    	
+        $this->getHelper('layout')->disableLayout();
+		$this->getHelper('viewRenderer')->setNoRender();
     }
 }

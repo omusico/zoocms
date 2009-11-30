@@ -20,6 +20,10 @@ class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
      */
     public function dispatchLoopShutdown()
     {
+    	if (!Zend_Layout::getMvcInstance()->isEnabled()) {
+    		// No layout, no blocks
+    		return;
+    	}
         $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
         /* @var $view Zend_View_Abstract */
 

@@ -13,6 +13,31 @@
  */
 class Connector_Service_Link extends Zoo_Service
 {
+	protected $factory = null;
+	/**
+     *
+     * @staticvar Content_Node_Factory $factory
+     * @return Content_Node_Factory
+     */
+    public function getFactory() {
+        if (!$this->factory) {
+        	$this->factory = new Connector_Link_Factory();
+        }
+        return $this->factory;
+    }
+
+    /**
+     * Route calls to nondefined methods to the Content_Node_Factory
+     *
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return mixed
+     */
+    public function __call($name, $arguments) {
+        return call_user_func_array(array($this->getFactory(), $name), $arguments);
+    }
+    
     /**
      * Add elements to a form for adding a link to a content node
      *
@@ -51,5 +76,82 @@ class Connector_Service_Link extends Zoo_Service
 
         return $ret;
     }
+
+    /**
+     * Make a connection from one node to another
+     * @param int $from
+     * @param int $to
+     * @param string $type
+     * @return bool
+     */
+    function connect($from, $to, $type = 'link') {
+    	$weight = $this->getNextWeight($from);
+
+        $gnode = $this->createRow();
+        $gnode->nid = $from;
+        $gnode->tonid = $to;
+        $gnode->type = $type;
+        $gnode->weight = $weight;
+        return $gnode->save();
+    }
+    
+    /**
+     * Update a linked node's position relative to another linked node
+     * @param string $type
+     * @param Zoo_Content_Interface $node
+     * @param int $movedId
+     * @param int $targetId
+     * @param int $position
+     * @return bool
+     */
+    function update($type = 'link', $node, $movedId, $targetId, $position) {
+    	$factory = $this->getFactory();
+		$moved = $factory->fetchAll($factory->select()
+        									->where('type = ?', $type)
+											->where('nid = ?', $node->id)
+        									->where('tonid = ?', $movedId))->current();
+		
+        $target = $factory->fetchAll($factory->select()
+        									->where('type = ?', $type)
+        									->where('nid = ?', $node->id)
+        									->where('tonid = ?', $targetId))->current();
+        									
+        $direction = $target->weight - $moved->weight;
+        $oldweight = $moved->weight;
+        if ($direction > 0) {
+			// Item moved forwards
+			$newweight = $position < 0 ? $target->weight - 1 : $target->weight;
+			// Decrease weight for all items in between item's original weight and new weight
+			$set = "weight = weight-1 WHERE type = " . $factory->getAdapter ()->quote ( $type ) . " 
+        								AND nid = " . $node->id . " 
+        								AND weight > " . $moved->weight . " 
+        								AND weight <= " . $newweight ;
+		}
+		else {
+			// Item moved backwards
+			switch ($position) {
+				case -1:
+				case 3:
+					$newweight = $target->weight;
+					break;
+					
+				case 1:
+				case 2:
+					$newweight = $target->weight + 1;
+					break;
+			}
+			// Increase weight for all items in between new weight and item's original weight
+			$set = "weight = weight+1 WHERE type = " . $factory->getAdapter ()->quote ( $type ) . " 
+        									AND nid = " . $node->id . " 
+        									AND weight >= " . $newweight . " 
+        									AND weight < " . $moved->weight;
+		}
+		if ($newweight == $oldweight) {
+			// No change
+			return true;
+		}
+        $factory->getAdapter()->query("UPDATE ".$factory->info(Zend_Db_Table_Abstract::NAME)." SET ".$set);
+        $moved->weight = $target->weight;
+        return $moved->save();
+    }
 }
-?>

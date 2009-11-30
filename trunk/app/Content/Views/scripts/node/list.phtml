@@ -1,4 +1,4 @@
-<div class="content-item">
+<div class="content-item content-<?php echo $this->item['type'];?>">
     <h2>
         <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
             <?php echo $this->escape($this->item['title']);?>
@@ -9,5 +9,5 @@
     foreach ($this->item->hooks as $hook) {
         echo $hook;
     }
-    ?>
+?>
 </div>
