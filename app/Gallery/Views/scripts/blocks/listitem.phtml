@@ -1,0 +1,15 @@
+<?php
+$ele = $this->gallery;
+if (isset ( $ele ['element'] )) {
+	echo "<li><a href='".$this->url(array('id' => $ele['element']['id']), $ele['element']['type'])."'>" . $this->escape($ele ['element'] ['title']) . "</a>";
+}
+if (isset ( $ele ['children'] )) {
+	echo "<ul>";
+	foreach ( $ele ['children'] as $child ) {
+		echo $this->partial ( 'blocks/listitem.phtml', array ('gallery' => $child ) );
+	}
+	echo "</ul>";
+}
+if (isset ( $ele ['element'] )) {
+	echo "</li>";
+}

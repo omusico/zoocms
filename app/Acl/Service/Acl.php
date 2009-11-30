@@ -158,4 +158,39 @@ class Acl_Service_Acl extends Zoo_Service {
         }
         return $groups;
     }
+    
+/**
+     * Check access to performing actions on content
+     *
+     * @param Zoo_Content_Interface $item
+     * @param string $privilege
+     * @return bool
+     */
+    function checkItemAccess(Zoo_Content_Interface $item, $privilege = "index") {
+        try {
+            if ($privilege == "editown") {
+                if ($item->uid != Zoo::getService('user')->getCurrentUser()->id) {
+                    return false;
+                }
+            }
+            /**
+             * Should this be shortened?
+             * Decision made not to, since this is more transparent to the developer
+             */
+            $roles = Zoo::getService('user')->getCurrentUser()->getGroups();
+
+            foreach ($roles as $role) {
+                if ($this->isAllowed($role, 'content.node', $privilege) ||
+                    $this->isAllowed($role, 'content.node', $privilege.'.'.$item->type)) {
+                    return true;
+                }
+            }
+        }
+        catch (Zend_Acl_Exception $e) {
+            // Most likely reason: Resource doesn't exist - should we do something? It will deny access...
+
+            // Log?
+        }
+        return false;
+    }
 }

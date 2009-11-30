@@ -1,7 +1,4 @@
-<?php
-$estate = $this->item->hooks['estate_node'];
-?>
-<div class="content-item">
+<?php $estate = $this->item->hooks['estate_node'];?>
     <h2>
         <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
             <?php echo $this->escape($this->item['title']);?>
@@ -42,5 +39,3 @@ $estate = $this->item->hooks['estate_node'];
           }
       }
     }
-    ?>
-</div>

@@ -50,7 +50,6 @@ class Zoo_Plugin_Boot_Http extends Zoo_Plugin_Boot
 
         parent::dispatchLoopStartup($request);
 
-        $this->getResponse()->setHeader('Content-Type', 'text/html; charset=utf-8');
         // Since we're not using the cli sapi, instanciate the http protocol items
         if (!Zend_Session::isStarted() && !Zend_Session::sessionExists()) {
             if ($config = Zoo::getConfig('session', 'plugin')) {
@@ -103,5 +102,17 @@ class Zoo_Plugin_Boot_Http extends Zoo_Plugin_Boot
 
         // Add core module's view helper path
         $viewRenderer->view->addHelperPath(ZfApplication::$_base_path."/app/Zoo/Views/helpers");
+        
+        // Add JQuery support
+        $viewRenderer->view->addHelperPath('ZendX/JQuery/View/Helper/', 'ZendX_JQuery_View_Helper');
+    }
+    
+    /**
+     * Sets content type header for Layout-enabled pages
+     */
+    public function postDispatch(Zend_Controller_Request_Abstract $request) {
+    	if (Zend_Layout::getMvcInstance()->isEnabled()) {
+    		$this->getResponse()->setHeader('Content-Type', 'text/html; charset=utf-8');
+    	}
     }
 }

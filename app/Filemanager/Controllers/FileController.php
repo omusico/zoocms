@@ -89,9 +89,9 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 				echo file_get_contents ( $file->getPath () );
 			}
 		}
-		//        $this->getHelper('layout')->disableLayout();
-		//        $this->getHelper('viewRenderer')->setNoRender();
-		die ();
+		Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
+        $this->getHelper('layout')->disableLayout();
+        $this->getHelper('viewRenderer')->setNoRender();
 	}
 	
 	/**
@@ -120,51 +120,29 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	}
 	
 	public function uploadAction() {
-		//Zoo::getService('cache')->remove("HeadScript_".md5($_SERVER['REQUEST_URI']));
-		//Zoo::getService('cache')->remove("HeadLink_".md5($_SERVER['REQUEST_URI']));
-		//Zoo::getService('cache')->remove("HeadMeta_".md5($_SERVER['REQUEST_URI']));
-		
-
-		/*
-		$this->view->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js', 'text/javascript');
-		$this->view->headScript()->appendFile('/js/infusion/framework/core/js/ProgressiveEnhancement.js', 'text/javascript');
 		$this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
+		$this->view->headScript()->appendFile('/js/infusion/framework/core/js/ProgressiveEnhancement.js', 'text/javascript');
 
-		$this->view->headLink()->appendStylesheet('/js/infusion/components/uploader/css/Uploader.css', 'text/javascript');
-		$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css', 'text/javascript');
-		*/
-		
-		$this->view->headLink ()->appendStylesheet ( '/js/infusion/framework/fss/css/fss-reset.css' );
-		$this->view->headLink ()->appendStylesheet ( '/js/infusion/framework/fss/css/fss-layout.css' );
-		$this->view->headLink ()->appendStylesheet ( '/js/infusion/components/uploader/css/Uploader.css' );
-		
-		$this->view->headScript ()->appendFile ( '/js/infusion/lib/jquery/core/js/jquery.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/lib/jquery/ui/js/ui.core.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/framework/core/js/jquery.keyboard-a11y.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/lib/swfobject/js/swfobject.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/lib/swfupload/js/swfupload.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/framework/core/js/Fluid.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/framework/core/js/ProgressiveEnhancement.js', 'text/javascript' );
-		
-		$this->view->headScript ()->appendFile ( '/js/infusion/components/uploader/js/FileQueue.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/components/uploader/js/DemoUploadManager.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/components/uploader/js/SWFUploadManager.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/components/uploader/js/Scroller.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/components/progress/js/Progress.js', 'text/javascript' );
-		$this->view->headScript ()->appendFile ( '/js/infusion/components/uploader/js/Uploader.js', 'text/javascript' );
+		//$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-reset.css' );
+		$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css');
+		$this->view->headLink()->appendStylesheet('/js/infusion/components/uploader/css/Uploader.css');
 	}
 	
 	public function performuploadAction() {
-		$factory = new Filemanager_File_Factory ( );
+		/*$writer = new Zend_Log_Writer_Stream ( ZfApplication::$_data_path.DIRECTORY_SEPARATOR."upload.txt" );
+		$logger = new Zend_Log ( $writer );
 		
-		// Insert image in category with $id and $array['texts'][$k]
+		$logger->log ( serialize($_REQUEST), Zend_Log::INFO );*/
+		
 		$image = Zoo::getService ( 'content' )->createRow ();
 		$image->type = 'filemanager_file';
 		$image->title = substr ( $this->getRequest ()->getParam ( 'Filename' ), 0, strrpos ( $this->getRequest ()->getParam ( 'Filename' ), '.' ));
 		$image->status = 1;
 		$image->published = time ();
+		$image->pid = $this->getRequest ()->getParam ( 'parent' );
 		$image->save ();
-		
+
+		/*
 		$file = $factory->createRow ();
 		$file->nid = $image->id;
 		$file->mimetype = $this->getMimetype ( $_FILES ['Filedata'] ['name'] );
@@ -173,7 +151,20 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$file->save ();
 		
 		rename ( $_FILES ['Filedata'] ['tmp_name'], $file->getPath () );
+		*/
+		Zoo::getService('cache')->remove("Filemanager_FileController_listAction".$image->pid);
+		
+		try {
+			$form = $image->getForm($this->_helper->getHelper('url')
+                                                    ->direct('save', 'node', 'Content'));
+            Zoo::getService("hook")->trigger("Node", "Save", $form, $image);
+        }
+        catch (Zoo_Exception_Service $e) {
+            // Hook service not available - log? Better not, some people may live happily without a hook service
+        }
 
+        $factory = new Filemanager_File_Factory ( );
+        $file = $factory->find($image->id)->current();
 		echo $file->getUrl(200,200);
 		die;
 	}
@@ -198,8 +189,8 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	 */
 	public function listAction() {
 		$method = __METHOD__;
-        $cacheid = str_replace("::", "_", $method).intval($this->getRequest()->getParam('id'));;
-
+        $cacheid = str_replace("::", "_", $method).intval($this->getRequest()->getParam('id'));
+        
         $content = $this->checkCache($cacheid);
         if (!$content) {
             $found = Zoo::getService('content')->find($this->_request->getParam('id'));

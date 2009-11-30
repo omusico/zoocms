@@ -1,0 +1,15 @@
+<?php
+$ele = $this->ele;
+if (isset ( $ele ['element'] )) {
+	echo "<li><a href='#' onclick='selectCategory(" . $ele ['element'] ['id'] . ");return false;'>" . $this->escape($ele ['element'] ['title']) . "</a>";
+}
+if (isset ( $ele ['children'] )) {
+	echo "<ul>";
+	foreach ( $ele ['children'] as $child ) {
+		echo $this->partial ( 'file/category.ajax.phtml', array ('ele' => $child ) );
+	}
+	echo "</ul>";
+}
+if (isset ( $ele ['element'] )) {
+	echo "</li>";
+}

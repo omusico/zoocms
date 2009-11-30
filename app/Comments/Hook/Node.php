@@ -34,10 +34,14 @@ class Comments_Hook_Node extends Zoo_Hook_Abstract {
         }
         foreach ($items as $item) {
             $count = isset($counts[$item->id]) ? ($counts[$item->id]) : 0;
-            /**
-             * @todo: Render HTML with links and stuff
-             */
-            $item->hooks['comments'] = "<div class='comment-count'><a href='".$url[$item->id]."#comments'>" . ($count == 1 ? $count." ".Zoo::_('comment') : $count." ".Zoo::_('comments')) . "</a></div>";
+            if ($count > 0) {
+            	$this->view->url = $url[$item->id];
+            	$this->view->count = $count;
+            	/**
+	             * Render HTML
+	             */
+            	$item->hooks['comments'] = $this->render('nodelist', 'Comments');
+            }
         }
     }
 
