@@ -24,18 +24,19 @@ class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
     		// No layout, no blocks
     		return;
     	}
-        $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
-        /* @var $view Zend_View_Abstract */
-
-        // Retrieve and render each block
+        // Retrieve blocks to be shown on this page
         $factory = new Flex_Block_Factory();
         $blocks = $factory->getBlocks();
         if (!$blocks) {
+        	// No blocks to show
             return;
         }
 
         $rendered_blocks = array();
-
+		
+        $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
+        /* @var $view Zend_View_Abstract */
+                        
         foreach (array_keys($blocks) as $position) {
             foreach ($blocks[$position] as $block) {
                 $cacheid = $block->getCacheId();

@@ -67,6 +67,17 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
 		$this->view->assign('pagetitle', $this->item->title);
     }
     
+    public function removeAction() {
+    	if ($this->getRequest()->isPost()) {
+    		echo "Image removed";
+    	}
+    	else {
+    		echo Zoo::_("Are you sure, you want to remove this image from the gallery?");
+    	}
+    	$this->getHelper('layout')->disableLayout();
+		$this->getHelper('viewRenderer')->setNoRender();
+    }
+    
     public function performreorderAction() {
     	$gallery = $this->item;
         // Reorder files

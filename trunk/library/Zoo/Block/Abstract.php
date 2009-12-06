@@ -26,6 +26,13 @@ abstract class Zoo_Block_Abstract {
      */
     public $title;
     /**
+    /**
+     * Block name
+     *
+     * @var string
+     */
+    public $name;
+    /**
      * Block weight for ordering blocks relative to each other
      *
      * @var int
@@ -44,6 +51,13 @@ abstract class Zoo_Block_Abstract {
      */
     public $cache_time = 2;
     /**
+     * Block configuration options
+     *
+     * @var array
+     */
+    public $options = array();
+    
+    /**
      * Block ID
      *
      * @var int
@@ -61,6 +75,17 @@ abstract class Zoo_Block_Abstract {
         }
         if (isset($options['title'])) {
             $this->title = $options['title'];
+        }
+        if (isset($options['name'])) {
+            $this->name = $options['name'];
+        }
+        if (isset($options['options'])) {
+        	if (is_string($options['options'])) {
+        		$this->options = unserialize($options['options']);
+        	}
+        	elseif (is_array($options['options'])) {
+        		$this->options = $options['options'];
+        	}
         }
         if (isset($options['cache_time'])) {
             $this->cache_time = $options['cache_time'];

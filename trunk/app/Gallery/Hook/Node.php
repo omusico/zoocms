@@ -24,6 +24,16 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             // Find files connected to the gallery
             $item->hooks['gallery_nodes'] = Zoo::getService('link')->getLinkedNodes($item, 'gallery_image');
             
+            $top_image = Zoo::getService('link')->getLinkedNodes($item, 'top_image');
+            if ($top_image->count() > 0) {
+            	$item->hooks['top_image'] = $top_image[0];
+            }
+            
+        	$bg_image = Zoo::getService('link')->getLinkedNodes($item, 'bg_image');
+            if ($bg_image->count() > 0) {
+            	$item->hooks['bg_image'] = $bg_image[0];
+            }
+            
             $options = array('nodetype' => 'gallery_node', 
             				 'parent' => $item->id, 
             				 'render' => true);
@@ -85,11 +95,23 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
         	$bgcolor->setLabel('Background colour');
         	//$bgcolor->setJqueryParams($params);
         	
-        	$topimage = new Zend_Form_Element_Text('gallery_topimage');
-        	$topimage->setLabel('Top image');
+        	$config = Zoo::getConfig('gallery', 'module');
         	
-        	$bgimage = new Zend_Form_Element_Text('gallery_bgimage');
+        	$topimage = new Zend_Form_Element_Radio('gallery_topimage');
+        	$topimage->setLabel('Top image');
+        	$topimages = Zoo::getService('content')->getContent(array('parent' => $config->top_image, 'nodetype' => 'filemanager_file'));
+        	$topimage->addMultiOption(0, Zoo::_("None"));
+        	foreach ($topimages as $image) {
+        		$topimage->addMultiOption($image->id, "<img src='".$image->hooks['filemanager_file']->getUrl()."' />".$image->title);
+        	}
+        	
+        	$bgimage = new Zend_Form_Element_Radio('gallery_bgimage');
         	$bgimage->setLabel('Background image');
+        	$bgimages = Zoo::getService('content')->getContent(array('parent' => $config->background_image, 'nodetype' => 'filemanager_file'));
+        	$bgimage->addMultiOption(0, Zoo::_("None"));
+        	foreach ($bgimages as $image) {
+        		$bgimage->addMultiOption($image->id, $image->title);
+        	}
         	
         	$form->addElements(array($bgcolor, $topimage, $bgimage));
         	
@@ -97,20 +119,14 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
         	$form->addDisplayGroup(array('gallery_bgcolor', 'gallery_topimage', 'gallery_bgimage'), 'gallery_node', $options);
 
             if ($item->id > 0) {
-                // Fetch gallery object
-                /*
-                $factory = new Gallery_Node_Factory();
-                $gnode = $factory->find($item->id)->current();
-                if (!$gnode) {
-                    $gnode = $factory->createRow();
-                }
-                $values = $gnode->toArray();
-                $populate = array();
-                foreach ($values as $key => $value) {
-                    $populate['gallery_'.$key] = $value;
-                }
+                // Fetch extra information
+	            $top_image = Zoo::getService('link')->getLinkedNodes($item, 'top_image');
+	            $populate['gallery_topimage'] = ($top_image->count() > 0) ? $top_image[0]->id : 0; 
+
+	            $bg_image = Zoo::getService('link')->getLinkedNodes($item, 'bg_image');
+	            $populate['gallery_bgimage'] = ($bg_image->count() > 0) ? $bg_image[0]->id : 0; 
+
                 $form->populate($populate);
-                */
             }
         }
     }
@@ -125,13 +141,27 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
         $item = array_shift($arguments);
         $arguments = array_shift($arguments);
         if ($item->type == "gallery_node") {
-            
+        	$values = $form->getValues();
+        	// Remove existing background image link
+        	Zoo::getService('link')->remove($item->id, null, 'bg_image');
+        	if ($values['gallery_bgimage']) {
+            	// Connect image to gallery_node
+	        	Zoo::getService('link')->connect($item->id, $values['gallery_bgimage'], 'bg_image');
+        		
+        	}
+        	// Remove existing top image link
+        	Zoo::getService('link')->remove($item->id, null, 'top_image');
+        	if ($values['gallery_topimage']) {
+        		// Connect image to gallery_node
+	        	Zoo::getService('link')->connect($item->id, $values['gallery_topimage'], 'top_image');
+        		
+        	}
         }
         elseif ($item->type == "filemanager_file") {
         	$connectTo = Zend_Controller_Front::getInstance()->getRequest()->getParam('connectTo');
         	if ($connectTo) {
 	        	// Connect image to gallery_node
-	        	Zoo::getService('link')->getFactory()->connect($connectTo, $item->id, 'gallery_image');
+	        	Zoo::getService('link')->connect($connectTo, $item->id, 'gallery_image');
         	}
         }
     }

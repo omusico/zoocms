@@ -95,6 +95,18 @@ class Connector_Service_Link extends Zoo_Service
         return $gnode->save();
     }
     
+    function remove($from, $to, $type = 'link') {
+    	$factory = $this->getFactory();
+    	$where = array();
+    	$where[] = $factory->getAdapter()->quoteInto('type = ?', $type);
+    	$where[] = $factory->getAdapter()->quoteInto('nid = ?', $from);
+    	if ($to) {
+    	    $where[] = $factory->getAdapter()->quoteInto('tonid = ?', $to);
+    	}
+    	
+    	return $factory->delete($where);
+    }
+    
     /**
      * Update a linked node's position relative to another linked node
      * @param string $type

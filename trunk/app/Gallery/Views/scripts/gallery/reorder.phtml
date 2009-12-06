@@ -18,8 +18,13 @@ if ($this->item->hooks['gallery_nodes']) {
 		          	   title="<?php echo $image['content'] ? $this->escape($image->content) : "*"; ?>"
 		          	   onclick="editDialog(<?php echo $image->id;?>); return false;">
 		                <img src="<?php echo $image->hooks['filemanager_file']->getUrl(135, 135);?>"
-		                     alt="<?php echo $this->translate('Billede: ').$image['title'];?>" />
+		                     alt="<?php echo $this->translate('Image: ').$image['title'];?>" />
 		            </a>
+		            	<img class="gallery-remove-image" src="/images/minus.gif" 
+		            		 alt="<?php echo $this->escape($this->translate('Remove %s', $image->title));?>" 
+		            		 onclick="removeDialog(<?php echo $image->id;?>); return false;"
+		            		 title="<?php echo $this->escape($this->translate('Remove %s', $image->title));?>" 
+		            	/>
 		          </div>
 		          <div class="flc-reorderer-imageTitle fl-reorderer-imageTitle">
 		            <?php echo $image['title'];?>
@@ -42,6 +47,30 @@ function editDialog(id) {
 	$("#editDialog").dialog('open');
 }
 
+function removeDialog(id) {
+	$("#editDialog").load("<?php echo $this->url ( array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'remove', 'id' => $image->id), 'default', true );?>");
+	$("#editDialog").dialog('option', 'buttons', { "Cancel": function() { $(this).dialog("close"); },
+												   "Delete": function() { $(this).dialog("close"); },
+												   "Ok": function() { removeAction(id); $(this).dialog("close"); }
+												    } );
+	$("#editDialog").dialog('open');
+}
+
+function removeAction(id) {
+	$.ajax({
+        type: "POST",
+        url: "<?php echo $this->url(array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'remove', 'id' => $image->id), 'default', true);?>", 
+        complete: function (data, ajaxStatus) {
+            // Handle success or failure by being nice to the user.
+			alert(data.responseText);
+			var str = "#gallery:::gallery-thumbs:::image:" + id;
+			var bleb = $(str);
+			console.log(bleb);
+			bleb.remove();
+        }
+    });
+}
+
 function submitForm(form_ele) {
 	request = $(form_ele).serialize();
 	$.ajax({
@@ -50,7 +79,6 @@ function submitForm(form_ele) {
         data: request, 
         complete: function (data, ajaxStatus) {
             // Handle success or failure by being nice to the user.
-			$("#editDialog").dialog( 'close' );
         }
     });
 }

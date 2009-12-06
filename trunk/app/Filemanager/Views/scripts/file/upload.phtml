@@ -107,6 +107,7 @@
 	</div>
 	<div id="folder-contents">
 	</div>
+	<div id="image-space"></div>
 	<br class="clear" />
 </div>
  <script type="text/javascript">
@@ -132,7 +133,7 @@
                     listeners: {
                         onFileSuccess: function (file, serverData){
                             // example assumes that the server code passes the new image URL in the serverData
-                            jQuery('#image-space').append('<img src="' + serverData + '" alt="' + file.name +'" />');
+                            //jQuery('#image-space').append('<img src="' + serverData + '" alt="' + file.name +'" />');
                         },
 
                         
@@ -141,6 +142,7 @@
 
                             // first check to see if the file queue is empty and there haven't been any errors
                             if (myUpload.uploadManager.queue.getReadyFiles().length === 0 && myUpload.uploadManager.queue.getErroredFiles().length === 0) {
+                            	myUpload = null;
                                 // Update the category listing
                                 selectCategory(catId);
                             }

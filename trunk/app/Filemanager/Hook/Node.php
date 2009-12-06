@@ -68,7 +68,7 @@ class Filemanager_Hook_Node extends Zoo_Hook_Abstract {
                 $file_item = $factory->find($item->id)->current();
                 if ($file_item) {
                     $existing = new Zend_Form_Element_Image('filemanager_image');
-                    if (substr($file_item->mime, 0, 5) == "image") {
+                    if (substr($file_item->mimetype, 0, 5) == "image") {
                         $imageid = $file_item->nid;
                     }
                     else {
@@ -131,10 +131,8 @@ class Filemanager_Hook_Node extends Zoo_Hook_Abstract {
                     rename($location, $existing);
 
                     // Update database
-                    $file->mimetype = $_FILES['filemanager_file']['type'];
-                    /**
-                     * @todo: Make something better for mimetype identification
-                     */
+                    $file->mimetype = $factory->getMimetype ( $_FILES ['filemanager_file'] ['name'] );
+                    
                     $file->size = filesize($file->getPath());
                     //                if (substr($file->mimetype, 0, 5) == "image") {
                     //                    $file->exif = "";
