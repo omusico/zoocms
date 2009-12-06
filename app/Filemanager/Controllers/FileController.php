@@ -116,7 +116,9 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 				
 				break;
 		}
-		die ();
+		Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
+        $this->getHelper('layout')->disableLayout();
+        $this->getHelper('viewRenderer')->setNoRender();
 	}
 	
 	public function uploadAction() {
@@ -129,6 +131,9 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	}
 	
 	public function performuploadAction() {
+		Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
+        $this->getHelper('layout')->disableLayout();
+        $this->getHelper('viewRenderer')->setNoRender();
 		/*$writer = new Zend_Log_Writer_Stream ( ZfApplication::$_data_path.DIRECTORY_SEPARATOR."upload.txt" );
 		$logger = new Zend_Log ( $writer );
 		
@@ -142,19 +147,24 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$image->pid = $this->getRequest ()->getParam ( 'parent' );
 		$image->save ();
 
-		/*
+		/**
+		 * A little bit of hard-coding, since the normal file uploading through Zend_Form_Element_File is not used with flash/AJAX uploader 
+		 */
+		$factory = new Filemanager_File_Factory();
 		$file = $factory->createRow ();
 		$file->nid = $image->id;
-		$file->mimetype = $this->getMimetype ( $_FILES ['Filedata'] ['name'] );
+		$file->mimetype = $factory->getMimetype ( $_FILES ['Filedata'] ['name'] );
 		
 		$file->size = $_FILES ['Filedata'] ['size'];
 		$file->save ();
 		
 		rename ( $_FILES ['Filedata'] ['tmp_name'], $file->getPath () );
-		*/
+
+		// Clear listing cache
 		Zoo::getService('cache')->remove("Filemanager_FileController_listAction".$image->pid);
 		
 		try {
+			// Trigger node save hooks
 			$form = $image->getForm($this->_helper->getHelper('url')
                                                     ->direct('save', 'node', 'Content'));
             Zoo::getService("hook")->trigger("Node", "Save", $form, $image);
@@ -163,10 +173,17 @@ class Filemanager_FileController extends Zoo_Controller_Action {
             // Hook service not available - log? Better not, some people may live happily without a hook service
         }
 
+        // Report back the URL for the file
         $factory = new Filemanager_File_Factory ( );
         $file = $factory->find($image->id)->current();
-		echo $file->getUrl(200,200);
-		die;
+        if ($file) {
+			echo $file->getUrl(200,200);
+        }
+        else {
+        	// Error during upload, delete the file object
+        	$image->delete();
+        	echo Zoo::_("An error occurred during file upload, please try again");
+        }
 	}
 	
 	/**
@@ -210,21 +227,5 @@ class Filemanager_FileController extends Zoo_Controller_Action {
             $this->cache($content, $cacheid, array('nodelist'), 60); //60 Seconds set - should be dynamic? Should it invalidate, whenever any node is saved?
         }
         $this->renderContent($content);
-	}
-	
-	protected function getMimetype($filename) {
-		$fileext = substr ( strrchr ( $filename, '.' ), 1 );
-		if (empty ( $fileext ))
-			return (false);
-		$regex = "/^([\w\+\-\.\/]+)\s+(\w+\s)*($fileext\s)/i";
-		$lines = file ( ZfApplication::$_base_path.DIRECTORY_SEPARATOR."app".DIRECTORY_SEPARATOR."Filemanager".DIRECTORY_SEPARATOR."mime.types", FILE_IGNORE_NEW_LINES );
-		foreach ( $lines as $line ) {
-			if (substr ( $line, 0, 1 ) == '#')
-				continue; // skip comments
-			if (! preg_match ( $regex, $line, $matches ))
-				continue; // no match to the extension
-			return ($matches [1]);
-		}
-		return (false); // no match at all
 	}
 }

@@ -2,35 +2,42 @@
 <?php if ($this->can_edit) {
     echo $this->render('gallery/top');
 }?>
-<div class="content-node-item"><?php echo $this->escape($this->item);?></div>
-<?php
-if ($this->item->hooks['subgalleries']) {?>
-	<div class="gallery-subgalleries">
-	<h2><?php echo $this->translate("Subgalleries");?></h2>
-	<?php foreach ($this->item->hooks['subgalleries'] as $subgallery) {
-		echo $subgallery;
+<div class="gallery-node-item"<?php if (isset($this->item->hooks['bg_image'])) {echo " style='background:url(\"".$this->item->hooks['bg_image']->hooks['filemanager_file']->getUrl()."\")'";}?>>
+	<?php if (isset($this->item->hooks['top_image'])) {?>
+		<div class="gallery-top-image"><img src="<?php echo $this->item->hooks['top_image']->hooks['filemanager_file']->getUrl();?>" /></div>
+	<?php }?>
+	<div class="content-node-item"><?php echo $this->escape($this->item);?></div>
+	<?php
+	if ($this->item->hooks['subgalleries']) {?>
+		<div class="gallery-subgalleries">
+		<h2><?php echo $this->translate("Subgalleries");?></h2>
+		<?php foreach ($this->item->hooks['subgalleries'] as $subgallery) {
+			echo $subgallery;
+		}
+		unset($this->item->hooks['subgalleries']);?>
+		</div>
+	<?php 
 	}
-	unset($this->item->hooks['subgalleries']);?>
-	</div>
+	if ($this->item->hooks['gallery_nodes']) {
+	    $i = 0;
+	    foreach ($this->item->hooks['gallery_nodes'] as $image) {?>
+	        <div class="content-item filemanager_file_list<?php if (($i % 4) == 0) {echo " clear";} ?>">
+	            <p>
+	                <a rel="lightbox[gallery]" href="<?php echo $image->hooks['filemanager_file']->getUrl();?>" title="<?php echo $image['content'] ? str_replace('"', "'", $this->escape($image)) : "*"; ?>">
+	                    <img src="<?php echo $image->hooks['filemanager_file']->getUrl(135, 135);?>"
+	                         alt="<?php echo $this->translate('Billede: ').$image['title'];?>" />
+	                </a>
+	            </p>
+	        </div>
+	<?php 
+	        $i++;
+	    }
+	    unset($this->item->hooks['gallery_nodes'], $this->item->hooks['top_image'], $this->item->hooks['bg_image']);
+	}
+	?>
+	<br class="clear" />
+</div>
 <?php 
-}
-if ($this->item->hooks['gallery_nodes']) {
-    $i = 0;
-    foreach ($this->item->hooks['gallery_nodes'] as $image) {?>
-        <div class="content-item filemanager_file_list<?php if (($i % 4) == 0) {echo " clear";} ?>">
-            <p>
-                <a rel="lightbox[gallery]" href="<?php echo $image->hooks['filemanager_file']->getUrl();?>" title="<?php echo $image['content'] ? str_replace('"', "'", $this->escape($image)) : "*"; ?>">
-                    <img src="<?php echo $image->hooks['filemanager_file']->getUrl(135, 135);?>"
-                         alt="<?php echo $this->translate('Billede: ').$image['title'];?>" />
-                </a>
-            </p>
-        </div>
-<?php 
-        $i++;
-    }
-    unset($this->item->hooks['gallery_nodes']);
-}
-
 if($this->item->hooks) {
     foreach ($this->item->hooks as $name => $hook) {
     	if ($hook) {

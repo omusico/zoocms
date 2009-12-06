@@ -22,6 +22,9 @@ class Comments_Hook_Node extends Zoo_Hook_Abstract {
      *
      */
     public function nodeList(&$items) {
+    	if (count($items) == 0) {
+    		return;
+    	}
         $nids = array();
         foreach ($items as $item) {
             $nids[] = $item->id;

@@ -409,6 +409,13 @@ div.filemanager_file_list img {
 	font-weight: bold;
 }
 
+.gallery-remove-image {
+	position: absolute;
+	bottom: 4px;
+	left: 15px;
+	cursor: pointer;
+}
+
 /* MOVEABLE LAYOUT */
 
 #portlet-reorderer-root {
@@ -440,4 +447,8 @@ div.filemanager_file_list img {
   height: 4px !important;
   width: 80px;
   background-color: green;
+}
+
+.fl-reorderer-image-inner-container {
+  position: relative;
 }
