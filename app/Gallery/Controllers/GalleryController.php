@@ -41,7 +41,7 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
         $this->view->assign('item', $item);
         $this->item =& $item;
 	}
-       
+	
     public function imagesAction() {
         $this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
 		$this->view->headScript()->appendFile('/js/infusion/framework/core/js/ProgressiveEnhancement.js', 'text/javascript');
