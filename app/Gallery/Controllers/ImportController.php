@@ -37,11 +37,8 @@ class Gallery_ImportController extends Zoo_Controller_Action {
         //$this->getHelper('viewRenderer')->setNoRender();
         
         ini_set('memory_limit', '1024M');
-        $urls = array(0 => array('href' => 'http://www.123hjemmeside.dk/Ravinski/21381098', 'title' => 'Dragsholm Slot'),
-        			  1 => array('href' => 'http://www.123hjemmeside.dk/Ravinski/21381099', 'title' => 'Firenze'));
+        $urls = array(0 => array('href' => 'http://www.123hjemmeside.dk/Ravinski/21381099', 'title' => 'Firenze'));
         
-        $urls = array_slice($urls, $this->getRequest()->getParam('offset'), 1);
-                
         header("Content-Type: text/html; charset=utf-8");
         
         foreach ($urls as $i => $url) {
