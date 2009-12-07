@@ -68,9 +68,10 @@ class Connector_Service_Link extends Zoo_Service
         $ret = array();
         $nids = (array) $nids;
 
-        $factory = new Connector_Link_Factory();
-        $select = $factory->select()->from($factory, array('nid', 'COUNT(*)'))
+        $factory = $this->getFactory();
+        $select = $factory->select()->from($factory, array('nid', 'COUNT(*) as count'))
                             ->where('type = ?', $type)
+                            ->where('nid IN (?)', $nids)
                             ->group('nid');
         $ret = $factory->fetchAll($select);
 

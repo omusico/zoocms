@@ -42,10 +42,10 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 			$iOut = imagecreatetruecolor ( $w, $h );
 			imagecopy ( $iOut, $imgBuf [0], 0, 0, 0, 0, imagesx ( $imgBuf [0] ), imagesy ( $imgBuf [0] ) );
 			imagedestroy ( $imgBuf [0] );
-			imagecopy ( $iOut, $imgBuf [1], 0, ceil($w/2)+5, 0, 0, imagesx ( $imgBuf [1] ), imagesy ( $imgBuf [1] ) );
-			imagedestroy ( $imgBuf [1] );
-			imagecopy ( $iOut, $imgBuf [2], ceil($h/2)-5, 0, 0, 0, imagesx ( $imgBuf [2] ), imagesy ( $imgBuf [2] ) );
+			imagecopy ( $iOut, $imgBuf [2], 0, ceil($w/2)+5, 0, 0, imagesx ( $imgBuf [2] ), imagesy ( $imgBuf [2] ) );
 			imagedestroy ( $imgBuf [2] );
+			imagecopy ( $iOut, $imgBuf [1], ceil($h/2)-5, 0, 0, 0, imagesx ( $imgBuf [1] ), imagesy ( $imgBuf [1] ) );
+			imagedestroy ( $imgBuf [1] );
 			imagecopy ( $iOut, $imgBuf [3], ceil($h/2)+5, ceil($w/2)-5, 0, 0, imagesx ( $imgBuf [3] ), imagesy ( $imgBuf [3] ) );
 			imagedestroy ( $imgBuf [3] );
 			// Write to file

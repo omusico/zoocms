@@ -10,11 +10,12 @@
 	<?php
 	if ($this->item->hooks['subgalleries']) {?>
 		<div class="gallery-subgalleries">
-		<h2><?php echo $this->translate("Subgalleries");?></h2>
-		<?php foreach ($this->item->hooks['subgalleries'] as $subgallery) {
-			echo $subgallery;
-		}
-		unset($this->item->hooks['subgalleries']);?>
+			<h2><?php echo $this->translate("Subgalleries");?></h2>
+			<?php foreach ($this->item->hooks['subgalleries'] as $subgallery) {
+				echo $subgallery;
+			}
+			unset($this->item->hooks['subgalleries']);?>
+			<br class="clear" />
 		</div>
 	<?php 
 	}
