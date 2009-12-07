@@ -19,7 +19,7 @@ class Connector_Link_Factory extends Zoo_Db_Table {
 	 * @param string $order
 	 * @return Zend_Db_Table_Rowset
 	 */
-	function getLinkedNodes($node, $type = 'link', $order = "weight") {
+	function getLinkedNodes($node, $type = 'link', $order = "weight", $limit = 0) {
 		try {
             $content_factory = Zoo::getService('content')->getFactory();
             $select = $content_factory->select()->from(array('c' => $content_factory->info(Zend_Db_Table_Abstract::NAME)));
@@ -27,6 +27,9 @@ class Connector_Link_Factory extends Zoo_Db_Table {
             $select->where('cl.nid = ?', $node->id);
             $select->where('cl.type = ?', $type);
             $select->order($order);
+            if ($limit > 0) {
+            	$select->limit($limit);
+            }
             $nodes = $content_factory->fetchAll($select);
             // Call hooks for items
             /*

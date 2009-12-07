@@ -416,6 +416,16 @@ div.filemanager_file_list img {
 	cursor: pointer;
 }
 
+.content-gallery_node-list {
+	width: 33%;
+	float: left;
+	border: none !important;
+}
+
+.gallery-subgalleries{
+	border-bottom: 1px solid gray;
+}
+
 /* MOVEABLE LAYOUT */
 
 #portlet-reorderer-root {
