@@ -40,7 +40,7 @@ class Auth_Service_Authenticator extends Zoo_Service
                     try {
                         $this->service = new Zend_Auth_Adapter_DbTable(Zoo::getService('db'));
                         $this->service
-                                    ->setTableName('Auth_user')
+                                    ->setTableName('Auth_User')
                                     ->setIdentityColumn('username')
                                     ->setCredentialColumn('password')
                                     ->setCredentialTreatment('md5(CONCAT(salt, ?)) AND status > 0');
