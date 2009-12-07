@@ -32,7 +32,7 @@ class Filemanager_File extends Zend_Db_Table_Row_Abstract {
                             'height' => $height,
                             'max' => intval($max),
                             'r' => filemtime($this->getPath()));
-        return Zend_Controller_Front::getInstance()->getRouter()->assemble($urlOptions, 'default');
+        return Zend_Controller_Front::getInstance()->getRouter()->assemble($urlOptions, 'default', true);
     }
 
     /**

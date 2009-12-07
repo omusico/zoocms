@@ -17,6 +17,52 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 					->addActionContext ( 'list', 'html')
 					->initContext ();
 	}
+	
+	public function combineAction() {
+		$ids = array($this->getRequest()->getParam('id1'),
+					$this->getRequest()->getParam('id2'),
+					$this->getRequest()->getParam('id3'),
+					$this->getRequest()->getParam('id4')
+					);
+		$ids = array_map('intval', $ids);
+		
+		$w = $this->getRequest ()->getParam ( "width" ) > 0 ? intval($this->getRequest()->getParam ( "width" )) : 1024;
+		$h = $this->getRequest ()->getParam ( "height" ) > 0 ? intval($this->getRequest()->getParam ( "height" )) : 1024;
+		
+		$thumbpath = ZfApplication::$_data_path . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR . "thumb" . DIRECTORY_SEPARATOR . "combine_" . implode ( '_', $ids ) . "_" . intval ( $w ) . "_" . intval ( $h );
+		if (! file_exists ( $thumbpath )) {
+			$factory = new Filemanager_File_Factory ( );
+			$files = $factory->find ( $ids );
+			$imgBuf = array ();
+			foreach ( $files as $file ) {
+				$url = "http://".$_SERVER['HTTP_HOST'].$file->getUrl(ceil($w/2)+5, ceil($h/2)+5, false);
+				$iTmp = imagecreatefrompng($url);
+				array_push ( $imgBuf, $iTmp );
+			}
+			$iOut = imagecreatetruecolor ( $w, $h );
+			imagecopy ( $iOut, $imgBuf [0], 0, 0, 0, 0, imagesx ( $imgBuf [0] ), imagesy ( $imgBuf [0] ) );
+			imagedestroy ( $imgBuf [0] );
+			imagecopy ( $iOut, $imgBuf [1], 0, ceil($w/2)+5, 0, 0, imagesx ( $imgBuf [1] ), imagesy ( $imgBuf [1] ) );
+			imagedestroy ( $imgBuf [1] );
+			imagecopy ( $iOut, $imgBuf [2], ceil($h/2)-5, 0, 0, 0, imagesx ( $imgBuf [2] ), imagesy ( $imgBuf [2] ) );
+			imagedestroy ( $imgBuf [2] );
+			imagecopy ( $iOut, $imgBuf [3], ceil($h/2)+5, ceil($w/2)-5, 0, 0, imagesx ( $imgBuf [3] ), imagesy ( $imgBuf [3] ) );
+			imagedestroy ( $imgBuf [3] );
+			// Write to file
+			imagepng ( $iOut, $thumbpath, 0 );
+		}
+		// Disable layout and template rendering
+		Zend_Controller_Front::getInstance ()->getResponse ()->clearHeaders ();
+		$this->getHelper ( 'layout' )->disableLayout ();
+		$this->getHelper ( 'viewRenderer' )->setNoRender ();
+				
+		header ( "Last-Modified: " . date ( 'r', filemtime ( $thumbpath ) ) );
+		header ( "Expires: " . date ( 'r', strtotime ( "+ 1 year" ) ) );
+		// Content type
+		header ( 'Content-type: image/png' );
+		//Output
+		echo file_get_contents ( $thumbpath );
+	}
 	/**
 	 * Echo file contents
 	 *
@@ -46,10 +92,19 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 				
 				$ratio_orig = $width_orig / $height_orig;
 				
-				if ($w / $h > $ratio_orig) {
-					$w = $h * $ratio_orig;
-				} else {
-					$h = $w / $ratio_orig;
+				if ($max) {
+					if ($w / $h > $ratio_orig) {
+						$w = $h * $ratio_orig;
+					} else {
+						$h = $w / $ratio_orig;
+					}
+				}
+				else {
+					if ($w / $h > $ratio_orig) {
+						$h = $h / $ratio_orig;
+					} else {
+						$w = $w * $ratio_orig;
+					}
 				}
 				
 				$thumbpath = ZfApplication::$_data_path . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR . "thumb" . DIRECTORY_SEPARATOR . $file->nid . "_" . intval ( $w ) . "_" . intval ( $h ) . ($max ? "_max" : "");
@@ -66,11 +121,11 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 							break;
 						
 						case "image/wbmp" :
-							imagecreatefromwbmp ( $file->getPath () );
+							$image = imagecreatefromwbmp ( $file->getPath () );
 							break;
 						
 						case "image/gif" :
-							imagecreatefromgif ( $file->getPath () );
+							$image = imagecreatefromgif ( $file->getPath () );
 							break;
 					}
 					imagecopyresampled ( $image_p, $image, 0, 0, 0, 0, $w, $h, $width_orig, $height_orig );
