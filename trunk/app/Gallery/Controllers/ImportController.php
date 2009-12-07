@@ -28,6 +28,58 @@ class Gallery_ImportController extends Zoo_Controller_Action {
         $this->view->jQuery()->enable();
 	}
 	
+	public function octimportAction() {
+		if (Zoo::getService('user')->getCurrentUser()->id == 0) {
+    		throw new Exception("No access");
+    	}
+    	Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
+        $this->getHelper('layout')->disableLayout();
+        //$this->getHelper('viewRenderer')->setNoRender();
+        
+        ini_set('memory_limit', '1024M');
+        $urls = array(0 => array('href' => 'http://www.123hjemmeside.dk/Ravinski/21381098', 'title' => 'Dragsholm Slot'),
+        			  1 => array('href' => 'http://www.123hjemmeside.dk/Ravinski/21381099', 'title' => 'Firenze'));
+        
+        $urls = array_slice($urls, $this->getRequest()->getParam('offset'), 1);
+                
+        header("Content-Type: text/html; charset=utf-8");
+        
+        foreach ($urls as $i => $url) {
+            set_time_limit(60);
+            $html = file_get_contents($url['href']);
+            $doc = new DomDocument();
+            @$doc->loadHTML($html);
+
+            $divs = $doc->getElementsByTagName('div');
+            foreach ($divs as $div) {
+                if (strstr($div->getAttribute('class'), "twoLineSpace")) {
+                    $Document = new DOMDocument();
+                    $Document->appendChild($Document->importNode($div,true));
+                    $urls[$i]['text'] = trim(strip_tags($Document->saveHTML(), "<br>"));
+                    break;
+                }
+            }
+
+            $tags = $doc->getElementsByTagName('table');
+            foreach ($tags as $tag) {
+                if ($tag->getAttribute('class') == "albumphoto") {
+                    $cnodes = $tag->getElementsByTagName('a');
+                    foreach ($cnodes as $cnode) {
+                        $imgurls[$i] = array('href' => $cnode->getAttribute('href'));
+                    }
+                    break;
+                }
+            }
+            unset($doc);
+        }
+
+        $this->getImages($imgurls, $urls);
+
+        $this->createGalleries($urls);
+        $this->view->urls = $urls;
+        $this->render('doimport');
+	}
+	
 	public function doimportAction() {
 		if (Zoo::getService('user')->getCurrentUser()->id == 0) {
     		throw new Exception("No access");
