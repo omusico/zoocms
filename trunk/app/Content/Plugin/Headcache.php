@@ -25,6 +25,7 @@ class Content_Plugin_Headcache extends Zend_Controller_Plugin_Abstract {
         $this->manageHeaders('headScript', $tag);
         $this->manageHeaders('headLink', $tag);
         $this->manageHeaders('headMeta', $tag);
+        $this->manageHeaders('headStyle', $tag);
     }
 
     /**
