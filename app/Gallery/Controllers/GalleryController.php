@@ -69,10 +69,11 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
     
     public function removeAction() {
     	if ($this->getRequest()->isPost()) {
+    		Zoo::getService('link')->remove($this->item->id, intval($this->getRequest()->getParam('image')), 'gallery_image');
     		echo "Image removed";
     	}
     	else {
-    		echo Zoo::_("Are you sure, you want to remove this image from the gallery?");
+    		echo Zoo::_("Are you sure, you want to remove %s from the gallery?", $this->item->title);
     	}
     	$this->getHelper('layout')->disableLayout();
 		$this->getHelper('viewRenderer')->setNoRender();

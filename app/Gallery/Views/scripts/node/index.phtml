@@ -2,7 +2,10 @@
 <?php if ($this->can_edit) {
     echo $this->render('gallery/top');
 }?>
-<div class="gallery-node-item"<?php if (isset($this->item->hooks['bg_image'])) {echo " style='background:url(\"".$this->item->hooks['bg_image']->hooks['filemanager_file']->getUrl()."\")'";}?>>
+<div class="gallery-node-item"
+	<?php if (isset($this->item->hooks['bg_image'])) {echo " style='background:url(\"".$this->item->hooks['bg_image']->hooks['filemanager_file']->getUrl()."\")'";}?>
+	<?php if (isset($this->item->hooks['bg_color'])) {echo " style='background-color: ".$this->item->hooks['bg_color']."'";}?>
+>
 	<?php if (isset($this->item->hooks['top_image'])) {?>
 		<div class="gallery-top-image"><img src="<?php echo $this->item->hooks['top_image']->hooks['filemanager_file']->getUrl();?>" /></div>
 	<?php }?>

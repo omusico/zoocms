@@ -39,6 +39,11 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             				 'render' => true);
             $item->hooks['subgalleries'] = Zoo::getService('content')->getContent($options, 0, 0);
             
+            // Find Estate node extra information
+            $factory = new Gallery_Node_Factory();
+            $extra = $factory->find($item->id)->current();
+            $item->hooks['bg_color'] = $extra ? $extra->bgcolor : "";
+            
             // Add Lightbox JS
             $layout = Zend_Layout::getMvcInstance();
             $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
@@ -149,6 +154,14 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
 
 	            $bg_image = Zoo::getService('link')->getLinkedNodes($item, 'bg_image');
 	            $populate['gallery_bgimage'] = ($bg_image->count() > 0) ? $bg_image[0]->id : 0; 
+	            
+	        	$factory = new Gallery_Node_Factory();
+	            $gnode = false;
+                // Fetch estate object
+                $gnode = $factory->find($item->id)->current();
+                if ($gnode) {
+                	$populate['gallery_bgcolor'] = $gnode->bgcolor;
+                }
 
                 $form->populate($populate);
             }
@@ -180,6 +193,23 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
 	        	Zoo::getService('link')->connect($item->id, $values['gallery_topimage'], 'top_image');
         		
         	}
+        	
+        	// Set background
+        	$factory = new Gallery_Node_Factory();
+            // Save gallery fields
+            $gnode = false;
+            if ($item->id > 0) {
+                // Fetch estate object
+                $gnode = $factory->find($item->id)->current();
+            }
+            if (!$gnode) {
+                $gnode = $factory->createRow();
+                $gnode->nid = $item->id;
+            }
+
+            $arguments = $form->getValues();
+            $gnode->bgcolor = $arguments['gallery_bgcolor'];
+            $estate->save();
         }
         elseif ($item->type == "filemanager_file") {
         	$connectTo = Zend_Controller_Front::getInstance()->getRequest()->getParam('connectTo');
