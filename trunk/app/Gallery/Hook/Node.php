@@ -209,7 +209,7 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
 
             $arguments = $form->getValues();
             $gnode->bgcolor = $arguments['gallery_bgcolor'];
-            $estate->save();
+            $gnode->save();
         }
         elseif ($item->type == "filemanager_file") {
         	$connectTo = Zend_Controller_Front::getInstance()->getRequest()->getParam('connectTo');
