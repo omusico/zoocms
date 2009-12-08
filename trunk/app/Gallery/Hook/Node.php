@@ -75,29 +75,31 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
      */
     public function nodeList(&$items) {
     	foreach ($items as $item) {
-	        $images = Zoo::getService('link')->getLinkedNodes($item, 'gallery_image', null, 4);
-	        $ids = array();
-	        foreach ($images as $image) {
-	            $ids[] = $image->id;
-	        }
-	        if (count($ids) == 4) {
-		        /**
-		         * @todo Query the filemanager service for this URL
-		         */
-		        $urlOptions = array('module' => 'Filemanager',
-		                            'controller' => 'file',
-		                            'action' => 'combine',
-		                            'id1' => $ids[0],
-		                            'id2' => $ids[1],
-		                            'id3' => $ids[2],
-		                            'id4' => $ids[3],
-		                            'width' => 135,
-		                            'height' => 135
-		            );
-		        $item->hooks['gallery_image'] = Zend_Controller_Front::getInstance()->getRouter()->assemble($urlOptions, 'default', true);
-		        $count = Zoo::getService('link')->countLinksByNode($item->id, 'gallery_image');
-		        $item->hooks['gallery_imagecount'] = $count->current()->count;
-	        }
+    		if ($item->type == "gallery_node") {
+		        $images = Zoo::getService('link')->getLinkedNodes($item, 'gallery_image', null, 4);
+		        $ids = array();
+		        foreach ($images as $image) {
+		            $ids[] = $image->id;
+		        }
+		        if (count($ids) == 4) {
+			        /**
+			         * @todo Query the filemanager service for this URL
+			         */
+			        $urlOptions = array('module' => 'Filemanager',
+			                            'controller' => 'file',
+			                            'action' => 'combine',
+			                            'id1' => $ids[0],
+			                            'id2' => $ids[1],
+			                            'id3' => $ids[2],
+			                            'id4' => $ids[3],
+			                            'width' => 135,
+			                            'height' => 135
+			            );
+			        $item->hooks['gallery_image'] = Zend_Controller_Front::getInstance()->getRouter()->assemble($urlOptions, 'default', true);
+			        $count = Zoo::getService('link')->countLinksByNode($item->id, 'gallery_image');
+			        $item->hooks['gallery_imagecount'] = $count->current()->count;
+		        }
+    		}
     	}
     }
 

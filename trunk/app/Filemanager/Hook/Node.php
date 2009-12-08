@@ -35,11 +35,25 @@ class Filemanager_Hook_Node extends Zoo_Hook_Abstract {
      *
      * @return void
      *
-     * @todo Change to fetch all information for all Filemanager nodes in one go
      */
     public function nodeList(&$items) {
+    	$factory = new Filemanager_File_Factory();
+    	$ids = array();
         foreach ($items as $item) {
-            $this->nodeDisplay($item);
+        	if ($item->type == "filemanager_file") {
+            	$ids[] = $item->id;
+        	}
+        }
+        $files = $factory->find($ids);
+        foreach ($files as $file) {
+        	$file_obj[$file->nid] = $file;
+        }
+		foreach ( $items as $item ) {
+			if ($item->type == "filemanager_file") {
+				if (isset ( $file_obj [$item->id] )) {
+					$item->hooks ['filemanager_file'] = $file_obj [$item->id];
+				}
+			}
         }
     }
 
