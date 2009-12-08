@@ -38,7 +38,7 @@ class Taxonomy_Hook_Node extends Zoo_Hook_Abstract {
         else {
             $category->setLabel('Category');
         }
-/*
+
         $categories = Zoo::getService('content')->getContent(
                                                     array('group' => 'category',
                                                           'order' => 'title',
@@ -53,7 +53,7 @@ class Taxonomy_Hook_Node extends Zoo_Hook_Abstract {
                                                     0,
                                                     " - ",
                                                     (($item->type == "taxonomy_category" && $item->id > 0) ? $item->id : null)));
-*/
+
         $form->addElement($category);
 
         $options = array('legend' => Zoo::_("Category"));
