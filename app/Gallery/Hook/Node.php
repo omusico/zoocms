@@ -147,6 +147,7 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
         	
         	$bgimage = new Zend_Form_Element_Radio('gallery_bgimage');
         	$bgimage->setLabel('Background image');
+        	$bgimage->setOptions(array('escape' => false));
         	$bgimages = Zoo::getService('content')->getContent(array('parent' => $config->background_image, 'nodetype' => 'filemanager_file'));
         	$bgimage->addMultiOption(0, Zoo::_("None"));
         	foreach ($bgimages as $image) {
