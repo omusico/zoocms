@@ -20,7 +20,7 @@ if ($this->item->hooks['gallery_nodes']) {
 		                <img src="<?php echo $image->hooks['filemanager_file']->getUrl(135, 135);?>"
 		                     alt="<?php echo $this->translate('Image: ').$image['title'];?>" />
 		            </a>
-		            	<img class="gallery-remove-image" src="/images/minus.gif" 
+		            	<img class="gallery-remove-image" src="<?php echo Zend_Controller_Front::getInstance()->getBaseUrl();?>/images/crystal_project/16x16/editdelete.png" 
 		            		 alt="<?php echo $this->escape($this->translate('Remove %s', $image->title));?>" 
 		            		 onclick="removeDialog(<?php echo $image->id;?>); return false;"
 		            		 title="<?php echo $this->escape($this->translate('Remove %s', $image->title));?>" 
@@ -48,10 +48,9 @@ function editDialog(id) {
 }
 
 function removeDialog(id) {
-	$("#editDialog").load("<?php echo $this->url ( array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'remove', 'id' => $image->id), 'default', true );?>");
+	$("#editDialog").load("<?php echo $this->url ( array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'remove'), 'default', true );?>/id/" + id);
 	$("#editDialog").dialog('option', 'buttons', { "Cancel": function() { $(this).dialog("close"); },
-												   "Delete": function() { $(this).dialog("close"); },
-												   "Ok": function() { removeAction(id); $(this).dialog("close"); }
+												   "Remove": function() { removeAction(id); $(this).dialog("close"); }
 												    } );
 	$("#editDialog").dialog('open');
 }
@@ -59,7 +58,7 @@ function removeDialog(id) {
 function removeAction(id) {
 	$.ajax({
         type: "POST",
-        url: "<?php echo $this->url(array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'remove', 'id' => $image->id), 'default', true);?>", 
+        url: "<?php echo $this->url(array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'remove', 'id' => $this->item->id), 'default', true);?>/image/" + id, 
         complete: function (data, ajaxStatus) {
             // Handle success or failure by being nice to the user.
 			alert(data.responseText);
