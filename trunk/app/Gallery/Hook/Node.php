@@ -135,7 +135,9 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
         	
         	$topimage = new Zend_Form_Element_Radio('gallery_topimage');
         	$topimage->setLabel('Top image');
-        	$topimages = Zoo::getService('content')->getContent(array('parent' => $config->top_image, 'nodetype' => 'filemanager_file'));
+        	$topimages = Zoo::getService('content')->getContent(array('parent' => $config->top_image, 
+        															  'nodetype' => 'filemanager_file',
+        															  'hooks' => false));
         	$topimage->addMultiOption(0, Zoo::_("None"));
         	foreach ($topimages as $image) {
         		$topimage->addMultiOption($image->id, "<img src='".$image->hooks['filemanager_file']->getUrl()."' />".$image->title);
