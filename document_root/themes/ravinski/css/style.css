@@ -422,6 +422,10 @@ div.filemanager_file_list img {
 	border: none !important;
 }
 
+.gallery-top-image {
+	text-align: center;
+}
+
 .gallery-subgalleries{
 	border-bottom: 1px solid gray;
 }
