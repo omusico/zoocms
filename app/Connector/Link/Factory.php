@@ -67,6 +67,6 @@ class Connector_Link_Factory extends Zoo_Db_Table {
     	$select->where('type = ?', $type);
     	$select->group('nid');
 		$row = $this->fetchRow($select);
-		return $row->weight+1;
+		return $row ? $row->weight+1 : 1;
     }
 }
