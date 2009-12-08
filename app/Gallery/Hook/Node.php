@@ -151,7 +151,7 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
         	$bgimages = Zoo::getService('content')->getContent(array('parent' => $config->background_image, 'nodetype' => 'filemanager_file'));
         	$bgimage->addMultiOption(0, Zoo::_("None"));
         	foreach ($bgimages as $image) {
-        		$bgimage->addMultiOption($image->id, $image->title."<br /><img src='".$image->hooks['filemanager_file']->getUrl(200)."' />");
+        		$bgimage->addMultiOption($image->id, $image->title."<br /><img src='".$image->hooks['filemanager_file']->getUrl(200, 200)."' />");
         	}
         	
         	$form->addElements(array($bgcolor, $topimage, $bgimage));
