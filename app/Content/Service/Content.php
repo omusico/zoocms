@@ -60,6 +60,9 @@ class Content_Service_Content extends Zoo_Service {
         if (!isset($options['viewtype'])) {
             $options['viewtype'] = "List";
         }
+        if (!isset($options['hooks'])) {
+        	$options['hooks'] = true;
+        }
         $this_table_name = $this->getFactory()->info(Zend_Db_Table_Abstract::NAME);
         $select = $this->getFactory()->select()->from(array('c' => $this_table_name));
         if (isset($options['active']) && $options['active'] == true) {
@@ -92,7 +95,7 @@ class Content_Service_Content extends Zoo_Service {
    		$select->limit($limit, $start);
         
         $items = $this->fetchAll($select);
-        if (!isset($options['render']) || $options['render'] == false) {
+        if ($options['hooks'] && !isset($options['render']) || $options['render'] == false) {
             // Call hooks for items
             try {
                 Zoo::getService("hook")->trigger("Node", ucfirst($options['viewtype']), $items);
