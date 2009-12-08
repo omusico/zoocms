@@ -24,6 +24,7 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             // Find files connected to the gallery
             $item->hooks['gallery_nodes'] = Zoo::getService('link')->getLinkedNodes($item, 'gallery_image');
             
+            $bg_image_style = $bg_color_style = "";
             $top_image = Zoo::getService('link')->getLinkedNodes($item, 'top_image');
             if ($top_image->count() > 0) {
             	$item->hooks['top_image'] = $top_image[0];
@@ -31,7 +32,7 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             
         	$bg_image = Zoo::getService('link')->getLinkedNodes($item, 'bg_image');
             if ($bg_image->count() > 0) {
-            	$item->hooks['bg_image'] = $bg_image[0];
+            	$bg_image_style = "background-image: url('".$bg_image[0]->hooks['filemanager_file']->getUrl()."');";
             }
             
             $options = array('nodetype' => 'gallery_node', 
@@ -42,7 +43,9 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             // Find Estate node extra information
             $factory = new Gallery_Node_Factory();
             $extra = $factory->find($item->id)->current();
-            $item->hooks['bg_color'] = $extra ? $extra->bgcolor : "";
+            if ($extra) {
+            	$bg_color_style = "background-color: ".$extra->bgcolor.";";
+            }
             
             // Add Lightbox JS
             $layout = Zend_Layout::getMvcInstance();
@@ -54,6 +57,10 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             $view->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.1/scriptaculous.js?load=effects,builder', 'text/javascript');
             $view->headScript()->appendFile($theme_folder.'/js/lightbox.js', 'text/javascript');
             $view->headLink()->appendStylesheet($theme_folder."/css/lightbox.css");
+            
+            if ($bg_image_style || $bg_color_style) {
+            	$view->headStyle()->appendStyle(".gallery-node-item {{$bg_image_style}{$bg_color_style}}");
+            }
         }
     }
 
