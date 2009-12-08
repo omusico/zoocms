@@ -245,7 +245,8 @@ div.rccentertwo {
 div.rcleft {
 	float: left;
 	width: 150px;
-
+	border-right: 1px solid #cccccc;
+	margin-right: 1px;
 }
 div.rcleftcontent {
 	background-color: #e5e5e5;
