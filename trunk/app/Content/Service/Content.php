@@ -95,14 +95,15 @@ class Content_Service_Content extends Zoo_Service {
    		$select->limit($limit, $start);
         
         $items = $this->fetchAll($select);
-        if ($options['hooks'] && !isset($options['render']) || $options['render'] == false) {
-            // Call hooks for items
-            try {
-                Zoo::getService("hook")->trigger("Node", ucfirst($options['viewtype']), $items);
-            }
-            catch (Zoo_Exception_Service $e) {
-                // Hook service not available - log? Better not, some people may live happily without a hook service
-            }
+        if (!isset($options['render']) || $options['render'] == false) {
+        	if ($options ['hooks']) {
+				// Call hooks for items
+				try {
+					Zoo::getService ( "hook" )->trigger ( "Node", ucfirst ( $options ['viewtype'] ), $items );
+				} catch ( Zoo_Exception_Service $e ) {
+					// Hook service not available - log? Better not, some people may live happily without a hook service
+				}
+			}
             return $items;
         }
 
