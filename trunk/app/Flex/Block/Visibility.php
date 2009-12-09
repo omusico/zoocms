@@ -19,9 +19,6 @@ class Flex_Block_Visibility extends Zend_Db_Table {
      * @return array
      */
     public function getVisibleBlocks(Zend_Controller_Request_Abstract $request) {
-        /**
-         * @todo If user, get user groups, assign to $groups
-         */
         $groups = array(0);
         try {
             $roles = Zoo::getService('user')->getCurrentUser()->getGroups();
