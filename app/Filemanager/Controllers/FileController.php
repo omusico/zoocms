@@ -76,8 +76,10 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		 * @todo Check access permissions etc.
 		 */
 		$last = filemtime ( $file->getPath () );
+		$expires = date ( 'r', strtotime ( "+ 1 year" ) );
+		header ( "Cache-Control: maxage=".$expires);
 		header ( "Last-Modified: " . date ( 'r', $last ) );
-		header ( "Expires: " . date ( 'r', strtotime ( "+ 1 year" ) ) );
+		header ( "Expires: " . $expires );
 		
 		$cond = isset($_SERVER['http_if_modified_since'])? $_SERVER['http_if_modified_since'] : 0;
 		
