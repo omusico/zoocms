@@ -80,7 +80,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		
 		if (! $file->isImage ()) {
 			header ( "Content-Type: " . $file->mimetype );
-			echo file_get_contents ( $file->getPath () );
+			$path = $file->getPath ();
 		} else {
 			if ($this->getRequest ()->getParam ( "width" ) > 0 || $this->getRequest ()->getParam ( "height" ) > 0) {
 				$w = $this->getRequest ()->getParam ( "width" ) > 0 ? $this->getRequest ()->getParam ( "width" ) : 1024;
@@ -136,14 +136,16 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 				// Content type
 				header ( 'Content-type: image/png' );
 				//Output
-				echo file_get_contents ( $thumbpath );
+				$path = $thumbpath;
 			} else {
 				// Content type
 				header ( 'Content-type: image/png' );
 				//Output
-				echo file_get_contents ( $file->getPath () );
+				$path = $file->getPath ();
 			}
 		}
+		$this->getResponse()->sendHeaders();
+		echo file_get_contents ( $path );
 		Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
         $this->getHelper('layout')->disableLayout();
         $this->getHelper('viewRenderer')->setNoRender();
