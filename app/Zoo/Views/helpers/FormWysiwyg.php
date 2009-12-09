@@ -7,7 +7,7 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2009 ZooCMS
  */
-class Zend_View_Helper_FormWysiwyg extends Zend_View_Helper_FormElement
+class Zend_View_Helper_FormWysiwyg extends Zend_View_Helper_FormTextarea
 {
     /**
      * The default number of rows for a textarea.
@@ -51,31 +51,10 @@ class Zend_View_Helper_FormWysiwyg extends Zend_View_Helper_FormElement
      */
     public function formWysiwyg($name, $value = null, $attribs = null)
     {
-        $info = $this->_getInfo($name, $value, $attribs);
+    	$info = $this->_getInfo($name, $value, $attribs);
         extract($info); // name, value, attribs, options, listsep, disable
-
-        // is it disabled?
-        $disabled = '';
-        if ($disable) {
-            // disabled.
-            $disabled = ' disabled="disabled"';
-        }
-
-        // Make sure that there are 'rows' and 'cols' values
-        // as required by the spec.  noted by Orjan Persson.
-        if (empty($attribs['rows'])) {
-            $attribs['rows'] = (int) $this->rows;
-        }
-        if (empty($attribs['cols'])) {
-            $attribs['cols'] = (int) $this->cols;
-        }
-
-        // build the element
-        $xhtml = '<textarea name="' . $this->view->escape($name) . '"'
-                . ' id="' . $this->view->escape($id) . '"'
-                . $disabled
-                . $this->_htmlAttribs($attribs) . '>'
-                . $this->view->escape($value) . '</textarea>';
+        
+        $xhtml = $this->formTextarea($name, $value, $attribs);
         $xhtml .= '<script type="text/javascript">
         				CKEDITOR.replace( "'. $this->view->escape($id) .'" );
         			</script>';
