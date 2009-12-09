@@ -144,7 +144,6 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 				$path = $file->getPath ();
 			}
 		}
-		$this->getResponse()->sendHeaders();
 		echo file_get_contents ( $path );
 		Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
         $this->getHelper('layout')->disableLayout();
