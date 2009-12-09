@@ -75,8 +75,16 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		/**
 		 * @todo Check access permissions etc.
 		 */
-		header ( "Last-Modified: " . date ( 'r', filemtime ( $file->getPath () ) ) );
+		$last = filemtime ( $file->getPath () );
+		header ( "Last-Modified: " . date ( 'r', $last ) );
 		header ( "Expires: " . date ( 'r', strtotime ( "+ 1 year" ) ) );
+		
+		$cond = isset($_SERVER['http_if_modified_since'])? $_SERVER['http_if_modified_since'] : 0;
+		
+		if ($cond && $_SERVER['REQUEST_METHOD'] == 'GET' && strtotime($cond) >= $last) {
+			header('HTTP/1.0 304 Not Modified');
+			exit;
+		}
 		
 		if (! $file->isImage ()) {
 			header ( "Content-Type: " . $file->mimetype );
