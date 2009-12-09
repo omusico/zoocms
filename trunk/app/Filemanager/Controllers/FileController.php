@@ -81,10 +81,9 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		header ( "Pragma: public");
 		header ( "Last-Modified: " . date ( 'r', $last ) );
 		header ( "Expires: " . $expires );
+		$cond = isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])? strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) : 0;
 		
-		$cond = isset($_SERVER['http_if_modified_since'])? $_SERVER['http_if_modified_since'] : 0;
-		
-		if ($cond && $_SERVER['REQUEST_METHOD'] == 'GET' && strtotime($cond) >= $last) {
+		if ($cond && $_SERVER['REQUEST_METHOD'] == 'GET' && ($cond) >= $last) {
 			header('HTTP/1.0 304 Not Modified');
 			exit;
 		}
