@@ -22,7 +22,16 @@ class Flex_Block_Factory extends Zoo_Db_Table {
      */
     public function getBlocks() {
         $ret = array();
-        $cacheid = str_replace("/", "_", "Flex_blocks_page".Zend_Controller_Front::getInstance()->getRequest()->getRequestUri());
+        $groups = array(0);
+        try {
+            $roles = Zoo::getService('user')->getCurrentUser()->getGroups();
+            $groups = array_keys($roles);
+        }
+        catch (Zoo_Exception_Service $e) {
+            // Do nothing
+        }
+        
+        $cacheid = str_replace("/", "_", "Flex_blocks_page".Zend_Controller_Front::getInstance()->getRequest()->getRequestUri()."_".implode("_", $groups));
         try {
             $ret = Zoo::getService("cache")->load($cacheid);
         }

@@ -1,0 +1,7 @@
+<ul>
+<?php
+foreach ($this->types as $type) {
+	echo "<li><a href='".$this->url(array('module' => 'Content', 'controller' => 'node', 'action' => 'add', 'type' => $type->type), 'default', true)."'>".$this->escape($type->name)."</a></li>";
+}
+?>
+</ul>
