@@ -26,7 +26,7 @@ class Content_Node_Form extends ZendX_JQuery_Form {
         $title->setLabel('Title');
         $title->setRequired(true)->addValidator(new Zend_Validate_StringLength(5,255));
 
-        $content = new Zend_Form_Element_Textarea('content');
+        $content = new Zoo_Form_Element_Wysiwyg('content');
         $content->setRequired(true)->setLabel('Content')->setAttrib('cols', 50);
 
         $submit = new Zend_Form_Element_Submit('save');

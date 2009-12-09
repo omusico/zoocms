@@ -318,11 +318,20 @@ text-align:right;
 margin:5px 5px 5px 0;
 }
 
+#title-label, #content-label {
+float: none;
+text-align: left;
+}
+
 .zend_form fieldset dd{
 padding:0;
 float:left;
 width:78%;
 margin:5px 2px 5px 0;
+}
+
+#content-element {
+	width: 100%;
 }
 
 .zend_form p{
