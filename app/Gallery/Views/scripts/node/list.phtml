@@ -4,8 +4,14 @@
             <?php echo $this->escape($this->item['title']);?>
         </a>
     </h2>
-    <img src="<?php echo $this->item->hooks['gallery_image']; ?>" alt="<?php echo $this->escape($this->item['title']);?>" />
-    <div><?php echo $this->item->hooks['gallery_imagecount']." ". $this->translate('images');?></div>
+    <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
+    	<img src="<?php echo $this->item->hooks['gallery_image']; ?>" alt="<?php echo $this->escape($this->item['title']);?>" />
+    </a>
+    <div>
+    	<a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
+    		<?php echo $this->item->hooks['gallery_imagecount']." ". $this->translate('images');?>
+    	</a>
+   	</div>
     <?php
     unset($this->item->hooks['gallery_image'], $this->item->hooks['gallery_imagecount']);
     if ($this->item->hooks) {

@@ -181,7 +181,7 @@ div#contentcontainer {
 
 div#maincontent {
 	float: left;
-	width: 600px;
+	width: 635px;
 	text-align: left;
 	line-height: 16px;
 }
@@ -193,7 +193,7 @@ div#maincontent a{
 *******************************************************************/
 div#rightcolumcont {
 	float: right;
-	width: 170px;
+	width: 150px;
 	margin-top: 5px;
 	text-align: left;
 	line-height: 16px;
@@ -255,8 +255,6 @@ div.rcleftcontent {
 }
 div.rcright {
 	margin-top: 5px;
-	float: right;
-	width: 150px;
 	background-color: #E5E5E5;
 	background-image: url(../images/colum_rightblock_bottom.png);
 	background-repeat: no-repeat;

@@ -3,5 +3,6 @@
 foreach ($this->types as $type) {
 	echo "<li><a href='".$this->url(array('module' => 'Content', 'controller' => 'node', 'action' => 'add', 'type' => $type->type), 'default', true)."'>".$this->escape($type->name)."</a></li>";
 }
+echo "<li><a href='". $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'upload'), 'default', true)."'>".$this->translate("File manager")."</a></li>";
 ?>
 </ul>

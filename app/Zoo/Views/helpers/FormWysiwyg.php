@@ -1,6 +1,6 @@
 <?php
 /**
- * Helper to generate a "wysiwyg" textare element
+ * Helper to generate a "wysiwyg" textarea element
  *
  * @category   Zoo
  * @package    View
@@ -9,24 +9,6 @@
  */
 class Zend_View_Helper_FormWysiwyg extends Zend_View_Helper_FormTextarea
 {
-    /**
-     * The default number of rows for a textarea.
-     *
-     * @access public
-     *
-     * @var int
-     */
-    public $rows = 24;
-
-    /**
-     * The default number of columns for a textarea.
-     *
-     * @access public
-     *
-     * @var int
-     */
-    public $cols = 80;
-    
     /**
      * How many instances of the wysiwyg editor is set in the form
      * 

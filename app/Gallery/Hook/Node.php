@@ -37,7 +37,8 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             
             $options = array('nodetype' => 'gallery_node', 
             				 'parent' => $item->id, 
-            				 'render' => true);
+            				 'render' => true,
+            				 'order' => 'published ASC');
             $item->hooks['subgalleries'] = Zoo::getService('content')->getContent($options, 0, 0);
             
             // Find Estate node extra information

@@ -18,6 +18,9 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 					->initContext ();
 	}
 	
+	/**
+	 * Combines four images into one, with a little overlap for appearance's sake
+	 */
 	public function combineAction() {
 		$ids = array($this->getRequest()->getParam('id1'),
 					$this->getRequest()->getParam('id2'),
@@ -56,13 +59,25 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$this->getHelper ( 'layout' )->disableLayout ();
 		$this->getHelper ( 'viewRenderer' )->setNoRender ();
 				
-		header ( "Last-Modified: " . date ( 'r', filemtime ( $thumbpath ) ) );
-		header ( "Expires: " . date ( 'r', strtotime ( "+ 1 year" ) ) );
+		$last = filemtime ( $thumbpath );
+		$expires = date ( 'r', strtotime ( "+ 1 year" ) );
+		header ( "Cache-Control: maxage=".$expires);
+		header ( "Pragma: public");
+		header ( "Last-Modified: " . date ( 'r', $last ) );
+		header ( "Expires: " . $expires );
+		
 		// Content type
 		header ( 'Content-type: image/png' );
+
+		$cond = isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])? strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) : 0;
+		if ($cond && $cond >= $last && $this->getRequest()->isGet() ) {
+			header('HTTP/1.0 304 Not Modified');
+			exit;
+		}
 		//Output
 		echo file_get_contents ( $thumbpath );
 	}
+	
 	/**
 	 * Echo file contents
 	 *
@@ -187,6 +202,9 @@ class Filemanager_FileController extends Zoo_Controller_Action {
         $this->getHelper('viewRenderer')->setNoRender();
 	}
 	
+	/**
+	 * Show browse/upload page
+	 */
 	public function uploadAction() {
 		$this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
 		$this->view->headScript()->appendFile('/js/infusion/framework/core/js/ProgressiveEnhancement.js', 'text/javascript');
@@ -196,6 +214,9 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$this->view->headLink()->appendStylesheet('/js/infusion/components/uploader/css/Uploader.css');
 	}
 	
+	/**
+	 * Perform upload of a file
+	 */
 	public function performuploadAction() {
 		Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
         $this->getHelper('layout')->disableLayout();
@@ -267,8 +288,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	}
 	
 	/**
-	 * List files in a category - should be in another controller, but which? Probably Filemanager/IndexController
-	 * @todo move to another controller
+	 * List files in a category
 	 */
 	public function listAction() {
 		$method = __METHOD__;
