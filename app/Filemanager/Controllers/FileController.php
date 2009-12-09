@@ -78,6 +78,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$last = filemtime ( $file->getPath () );
 		$expires = date ( 'r', strtotime ( "+ 1 year" ) );
 		header ( "Cache-Control: maxage=".$expires);
+		header ( "Pragma: public");
 		header ( "Last-Modified: " . date ( 'r', $last ) );
 		header ( "Expires: " . $expires );
 		
