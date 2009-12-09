@@ -10,7 +10,6 @@
 	<?php
 	if ($this->item->hooks['subgalleries']) {?>
 		<div class="gallery-subgalleries">
-			<h2><?php echo $this->translate("Subgalleries");?></h2>
 			<?php foreach ($this->item->hooks['subgalleries'] as $subgallery) {
 				echo $subgallery;
 			}
@@ -21,6 +20,7 @@
 	}
 	if ($this->item->hooks['gallery_nodes']) {
 	    $i = 0;
+	    echo "<h2>".$this->translate('%s images', count($this->item->hooks['gallery_nodes']))."</h2>";
 	    foreach ($this->item->hooks['gallery_nodes'] as $image) {?>
 	        <div class="content-item filemanager_file_list<?php if (($i % 4) == 0) {echo " clear";} ?>">
 	            <p>
