@@ -73,7 +73,7 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
     		echo "Image removed";
     	}
     	else {
-    		echo Zoo::_("Are you sure, you want to remove %s from the gallery?", $this->item->title);
+    		echo sprintf(Zoo::_("Are you sure, you want to remove %s from the gallery?"), $this->item->title);
     	}
     	$this->getHelper('layout')->disableLayout();
 		$this->getHelper('viewRenderer')->setNoRender();

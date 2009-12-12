@@ -143,7 +143,7 @@ class Content_Service_Content extends Zoo_Service {
                 $item = $found->current();
                 // Call hooks for items
                 try {
-                    $hookitems = array($item);
+                    $hookitems = $type == "Display" ? $item : array($item);
                     Zoo::getService("hook")->trigger("Node", ucfirst($type), $hookitems);
                 }
                 catch (Zoo_Exception_Service $e) {
@@ -163,13 +163,13 @@ class Content_Service_Content extends Zoo_Service {
                 $this->addLanguage($module);
 
                 $this->view->assign('item', $item);
-                $rendered = $this->view->render($type);
+                $rendered = $this->view->render($type == "Display" ? "index.phtml" : $type);
                 $content[] = $rendered;
 
                 try {
                     Zoo::getService('cache')->save($rendered,
                         $cacheid,
-                        array('nodeList', 'node_'.$item->id),
+                        array('node'.$type, 'node_'.$item->id),
                         null);
                 }
                 catch (Zoo_Exception_Service $e) {

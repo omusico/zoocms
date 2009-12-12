@@ -1,0 +1,79 @@
+<div id="filemanager">
+	<div id="folder-list">
+		<h2><?php echo $this->translate('Folders');?></h2>
+		<?php
+		foreach ( $this->tree as $ele ) {
+			echo $this->partial('file/category.ajax.phtml', array('ele' => $ele, 'first' => true));
+		}
+		?>
+	</div>
+	
+	<div id="uploader-contents">
+		<div class="filemanager-toolbar">
+			<span class="toolbar-upload" onclick="toggleUploader();">Upload</span>
+			<span class="toolbar-refresh" onclick="selectCategory();">Refresh</span>
+			<span class="toolbar-configure" onclick="toggleConfigure();">Configure</span>
+		</div>
+		<div id="filemanager-configure-form">Configure panel</div>
+		<div id="filemanager-upload-form"></div>
+	
+		<div id="portlet-reorderer-root">
+			<div id="selected">
+			</div>
+			<div id="folder-contents">
+			</div>
+			<div id="image-space"></div>
+			<br class="clear" />
+		</div>
+	</div>
+	<br class="clear" />
+</div>
+ <script type="text/javascript">
+ 	var catId = 0;
+ 	
+	function selectCategory(id) {
+		$('#filemanager-upload-form').hide();
+		if (!id) {
+			id = catId;
+		}
+		else {
+			catId = id;
+		}
+		var content = '<iframe src="/Filemanager/file/upload/catid/' + catId + '" width="100%" height="310"></iframe>';
+		$('#filemanager-upload-form').html(content);
+		$("#folder-contents").load("<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'list', 'format' => 'html' ), 'default', true );?>/id/" + id);
+	}
+
+	function toggleConfigure() {
+		$('#filemanager-upload-form').hide();
+		$('#filemanager-configure-form').toggle(100);
+	}
+
+	function toggleUploader() {
+		if (catId > 0) {
+			$('#filemanager-configure-form').hide();
+			$('#filemanager-upload-form').toggle(100);
+		}
+		else {
+			alert("<?php echo $this->translate('Please select a folder');?>");
+		}
+	}
+
+	function afterUpload() {
+		selectCategory();
+	}
+
+	function selectImage(id) {
+		var fileUrl = "<?php echo $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'show'), 'default', true);?>/id/" + id + "/width/150/height/150";
+		<?php if (isset($_REQUEST['CKEditorFuncNum'])) {?>
+			window.opener.CKEDITOR.tools.callFunction( <?php echo $this->escape($_REQUEST['CKEditorFuncNum']);?>, fileUrl);
+		<?php } else {?>
+			window.opener.callFunction(id, fileUrl, '<?php echo $this->escape($_REQUEST['elementid']);?>');
+		<?php }?>
+		window.close();
+	}
+
+	$('#filemanager-upload-form').hide();
+	$('#filemanager-configure-form').hide();
+
+</script>

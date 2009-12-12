@@ -45,6 +45,9 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             $factory = new Gallery_Node_Factory();
             $extra = $factory->find($item->id)->current();
             if ($extra) {
+            	if (substr($extra->bgcolor, 0, 1) != "#") {
+            		$extra->bgcolor = "#".$extra->bgcolor;
+            	}
             	$bg_color_style = "background-color: ".$extra->bgcolor.";";
             }
             
@@ -113,29 +116,13 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
     public function nodeForm(Zend_Form &$form, &$arguments) {
         $item =& array_shift($arguments);
         if ($item->type == "gallery_node") {
-            // Add Colorpicker JS
-            /**
-             * 
-             * @todo Why is this not part of ZF? They have the view helper, but not the CSS/JS files...
-             */
-            $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
-            $view->jQuery()->addJavascriptFile(Zend_Controller_Front::getInstance()->getBaseUrl().'/js/jquery/colorpicker/js/colorpicker.js', 'text/javascript');
-            $view->jQuery()->addStylesheet(Zend_Controller_Front::getInstance()->getBaseUrl()."/js/jquery/colorpicker/css/colorpicker.css");
-        	
-            /*
-            // Ain't working... param values are parsed as strings, not javascript
-            $params = array('onSubmit' => 'function(hsb, hex, rgb, el) {
-												$(el).val(hex);
-												$(el).ColorPickerHide();
-											}',
-            				'onBeforeShow' => 'function () {$(this).ColorPickerSetColor(this.value);}');
-            				*/
-            $bgcolor = new ZendX_JQuery_Form_Element_ColorPicker('gallery_bgcolor');
+            
+        	$bgcolor = new Zoo_Form_Element_ColorPicker('gallery_bgcolor');
         	$bgcolor->setLabel('Background colour');
-        	//$bgcolor->setJqueryParams($params);
         	
         	$config = Zoo::getConfig('gallery', 'module');
         	
+        	/*
         	$topimage = new Zend_Form_Element_Radio('gallery_topimage');
         	$topimage->setLabel('Top image');
         	$topimage->setOptions(array('escape' => false));
@@ -145,15 +132,12 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
         	foreach ($topimages as $image) {
         		$topimage->addMultiOption($image->id, $image->title."<br /><img src='".$image->hooks['filemanager_file']->getUrl(200)."' />");
         	}
+        	*/
+        	$topimage = new Zoo_Form_Element_FileBrowser('gallery_topimage');
+        	$topimage->setLabel('Top image');
         	
-        	$bgimage = new Zend_Form_Element_Radio('gallery_bgimage');
+        	$bgimage = new Zoo_Form_Element_FileBrowser('gallery_bgimage');
         	$bgimage->setLabel('Background image');
-        	$bgimage->setOptions(array('escape' => false));
-        	$bgimages = Zoo::getService('content')->getContent(array('parent' => $config->background_image, 'nodetype' => 'filemanager_file'));
-        	$bgimage->addMultiOption(0, Zoo::_("None"));
-        	foreach ($bgimages as $image) {
-        		$bgimage->addMultiOption($image->id, $image->title."<br /><img src='".$image->hooks['filemanager_file']->getUrl(200, 200)."' />");
-        	}
         	
         	$form->addElements(array($bgcolor, $topimage, $bgimage));
         	

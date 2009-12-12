@@ -51,7 +51,6 @@ class Content_Node_Form extends ZendX_JQuery_Form {
         	$publishdate = new ZendX_JQuery_Form_Element_DatePicker('published');
         	$publishdate->setLabel('Publish date');
         	
-        	$target->published = date('d M y', $target->published);
         	$this->addElements(array($status, $publishdate));
         	$this->addDisplayGroup(array('status', 'published'), 'content_publish', array('legend' => Zoo::_("Publish settings")));
         	
@@ -79,6 +78,8 @@ class Content_Node_Form extends ZendX_JQuery_Form {
         $this->addElement(new Zend_Form_Element_Hidden('type', array('value' => $target->type)));
         $this->addElement(new Zend_Form_Element_Hidden('pid', array('value' => $target->pid)));
 
-        $this->populate($target->toArray());
+        $populate = $target->toArray();
+        $populate['published'] = date("d M y", $target->published ? $target->published : time());
+        $this->populate($populate);
     }
 }

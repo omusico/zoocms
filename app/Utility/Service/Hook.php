@@ -34,8 +34,8 @@ class Utility_Service_Hook extends Zoo_Service {
             $method = strtolower($type).$action;
             foreach ($hooks as $hook) {
                 try {
-                    $arguments = array();
-                    $arguments = array_slice(func_get_args(), 3);
+                	$arguments = array();
+            		$arguments = array_slice(func_get_args(), 3);
                     $hook->$method($target, $arguments);
                 }
                 catch (Exception $e) {

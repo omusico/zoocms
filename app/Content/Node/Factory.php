@@ -19,9 +19,13 @@ class Content_Node_Factory extends Zoo_Db_Table {
     public function insert(array $data ) {
         $data['created'] = time();
         $data['createdby'] = 0;
-        if (Zend_Auth::getInstance()->hasIdentity()) {
-            $identity = Zend_Auth::getInstance()->getIdentity();
-            $data['createdby'] = $identity->id;
+        try {
+        	$uid = Zoo::getService('user')->getCurrentUser()->id;
+        	if ($uid > 0) {
+            	$data['createdby'] = $uid;
+        	}
+        }
+        catch (Exception $e) {
         }
         return parent::insert($data);
     }
@@ -38,9 +42,13 @@ class Content_Node_Factory extends Zoo_Db_Table {
         // add a timestamp
         $data['updated'] = time();
         $data['updatedby'] = 0;
-        if (Zend_Auth::getInstance()->hasIdentity()) {
-            $identity = Zend_Auth::getInstance()->getIdentity();
-            $data['updatedby'] = $identity->id;
+    	try {
+        	$uid = Zoo::getService('user')->getCurrentUser()->id;
+        	if ($uid > 0) {
+            	$data['updatedby'] = $uid;
+        	}
+        }
+        catch (Exception $e) {
         }
         return parent::update($data, $where);
     }

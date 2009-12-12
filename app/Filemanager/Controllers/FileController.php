@@ -110,7 +110,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 			if ($this->getRequest ()->getParam ( "width" ) > 0 || $this->getRequest ()->getParam ( "height" ) > 0) {
 				$w = $this->getRequest ()->getParam ( "width" ) > 0 ? $this->getRequest ()->getParam ( "width" ) : 1024;
 				$h = $this->getRequest ()->getParam ( "height" ) > 0 ? $this->getRequest ()->getParam ( "height" ) : 1024;
-				$max = ( bool ) $this->getRequest ()->getParam ( "max" ) or true;
+				$max = ( bool ) $this->getRequest ()->getParam ( "max", true );
 				
 				// Get new dimensions
 				list ( $width_orig, $height_orig ) = getimagesize ( $file->getPath () );
@@ -202,6 +202,31 @@ class Filemanager_FileController extends Zoo_Controller_Action {
         $this->getHelper('viewRenderer')->setNoRender();
 	}
 	
+	public function browseAction() {
+		$this->view->jQuery()->enable()->uiEnable();
+		$this->view->jQuery()->addJavascriptFile('/js/jquery/treeview/jquery.treeview.js', 'text/javascript');
+		$this->view->headLink()->appendStylesheet('/js/jquery/treeview/jquery.treeview.css');
+		
+		$js = '$(document).ready(function(){
+				$("#treeview").treeview({collapsed: true});
+  			   });';
+		$this->view->jQuery()->addOnLoad($js);
+		
+		/**
+		 * @todo Find another way to implement changing layout template in a controller
+		 */
+		Zend_Layout::getMvcInstance()->setInflectorTarget(':script/popup.:suffix');
+		
+		$categories = Zoo::getService('content')->getContent(
+                                                    array('group' => 'category',
+                                                          'order' => 'title',
+                                                    	  'hooks' => false),
+                                                    0,
+                                                    0);
+        $tree = new Zoo_Object_Tree($categories, 'id', 'pid');
+        $this->view->assign('tree', $tree->toArray());
+	}
+	
 	/**
 	 * Show browse/upload page
 	 */
@@ -212,6 +237,13 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		//$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-reset.css' );
 		$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css');
 		$this->view->headLink()->appendStylesheet('/js/infusion/components/uploader/css/Uploader.css');
+		
+		/**
+		 * @todo Find another way to implement changing layout template in a controller
+		 */
+		Zend_Layout::getMvcInstance()->setInflectorTarget(':script/popup.:suffix');
+		
+		$this->view->assign('catId', intval($this->getRequest()->getParam('catid')));
 	}
 	
 	/**
@@ -230,7 +262,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$image->type = 'filemanager_file';
 		$image->title = substr ( $this->getRequest ()->getParam ( 'Filename' ), 0, strrpos ( $this->getRequest ()->getParam ( 'Filename' ), '.' ));
 		$image->status = 1;
-		$image->published = time ();
+		$image->published = time();
 		$image->pid = $this->getRequest ()->getParam ( 'parent' );
 		$image->save ();
 
@@ -291,27 +323,18 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	 * List files in a category
 	 */
 	public function listAction() {
-		$method = __METHOD__;
-        $cacheid = str_replace("::", "_", $method).intval($this->getRequest()->getParam('id'));
-        
-        $content = $this->checkCache($cacheid);
-        if (!$content) {
-            $found = Zoo::getService('content')->find($this->_request->getParam('id'));
-            if ($found->count() == 0) {
-                throw new Zend_Controller_Action_Exception(Zoo::_("Category does not exist"), 404);
-            }
-            $category = $found->current();
-            $items = Zoo::getService('content')->getContent(array('active' => true,
-                                                                  'nodetype' => 'filemanager_file',
-                                                                  'parent' => $category->id,
-                                                                  'render' => false));
-            $this->view->assign('items', $items);
-            $this->view->assign('category', $category);
+		$found = Zoo::getService ( 'content' )->find ( $this->_request->getParam ( 'id' ) );
+		if ($found->count () == 0) {
+			throw new Zend_Controller_Action_Exception ( Zoo::_ ( "Category does not exist" ), 404 );
+		}
+		$offset = $this->getRequest()->getParam('offset') or 0;
+		$category = $found->current ();
+		$items = Zoo::getService ( 'content' )->getContent ( array ('active' => true, 
+																	'nodetype' => 'filemanager_file', 
+																	'parent' => $category->id, 
+																	'render' => false ), $offset );
+		$this->view->assign ( 'items', $items );
+		$this->view->assign ( 'category', $category );
 
-
-            $content = $this->getContent();
-            $this->cache($content, $cacheid, array('nodelist'), 60); //60 Seconds set - should be dynamic? Should it invalidate, whenever any node is saved?
-        }
-        $this->renderContent($content);
 	}
 }

@@ -1,4 +1,3 @@
-<h1><?php echo $this->escape($this->item['title']);?></h1>
 <?php if ($this->can_edit) {
     echo $this->render('gallery/top');
 }?>
@@ -22,7 +21,7 @@
 	    $i = 0;
 	    echo "<h2>".$this->translate('%s images', count($this->item->hooks['gallery_nodes']))."</h2>";
 	    foreach ($this->item->hooks['gallery_nodes'] as $image) {?>
-	        <div class="content-item filemanager_file_list<?php if (($i % 4) == 0) {echo " clear";} ?>">
+	        <div class="content-item gallery_node_list<?php if (($i % 4) == 0) {echo " clear";} ?>">
 	            <p>
 	                <a rel="lightbox[gallery]" href="<?php echo $image->hooks['filemanager_file']->getUrl();?>" title="<?php echo $image['content'] ? str_replace('"', "'", $this->escape($image)) : "*"; ?>">
 	                    <img src="<?php echo $image->hooks['filemanager_file']->getUrl(135, 135);?>"
