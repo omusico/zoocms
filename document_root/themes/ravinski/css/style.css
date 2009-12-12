@@ -270,9 +270,6 @@ div.rcright {
 	overflow: hidden;
 }
 
-div.rcright a {
-    color: #d70000;
-}
 div.rcrightcontent {
 	padding: 5px;
 	color: #fff;
@@ -439,6 +436,7 @@ div.filemanager_file_list {
     border: 1px solid #D3D3D3;
 	background-color: #FFFFFF;
     text-align: center;
+	cursor: pointer;
 }
 
 div.filemanager_file_list img {
