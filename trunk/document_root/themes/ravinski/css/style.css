@@ -90,6 +90,14 @@ div#maincontainer {
     background-color: #FFF;
     border: 1px solid #CCCCCC;
 }
+
+.popup-body {
+	background-color: #F1F1F3;
+}
+
+div#popupcontainer {
+	text-align: left;
+}
 div#logo {
 	background-image: url(../images/logo2.jpg);
 	background-repeat: no-repeat;
@@ -377,24 +385,98 @@ div.content-item .comment-count {
 }
 
 /* FILEMANAGER */
+div#filemanager {
+	background-color: #F1F1E3;
+}
+
+.filemanager-toolbar {
+	border-bottom:1px outset #EFEFDE;
+	border-top:1px outset #EFEFDE;
+	background-color:#EFEFDE;
+	cursor:default;
+	padding: 10px;
+	font-family: 'Microsoft Sans Serif',Tahoma,Arial,Verdana,Sans-Serif;
+	font-size: 11px;
+}
+
+.filemanager-toolbar span {
+	background-position: center left;
+	background-repeat: no-repeat;
+	padding: 5px 0px 0px 18px;
+	margin-right: 15px;
+	cursor: pointer;
+	border: 1px solid #EFEFDE;
+}
+
+.filemanager-toolbar span:hover {
+	background-color: #DFF1FF;
+	border: 1px solid #316AC5;
+}
+
+.filemanager-toolbar .toolbar-upload {
+	background-image: url('../../../images/crystal_project/16x16/actions/window_new.png');
+}
+.filemanager-toolbar .toolbar-refresh {
+	background-image: url('../../../images/crystal_project/16x16/actions/reload.png');
+}
+.filemanager-toolbar .toolbar-configure {
+	background-image: url('../../../images/crystal_project/16x16/actions/configure.png');
+}
+
+#filemanager-upload-form {
+	padding-left: 10px;
+}
+
+#filemanager-upload-form iframe {
+	border: none;
+}
+
 div.filemanager_file_list {
     float: left;
-    width: 130px;
-    border: none;
+    width: 125px;
+	height: 210px;
+	margin: 2px;
+    border: 1px solid #D3D3D3;
+	background-color: #FFFFFF;
     text-align: center;
 }
 
 div.filemanager_file_list img {
-    max-width: 130px;
+    max-width: 120px;
+	padding: 2px;
 }
 
 #folder-list {
-	width: 29%;
+	width: 15%;
 	float: left;
+	border-right: 5px solid #E3E3C7;
+	font-family: 'Microsoft Sans Serif',Tahoma,Arial,Verdana,Sans-Serif;
+	font-size: 11px;
+}
+
+#folder-list h2 {
+	background-color: #E3E3C7;
+	border-bottom: 1px solid #E3E3C7;
+	color:#737357;
+	font-size:14pt;
+	font-weight:bold;
+	padding:3px 10px;
+}
+
+#folder-contents .file-list {
+	padding: 10px;
+}
+
+.file-image {
+	height: 145px;
+}
+
+.file-information {
+	padding-top: 5px;
 }
 
 #uploader-contents {
-	width: 70%;
+	width: 84%;
 	float: left;
 	margin: 0px 0px 10px;
 }
@@ -417,9 +499,6 @@ div.filemanager_file_list img {
 }
 
 .gallery-remove-image {
-	position: absolute;
-	bottom: 4px;
-	left: 15px;
 	cursor: pointer;
 }
 
@@ -429,6 +508,13 @@ div.filemanager_file_list img {
 	border: none !important;
 }
 
+div.gallery_node_list {
+    float: left;
+    width: 135px;
+	margin: 2px;
+    text-align: center;
+    border: none;
+}
 .gallery-top-image {
 	text-align: center;
 }
@@ -438,11 +524,20 @@ div.filemanager_file_list img {
 }
 
 /* MOVEABLE LAYOUT */
+.fl-uploader-queue-header {
+	background-color: #E3E3C7;
+}
+
+.fl-uploader-btns {
+	background-color: #E3E3C7;
+}
+
+.fl-uploader {
+	width: 100%;
+}
 
 #portlet-reorderer-root {
-  border: 1px solid #005572;
-  float: left;
-  width: 70%;
+  clear: both;
 }
 
 .fl-reorderer-movable-default {

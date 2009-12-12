@@ -1,35 +1,31 @@
-<h1><?php echo $this->category['title'];?></h1>
+<div class="file-list">
+<h2><?php echo $this->category['title'];?></h2>
 <?php
 $i = 0;
 foreach ($this->items as $item) {?>
-    <div id="file-<?php echo $item->id;?>" class="content-item filemanager_file_list<?php if (($i % 3) == 0) {echo " clear";} ?>">
-    <?php
-    if ($item->hooks['filemanager_file']->isImage()):?>
-    <p>
-        <img src="<?php echo $item->hooks['filemanager_file']->getUrl(130);?>"
-                 alt="<?php echo $this->translate('Billede: ').$item['title'];?>" />
-    </p>
-    <?php else:?>
-    <p>
-        <img src="<?php echo $this->getTypeImage($item->hooks['filemanager_file']->mimetype);?>"
-                 alt="<?php echo $this->translate('Fil: ').$item['title'];?>" />
-    </p>
-    <?php endif;?>
-    <h2>
-        <?php echo $this->escape($item['title']);?>
-    </h2>
-    <p><?php echo $this->filter($item, 'content', 350); ?></p>
-    <?php if($item->hooks) {
-        foreach ($item->hooks as $name => $hook) {
-            if ($name != "filemanager_file") {
-                echo $hook;
-            }
-        }
-    }
-    ?>
+    <div id="file-<?php echo $item->id;?>" class="content-item filemanager_file_list" onclick="selectImage(<?php echo $item->id;?>)">
+    	<div class="file-image">
+		    <?php
+		    if ($item->hooks['filemanager_file']->isImage()):?>
+		        <img src="<?php echo $item->hooks['filemanager_file']->getUrl(120, 145);?>"
+		                 alt="<?php echo $this->translate('Billede: ').$item['title'];?>" />
+		    <?php else:?>
+		    <p>
+		        <img src="<?php echo $this->getTypeImage($item->hooks['filemanager_file']->mimetype);?>"
+		                 alt="<?php echo $this->translate('Fil: ').$item['title'];?>" />
+		    </p>
+		    <?php endif;?>
+	    </div>
+	    <div class="file-information">
+	        <?php echo $this->escape($item['title']);?><br />
+	        <?php echo date('d/m/Y H:i', $item['published']);?><br />
+	        <?php echo ceil($item->hooks['filemanager_file']->size/1024);?> KB
+	    </div>
+	    
     </div>
 <?php
 	$i++;
 }
 ?>
 <br class="clear" />
+</div>

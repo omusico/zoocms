@@ -37,8 +37,14 @@ class Zend_View_Helper_FormWysiwyg extends Zend_View_Helper_FormTextarea
         extract($info); // name, value, attribs, options, listsep, disable
         
         $xhtml = $this->formTextarea($name, $value, $attribs);
+        /**
+         * @todo Change to query file manager service for URLs
+         */
         $xhtml .= '<script type="text/javascript">
-        				CKEDITOR.replace( "'. $this->view->escape($id) .'" );
+        				CKEDITOR.replace( "'. $this->view->escape($id) .'", {
+        					filebrowserBrowseUrl : "/Filemanager/file/browse",
+        					filebrowserImageBrowseUrl : "/Filemanager/file/browse?type=Images"
+    						} );
         			</script>';
         $this->instances += 1;
         if ($this->instances == 1) {

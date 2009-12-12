@@ -43,7 +43,7 @@ class Content_NodeController extends Zoo_Controller_Action
         	// No acl service installed
         }
         
-        $cacheid = get_class($item)."_".$id.($can_edit ? "_edit" : "");
+        $cacheid = "Content_nodeDisplay_".$id.($can_edit ? "_edit" : "");
         $content = $this->checkCache($cacheid);
         if (!$content) {
             try {

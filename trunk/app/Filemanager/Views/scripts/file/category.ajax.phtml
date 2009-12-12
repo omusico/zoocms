@@ -1,10 +1,16 @@
 <?php
 $ele = $this->ele;
 if (isset ( $ele ['element'] )) {
-	echo "<li><a href='#' onclick='selectCategory(" . $ele ['element'] ['id'] . ");return false;'>" . $this->escape($ele ['element'] ['title']) . "</a>";
+	echo "<li><span class='folder'><a href='#' onclick='selectCategory(" . $ele ['element'] ['id'] . ");return false;'>" . $this->escape($ele ['element'] ['title']) . "</a></span>";
+	//echo "<li><span class='folder'>" . $this->escape($ele ['element'] ['title']) . "</span>";
 }
 if (isset ( $ele ['children'] )) {
-	echo "<ul>";
+	if ($this->first) {
+		echo "<ul id='treeview' class='filetree'>";
+	}
+	else {
+		echo "<ul>";
+	}
 	foreach ( $ele ['children'] as $child ) {
 		echo $this->partial ( 'file/category.ajax.phtml', array ('ele' => $child ) );
 	}
