@@ -1,8 +1,6 @@
 <ul>
-<?php
-foreach ($this->types as $type) {
-	echo "<li><a href='".$this->url(array('module' => 'Content', 'controller' => 'node', 'action' => 'add', 'type' => $type->type), 'default', true)."'>".$this->escape($type->name)."</a></li>";
-}
-echo "<li><a href='". $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'upload'), 'default', true)."'>".$this->translate("File manager")."</a></li>";
-?>
+<li><a href='<?php echo $this->url(array('module' => 'Content', 'controller' => 'node', 'action' => 'add', 'type' => 'content_node'), 'default', true);?>'>Indhold</a></li>
+<li><a href='<?php echo $this->url(array('module' => 'Content', 'controller' => 'node', 'action' => 'add', 'type' => 'taxonomy_category'), 'default', true);?>'>Kategori</a></li>
+<li><a href='<?php echo $this->url(array('module' => 'Content', 'controller' => 'node', 'action' => 'add', 'type' => 'gallery_node'), 'default', true);?>'>Galleri</a></li>
+<li><a href="#" onclick="window.open('<?php echo $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'browse'), 'default', true);?>', 'filemanager', 800, 600);">Filhåndtering</a></li>
 </ul>
