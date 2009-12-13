@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zoo Content Module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-13 13:42+0100\n"
+"POT-Creation-Date: 2009-12-13 13:45+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jan <jkp@cusix.dk>\n"
 "Language-Team: ZooCrew\n"
@@ -22,7 +22,7 @@ msgstr ""
 #: Content\Controllers/NodeController.php:31
 #: Content/Controllers/NodeController.php:31
 msgid "Content not found"
-msgstr "The content with that ID was not found in the database"
+msgstr "Indholdet blev ikke fundet"
 
 #: Content\Controllers/NodeController.php:38
 #: Content\Controllers/NodeController.php:87
@@ -35,29 +35,29 @@ msgstr "The content with that ID was not found in the database"
 #: Content/Controllers/NodeController.php:140
 #: Content/Controllers/NodeController.php:152
 msgid "Access denied - insufficient privileges"
-msgstr "You do not have enough privileges to perform this action"
+msgstr "Du har ikke rettigheder til at udføre dette"
 
 #: Content\Node/Form.php:26
 msgid "Title"
-msgstr "Headline"
+msgstr "Overskrift"
 
 #: Content\Node/Form.php:30
 msgid "Content"
-msgstr "Body text"
+msgstr "Indhold"
 
 #: Content\Node/Form.php:33
 msgid "Save"
-msgstr "Save content"
+msgstr "Gem indhold"
 
 #: Content\Node/Form.php:39
 #, php-format
 msgid "Edit %s"
-msgstr "Edit %s"
+msgstr "Rediger %s"
 
 #: Content\Node/Form.php:39
 #, php-format
 msgid "Add %s"
-msgstr "Add new %s"
+msgstr "Tilføj ny %s"
 
 #: Content\Node/Form.php:46
 msgid "Status"
@@ -65,37 +65,37 @@ msgstr "Status"
 
 #: Content\Node/Form.php:47
 msgid "Unpublished"
-msgstr "Unpublished"
+msgstr "Ikke publiseret"
 
 #: Content\Node/Form.php:48
 msgid "Published"
-msgstr "Published"
+msgstr "Publiseret"
 
 #: Content\Node/Form.php:52
 msgid "Publish date"
-msgstr "Publish date"
+msgstr "Publiseringsdato"
 
 #: Content\Node/Form.php:55
 msgid "Publish settings"
-msgstr "Publish settings"
+msgstr "Publiseringsindstillinger"
 
 #: Content/Hook/Node.php:48
 msgid "Filters"
-msgstr "Filters"
+msgstr "Filtre"
 
 #: Content\Views/scripts/blocks/admin.phtml:6
 #: Content/Views/scripts/blocks/admin.phtml:6
 msgid "File manager"
-msgstr "File manager"
+msgstr "Filhåndtering"
 
 #: Content\Views/scripts/node/form.phtml:4
 #, php-format
 msgid "Back to'%s'"
-msgstr "Back to '%s'"
+msgstr "Tilbage til '%s'"
 
 #: Content\Views/scripts/node/index.phtml:3
 msgid "Edit"
-msgstr "Edit"
+msgstr "Rediger"
 
 #~ msgid "Add item"
 #~ msgstr "Add content"

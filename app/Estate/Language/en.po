@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Estate module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-12-29 13:45+0100\n"
+"POT-Creation-Date: 2009-12-13 13:23+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jan <jkp@cusix.dk>\n"
 "Language-Team: ZooCMS Crew <jkp@cusix.dk>\n"
@@ -13,34 +13,36 @@ msgstr ""
 "X-Poedit-Country: Denmark\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: translate;setLabel\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: e:\\dokumenter\\xoops\\webserver\\ZooCMS\\app\\modules\\Estate\n"
+"X-Poedit-Basepath: E:\\Dokumenter\\Xoops\\webserver\\ZooCMS SVN\\app\n"
+"X-Poedit-SearchPath-0: Estate\n"
+"X-Poedit-SearchPath-1: Estate\\Controllers\n"
+"X-Poedit-SearchPath-2: Estate\\Views\n"
 
-#: e:\dokumenter\xoops\webserver\ZooCMS\app\modules\Estate/Hook/Node.php:60
+#: Estate/Hook/Node.php:56
 msgid "Price"
 msgstr "Price/Deposit"
 
-#: e:\dokumenter\xoops\webserver\ZooCMS\app\modules\Estate/Hook/Node.php:64
+#: Estate/Hook/Node.php:60
 msgid "Area"
 msgstr "Area in m2"
 
-#: e:\dokumenter\xoops\webserver\ZooCMS\app\modules\Estate/Hook/Node.php:68
+#: Estate/Hook/Node.php:64
 msgid "Rooms"
 msgstr "No. of rooms"
 
-#: e:\dokumenter\xoops\webserver\ZooCMS\app\modules\Estate/Hook/Node.php:72
+#: Estate/Hook/Node.php:68
 msgid "Floors"
 msgstr "No. of floors"
 
-#: e:\dokumenter\xoops\webserver\ZooCMS\app\modules\Estate/Hook/Node.php:76
+#: Estate/Hook/Node.php:72
 msgid "Built Year"
 msgstr "Year of construction"
 
-#: e:\dokumenter\xoops\webserver\ZooCMS\app\modules\Estate/Hook/Node.php:80
+#: Estate/Hook/Node.php:76
 msgid "Ground area"
 msgstr "Additional ground area in m2"
 
-#: e:\dokumenter\xoops\webserver\ZooCMS\app\modules\Estate/Hook/Node.php:85
+#: Estate/Hook/Node.php:81
 msgid "Real estate information"
 msgstr "Real estate information"
 
