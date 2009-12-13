@@ -67,7 +67,7 @@
 		var fileUrl = "<?php echo $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'show'), 'default', true);?>/id/" + id + "/width/150/height/150";
 		<?php if (isset($_REQUEST['CKEditorFuncNum'])) {?>
 			window.opener.CKEDITOR.tools.callFunction( <?php echo $this->escape($_REQUEST['CKEditorFuncNum']);?>, fileUrl);
-		<?php } else {?>
+		<?php } elseif (isset($_REQUEST['elementid'])) {?>
 			window.opener.callFunction(id, fileUrl, '<?php echo $this->escape($_REQUEST['elementid']);?>');
 		<?php }?>
 		window.close();
