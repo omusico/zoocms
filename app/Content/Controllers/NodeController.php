@@ -196,15 +196,15 @@ class Content_NodeController extends Zoo_Controller_Action
             /**
              * Invalidate cache
              */
-            Zoo::getService('cache')->remove(get_class($item)."_".$item->id);
-            Zoo::getService('cache')->remove(get_class($item)."_".$item->id."_edit");
+            Zoo::getService('cache')->remove("Content_nodeDisplay_".$item->id);
+            Zoo::getService('cache')->remove("Content_nodeDisplay_".$item->id."_edit");
             Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('node_'.$item->id));
 
             if ($item->pid > 0) {
                 // Clear cache for immediate parent
                 $parent = Zoo::getService('content')->find($item->pid)->current();
-                Zoo::getService('cache')->remove(get_class($parent)."_".$item->pid);
-                Zoo::getService('cache')->remove(get_class($parent)."_".$item->pid."_edit");
+                Zoo::getService('cache')->remove("Content_nodeDisplay_".$item->pid);
+                Zoo::getService('cache')->remove("Content_nodeDisplay_".$item->pid."_edit");
                 Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('node_'.$item->pid));
             }
             if ($this->getRequest()->isXmlHttpRequest()) {
