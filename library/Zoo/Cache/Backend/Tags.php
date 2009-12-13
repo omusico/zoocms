@@ -206,16 +206,15 @@ class Zoo_Cache_Backend_Tags extends Zend_Cache_Backend implements Zend_Cache_Ba
                 $tags = array($tags);
             }
 
-            // Quote the tags and convert to a string
-            $tags = array_map(array($this->getTable()->getAdapter(), 'quote'), $tags);
-
             // Build the query for the desired matching mode
             if ( $mode == Zend_Cache::CLEANING_MODE_MATCHING_TAG ) {
-                $items = $this->getTable()->select()->where('tag IN (?)', $tags);
+                $select = $this->getTable()->select()->where('tag IN (?)', $tags);
             } else {
-                $items = $this->getTable()->select()->where('tag NOT IN (?)', $tags);
+                $select = $this->getTable()->select()->where('tag NOT IN (?)', $tags);
             }
-
+            
+            $items = $this->getTable()->fetchAll($select);
+            
             foreach ( $items as $item ) {
                 $this->remove( $item->cacheid );
             }
