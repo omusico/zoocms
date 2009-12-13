@@ -41,7 +41,11 @@
 		}
 		var content = '<iframe src="/Filemanager/file/upload/catid/' + catId + '" width="100%" height="310"></iframe>';
 		$('#filemanager-upload-form').html(content);
-		$("#folder-contents").load("<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'list', 'format' => 'html' ), 'default', true );?>/id/" + id);
+		loadCategory("<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'list', 'format' => 'html' ), 'default', true );?>/id/" + id);
+	}
+
+	function loadCategory(url) {
+		$("#folder-contents").load(url);
 	}
 
 	function toggleConfigure() {

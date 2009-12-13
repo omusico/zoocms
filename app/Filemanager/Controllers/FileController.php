@@ -327,14 +327,35 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		if ($found->count () == 0) {
 			throw new Zend_Controller_Action_Exception ( Zoo::_ ( "Category does not exist" ), 404 );
 		}
-		$offset = $this->getRequest()->getParam('offset') or 0;
 		$category = $found->current ();
-		$items = Zoo::getService ( 'content' )->getContent ( array ('active' => true, 
-																	'nodetype' => 'filemanager_file', 
-																	'parent' => $category->id, 
-																	'render' => false ), $offset );
-		$this->view->assign ( 'items', $items );
 		$this->view->assign ( 'category', $category );
+
+		$limit = $this->getRequest()->getParam('limit', 20);
+		// Offset = items per page multiplied by the page number minus 1
+		$offset = ($this->getRequest()->getParam('page', 1) - 1) * $limit;
+		$order = $this->getRequest()->getParam('order', "published DESC");
+		$nodetype = $this->getRequest()->getParam('nodetype', "filemanager_file");
+		
+		$options =  array ( 'active' => true, 
+							'nodetype' => $nodetype, 
+							'parent' => $category->id,
+							'order' => $order, 
+							'render' => false );
+		
+		$select = Zoo::getService ( 'content' )->getContentSelect (	$options, 
+																	$offset, 
+																	$limit );
+
+		$adapter = new Zend_Paginator_Adapter_DbSelect ( $select );
+		$paginator = new Zend_Paginator ( $adapter );
+		$paginator->setItemCountPerPage($limit);
+		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page', 1));
+		Zend_Paginator::setDefaultScrollingStyle('Elastic');
+		Zend_View_Helper_PaginationControl::setDefaultViewPartial('file/pagination_control.phtml');
+		$paginator->setView($this->view);
+		$this->view->assign('paginator', $paginator);
+		
+		$this->view->items = Zoo::getService('content')->getContent($options, $offset, $limit);
 
 	}
 }
