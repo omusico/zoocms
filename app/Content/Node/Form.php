@@ -40,6 +40,12 @@ class Content_Node_Form extends ZendX_JQuery_Form {
         $legend = sprintf($legend, $type->name);
         $this->addDisplayGroup(array('title', 'content'), 'content_add', array('legend' => $legend ));
         
+        try {
+            Zoo::getService("hook")->trigger("Node", "Form", $this, $target);
+        }
+        catch (Zoo_Exception_Service $e) {
+            // Hook service not available - log? Better not, some people may live happily without a hook service
+        }
     	if ($type->has_publishdate_select) {
         	// Add publish date and approval settings
         	$status = new Zend_Form_Element_Radio('status', array('class' => 'content_status'));
@@ -60,13 +66,6 @@ class Content_Node_Form extends ZendX_JQuery_Form {
         	 */
         	$view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
         	$view->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css');
-        }
-
-        try {
-            Zoo::getService("hook")->trigger("Node", "Form", $this, $target);
-        }
-        catch (Zoo_Exception_Service $e) {
-            // Hook service not available - log? Better not, some people may live happily without a hook service
         }
         
         $this->addElement($submit);

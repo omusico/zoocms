@@ -1,0 +1,23 @@
+<?php $image = $this->image;?>
+<div class="content-item filemanager_file_list" id="selected-file-list-image-<?php echo $image->id;?>">
+	<div>
+    	<div class="fl-reorderer-image-inner-container">
+          	<a href="<?php echo $image->hooks['filemanager_file']->getUrl();?>" 
+          	   title="<?php echo $image['content'] ? $this->escape($image->content) : "*"; ?>"
+          	   onclick="editDialog(<?php echo $image->id;?>); return false;">
+                <img src="<?php echo $image->hooks['filemanager_file']->getUrl(135, 135);?>"
+                     alt="<?php echo $this->translate('Image: ').$image['title'];?>" />
+            </a>
+            	
+        </div>
+        <div class="flc-reorderer-imageTitle fl-reorderer-imageTitle">
+            <?php echo $image['title'];?>
+            <img class="gallery-remove-image" src="<?php echo Zend_Controller_Front::getInstance()->getBaseUrl();?>/images/crystal_project/16x16/actions/editdelete.png" 
+            	 alt="<?php echo $this->escape($this->translate('Remove %s', $image->title));?>" 
+            	 onclick="removeDialog(<?php echo $image->id;?>); return false;"
+            	 title="<?php echo $this->escape($this->translate('Remove %s', $image->title));?>" 
+            />
+        </div>
+    </div>
+	<input id="gallery:::gallery-thumbs:::lightbox-cell:<?php echo $image->id;?>:reorder-index" name="image[]" value="<?php echo $image->id;?>" type="hidden"/>
+</div>

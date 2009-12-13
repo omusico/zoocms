@@ -203,6 +203,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	}
 	
 	public function browseAction() {
+		ini_set('memory_limit', '64M');
 		$this->view->jQuery()->enable()->uiEnable();
 		$this->view->jQuery()->addJavascriptFile('/js/jquery/treeview/jquery.treeview.js', 'text/javascript');
 		$this->view->headLink()->appendStylesheet('/js/jquery/treeview/jquery.treeview.css');
@@ -225,7 +226,74 @@ class Filemanager_FileController extends Zoo_Controller_Action {
                                                     0);
         $tree = new Zoo_Object_Tree($categories, 'id', 'pid');
         $this->view->assign('tree', $tree->toArray());
+        if ($this->getRequest()->getParam('connectTo')) {
+        	$this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
+			$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css');
+			$this->view->headLink()->appendStylesheet('/js/infusion/components/reorderer/css/Reorderer.css');
+			$this->view->headLink()->appendStylesheet('/js/infusion/components/reorderer/css/ImageReorderer.css');
+			$this->view->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css');
+			
+        	$found = Zoo::getService('content')->find($this->getRequest()->getParam('connectTo'));
+	        if ($found->count() == 0) {
+	            throw new Zend_Controller_Action_Exception(Zoo::_("Content not found"), 404);
+	        }
+	        $item = $found->current();
+	        
+	        try {
+		    	if (!Zoo::getService('acl')->checkItemAccess($item, 'edit')) {
+		        	throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
+		        }
+	        }
+	    	catch (Zoo_Exception_Service $e) {
+	        	// No acl service installed
+	        }
+	        
+	        // Find files connected to the item
+			$item->hooks ['connected_nodes'] = Zoo::getService('link')->getLinkedNodes($item, $this->getRequest()->getParam('type'));
+	
+	        $this->view->assign('item', $item);
+	        $this->view->assign('connectTo', $item->id);
+	        $this->view->assign('type', $this->getRequest()->getParam('type'));
+        }
 	}
+	
+	public function connectAction() {
+		if ($this->getRequest()->isPost() ) {
+			$item = Zoo::getService('content')->find($this->getRequest()->getParam('image'))->current();
+			// Connect image to gallery_node
+	        Zoo::getService('link')->connect($this->getRequest()->getParam('id'), $item->id, $this->getRequest()->getParam('type'));
+				
+			// Call hooks for item
+			try {
+				$items = array($item);
+				Zoo::getService ( "hook" )->trigger ( "Node", "List", $items);
+			} catch ( Zoo_Exception_Service $e ) {
+				// Hook service not available - log? Better not, some people may live happily without a hook service
+			}
+	        
+	        $this->view->image = $item;
+	        
+	        Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
+	        $this->getHelper('layout')->disableLayout();
+			$this->render("sel-item");
+		}
+	}
+	
+	public function removeAction() {
+		$item = Zoo::getService('content')->find($this->getRequest()->getParam('id'))->current();
+    	if ($this->getRequest()->isPost()) {
+    		Zoo::getService('link')->remove($item->id, intval($this->getRequest()->getParam('image')), $this->getRequest()->getParam('type'));
+    		echo Zoo::_("Image removed");
+    	}
+    	else {
+    		/**
+    		 * @todo change "gallery" to name of content type
+    		 */
+    		echo sprintf(Zoo::_("Are you sure, you want to remove %s from the gallery?"), $item->title);
+    	}
+    	$this->getHelper('layout')->disableLayout();
+		$this->getHelper('viewRenderer')->setNoRender();
+    }
 	
 	/**
 	 * Show browse/upload page
@@ -358,4 +426,25 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$this->view->items = Zoo::getService('content')->getContent($options, $offset, $limit);
 
 	}
+	
+	public function performreorderAction() {
+        // Reorder files
+        $item = Zoo::getService('content')->find($this->getRequest()->getParam('id'))->current();
+        //Target is on the form selected-file-list-image-[ID]
+        $targetId = intval(substr($this->getRequest()->getParam('target'), strrpos($this->getRequest()->getParam('target'), "-")+1));
+        // -1 = before, 1 = after
+        $position = $this->getRequest()->getParam('position');
+        Zoo::getService('link')->update($this->getRequest()->getParam('type'), $item, $this->getRequest()->getParam('movedId'), $targetId, $position);
+        
+        try {
+        	Zoo::getService('cache')->remove("Content_nodeDisplay_".$item->id);
+        	Zoo::getService('cache')->remove("Content_nodeDisplay_".$item->id."_edit");
+        }
+        catch (Zoo_Exception_Service $e) {
+        	// No caching service installed, nothing to remove
+        }
+    	
+        $this->getHelper('layout')->disableLayout();
+		$this->getHelper('viewRenderer')->setNoRender();
+    }
 }

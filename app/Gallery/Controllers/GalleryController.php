@@ -41,7 +41,7 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
         $this->view->assign('item', $item);
         $this->item =& $item;
 	}
-	
+	/*
     public function imagesAction() {
         $this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
 		$this->view->headScript()->appendFile('/js/infusion/framework/core/js/ProgressiveEnhancement.js', 'text/javascript');
@@ -67,6 +67,7 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
 		$this->view->assign('pagetitle', $this->item->title);
     }
     
+    
     public function removeAction() {
     	if ($this->getRequest()->isPost()) {
     		Zoo::getService('link')->remove($this->item->id, intval($this->getRequest()->getParam('image')), 'gallery_image');
@@ -78,6 +79,7 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
     	$this->getHelper('layout')->disableLayout();
 		$this->getHelper('viewRenderer')->setNoRender();
     }
+    
     
     public function performreorderAction() {
     	$gallery = $this->item;
@@ -99,4 +101,5 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
         $this->getHelper('layout')->disableLayout();
 		$this->getHelper('viewRenderer')->setNoRender();
     }
+    */
 }
