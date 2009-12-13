@@ -19,13 +19,13 @@ msgstr ""
 #: E:\dokumenter\xoops\webserver\ZooCMS
 #: SVN\app\Auth/Controllers/IndexController.php:61
 msgid "Something else happened"
-msgstr "An unspecified error occurred"
+msgstr "En uspecificeret fejl skete"
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
 #: SVN\app\Auth/Controllers/IndexController.php:86
 #: SVN\app\Auth/Service/User.php:53
 msgid "Username"
-msgstr "User name"
+msgstr "Brugernavn"
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
 #: SVN\app\Auth/Controllers/IndexController.php:91
@@ -36,22 +36,22 @@ msgstr "Password"
 #: E:\dokumenter\xoops\webserver\ZooCMS
 #: SVN\app\Auth/Controllers/IndexController.php:95
 msgid "Log in"
-msgstr "Log in"
+msgstr "Log ind"
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
 #: SVN\app\Auth/Controllers/IndexController.php:117
 msgid "You are now logged out"
-msgstr "You are now logged out"
+msgstr "Du er nu logget ud"
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
 #: SVN\app\Auth/Service/User.php:60
 msgid "Register"
-msgstr "Register"
+msgstr "Registrér"
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
 #: SVN\app\Auth/Service/User.php:64
 msgid "Register user"
-msgstr "Register user"
+msgstr "Registrér bruger"
 
 #~ msgid "No corresponding user found"
 #~ msgstr "No corresponding user found"

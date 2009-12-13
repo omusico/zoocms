@@ -1,7 +1,7 @@
 <h1><?php echo $this->type->name;?></h1>
 <?php if ($this->item['id']) { ?>
     <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
-        <?php echo $this->translate("Back to'")." ".$this->escape($this->item['title'])."'";?>
+        <?php echo sprintf($this->translate("Back to'%s'"),$this->escape($this->item['title']));?>
     </a>
 <?php } ?>
 <?php echo $this->form ?>

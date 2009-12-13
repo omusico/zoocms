@@ -70,7 +70,7 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
     public function removeAction() {
     	if ($this->getRequest()->isPost()) {
     		Zoo::getService('link')->remove($this->item->id, intval($this->getRequest()->getParam('image')), 'gallery_image');
-    		echo "Image removed";
+    		echo Zoo::_("Image removed");
     	}
     	else {
     		echo sprintf(Zoo::_("Are you sure, you want to remove %s from the gallery?"), $this->item->title);
