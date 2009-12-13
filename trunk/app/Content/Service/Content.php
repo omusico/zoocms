@@ -48,22 +48,17 @@ class Content_Service_Content extends Zoo_Service {
     public function __call($name, $arguments) {
         return call_user_func_array(array($this->getFactory(), $name), $arguments);
     }
-
+    
     /**
-     *
+     * Get Zend_Db_Table_Select object to retrieve content
+     * 
      * @param array $options
      * @param int $start
      * @param int $limit
-     * @return array
+     * @return Zend_Db_Table_Select
      */
-    function getContent($options = array(), $start=0, $limit = 20) {
-        if (!isset($options['viewtype'])) {
-            $options['viewtype'] = "List";
-        }
-        if (!isset($options['hooks'])) {
-        	$options['hooks'] = true;
-        }
-        $this_table_name = $this->getFactory()->info(Zend_Db_Table_Abstract::NAME);
+    function getContentSelect($options = array(), $start = 0, $limit = 20) {
+    	$this_table_name = $this->getFactory()->info(Zend_Db_Table_Abstract::NAME);
         $select = $this->getFactory()->select()->from(array('c' => $this_table_name));
         if (isset($options['active']) && $options['active'] == true) {
             $select->where('status = ?', 1)
@@ -93,6 +88,24 @@ class Content_Service_Content extends Zoo_Service {
         }
         
    		$select->limit($limit, $start);
+   		return $select;
+    }
+
+    /**
+     *
+     * @param array $options
+     * @param int $start
+     * @param int $limit
+     * @return array
+     */
+    function getContent($options = array(), $start=0, $limit = 20) {
+        if (!isset($options['viewtype'])) {
+            $options['viewtype'] = "List";
+        }
+        if (!isset($options['hooks'])) {
+        	$options['hooks'] = true;
+        }
+        $select = $this->getContentSelect($options, $start, $limit);
         
         $items = $this->fetchAll($select);
         if (!isset($options['render']) || $options['render'] == false) {

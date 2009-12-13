@@ -1,6 +1,7 @@
 <div class="file-list">
 <h2><?php echo $this->category['title'];?></h2>
 <?php
+echo $this->paginator;
 $i = 0;
 foreach ($this->items as $item) {?>
     <div id="file-<?php echo $item->id;?>" class="content-item filemanager_file_list" onclick="selectImage(<?php echo $item->id;?>)">
@@ -28,4 +29,5 @@ foreach ($this->items as $item) {?>
 }
 ?>
 <br class="clear" />
+<?php echo $this->paginator;?>
 </div>
