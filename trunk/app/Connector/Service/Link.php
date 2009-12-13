@@ -86,7 +86,7 @@ class Connector_Service_Link extends Zoo_Service
      * @return bool
      */
     function connect($from, $to, $type = 'link') {
-    	$weight = $this->getNextWeight($from);
+    	$weight = $this->getNextWeight($from, $type);
 
         $gnode = $this->createRow();
         $gnode->nid = $from;

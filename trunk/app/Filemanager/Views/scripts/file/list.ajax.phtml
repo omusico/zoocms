@@ -4,7 +4,7 @@
 echo $this->paginator;
 $i = 0;
 foreach ($this->items as $item) {?>
-    <div id="file-<?php echo $item->id;?>" class="content-item filemanager_file_list" onclick="selectImage(<?php echo $item->id;?>)">
+    <div id="file-<?php echo $item->id;?>" class="content-item filemanager_file_list" onclick="selectImage(<?php echo $item->id;?>, this)">
     	<div class="file-image">
 		    <?php
 		    if ($item->hooks['filemanager_file']->isImage()):?>

@@ -92,7 +92,7 @@ div#maincontainer {
 }
 
 .popup-body {
-	background-color: #F1F1F3;
+	background-color: #F1F1E3;
 }
 
 div#popupcontainer {
@@ -419,6 +419,12 @@ div#filemanager {
 .filemanager-toolbar .toolbar-configure {
 	background-image: url('../../../images/crystal_project/16x16/actions/configure.png');
 }
+.filemanager-toolbar .toolbar-selected {
+	background-image: url('../../../images/crystal_project/16x16/actions/14_layer_visible.png');
+}
+.filemanager-toolbar .toolbar-reorder {
+	background-image: url('../../../images/crystal_project/16x16/actions/move.png');
+}
 
 #filemanager-upload-form {
 	padding-left: 10px;
@@ -463,6 +469,7 @@ div.filemanager_file_list img {
 
 #folder-contents .file-list {
 	padding: 10px;
+	clear: both;
 }
 
 .file-image {
@@ -477,6 +484,10 @@ div.filemanager_file_list img {
 	width: 84%;
 	float: left;
 	margin: 0px 0px 10px;
+}
+
+#selected {
+	display: none;
 }
 
 /* GALLERY */
