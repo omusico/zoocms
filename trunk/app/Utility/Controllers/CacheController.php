@@ -39,7 +39,12 @@ class Utility_CacheController extends Zend_Controller_Action
      *
      */
     function cleanAction() {
-        Zoo::getService('cache')->clean();
+    	if ($this->getRequest()->getParam('tag')) {
+    		Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array($this->getRequest()->getParam('tag')));
+    	}
+    	else {
+        	Zoo::getService('cache')->clean();
+    	}
     }
 
 
