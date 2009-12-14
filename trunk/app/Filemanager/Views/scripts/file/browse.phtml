@@ -116,7 +116,7 @@
 													    } );
 		$("#editDialog").dialog('open');
 	}
-
+<?php if ($this->item)) {?>
 	function removeAction(id) {
 		$.ajax({
 	        type: "POST",
@@ -128,7 +128,7 @@
 	        }
 	    });
 	}
-
+<?php }?>
 	function submitForm(form_ele) {
 		request = $(form_ele).serialize();
 		$.ajax({
