@@ -37,15 +37,15 @@
  	var catId = 0;
  	
 	function selectCategory(id) {
-		$('#filemanager-upload-form').hide();
 		if (!id) {
 			id = catId;
 		}
 		else {
 			catId = id;
 		}
-		var content = '<iframe src="/Filemanager/file/upload/catid/' + catId + '" width="100%" height="310"></iframe>';
-		$('#filemanager-upload-form').html(content);
+		$('#filemanager-upload-form').hide();
+		$('#filemanager-upload-form').html('<iframe src="/Filemanager/file/upload/catid/' + catId + '" width="100%" height="310"></iframe>');
+		$('.flc-uploader').show();
 		loadCategory("<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'list', 'format' => 'html' ), 'default', true );?>/id/" + id);
 	}
 
