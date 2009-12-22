@@ -29,8 +29,8 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 					);
 		$ids = array_map('intval', $ids);
 		
-		$w = $this->getRequest ()->getParam ( "width" ) > 0 ? intval($this->getRequest()->getParam ( "width" )) : 1024;
-		$h = $this->getRequest ()->getParam ( "height" ) > 0 ? intval($this->getRequest()->getParam ( "height" )) : 1024;
+		$w = $this->getRequest ()->getParam ( "width", 1024 );
+		$h = $this->getRequest ()->getParam ( "height", 1024 );
 		
 		$thumbpath = ZfApplication::$_data_path . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR . "thumb" . DIRECTORY_SEPARATOR . "combine_" . implode ( '_', $ids ) . "_" . intval ( $w ) . "_" . intval ( $h );
 		if (! file_exists ( $thumbpath )) {
@@ -38,8 +38,8 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 			$files = $factory->find ( $ids );
 			$imgBuf = array ();
 			foreach ( $files as $file ) {
-				$url = "http://".$_SERVER['HTTP_HOST'].$file->getUrl(ceil($w/2)+5, ceil($h/2)+5, false);
-				$iTmp = imagecreatefrompng($url);
+				//$url = "http://".$_SERVER['HTTP_HOST'].$file->getUrl(ceil($w/2)+5, ceil($h/2)+5, false);
+				$iTmp = imagecreatefrompng($file->getThumbnail(ceil($w/2)+5, ceil($h/2)+5, false));
 				array_push ( $imgBuf, $iTmp );
 			}
 			$iOut = imagecreatetruecolor ( $w, $h );
@@ -83,14 +83,35 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	 *
 	 */
 	public function showAction() {
+		Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
+        $this->getHelper('layout')->disableLayout();
+        $this->getHelper('viewRenderer')->setNoRender();
+        
 		$factory = new Filemanager_File_Factory ( );
 		if (! ($file = $factory->find ( $this->getRequest ()->getParam ( "id" ) )->current ())) {
 			$file = $factory->createRow ();
 		}
+		if (! $file->isImage ()) {
+			header ( "Content-Type: " . $file->mimetype );
+			$path = $file->getPath ();
+		} else {
+			if ($this->getRequest ()->getParam ( "width" ) > 0 || $this->getRequest ()->getParam ( "height" ) > 0) {
+				// Content type
+				header ( 'Content-type: image/png' );
+				//Output
+				$path = $file->getThumbnail($this->getRequest()->getParam('width', 1024), $this->getRequest()->getParam('height', 1024), $this->getRequest()->getParam('max'));
+			} else {
+				// Content type
+				header ( 'Content-type: image/png' );
+				//Output
+				$path = $file->getPath ();
+			}
+		}
+		
 		/**
 		 * @todo Check access permissions etc.
 		 */
-		$last = filemtime ( $file->getPath () );
+		$last = filemtime ( $path );
 		$expires = date ( 'r', strtotime ( "+ 1 year" ) );
 		header ( "Cache-Control: maxage=".$expires);
 		header ( "Pragma: public");
@@ -103,76 +124,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 			exit;
 		}
 		
-		if (! $file->isImage ()) {
-			header ( "Content-Type: " . $file->mimetype );
-			$path = $file->getPath ();
-		} else {
-			if ($this->getRequest ()->getParam ( "width" ) > 0 || $this->getRequest ()->getParam ( "height" ) > 0) {
-				$w = $this->getRequest ()->getParam ( "width" ) > 0 ? $this->getRequest ()->getParam ( "width" ) : 1024;
-				$h = $this->getRequest ()->getParam ( "height" ) > 0 ? $this->getRequest ()->getParam ( "height" ) : 1024;
-				$max = ( bool ) $this->getRequest ()->getParam ( "max", true );
-				
-				// Get new dimensions
-				list ( $width_orig, $height_orig ) = getimagesize ( $file->getPath () );
-				
-				$ratio_orig = $width_orig / $height_orig;
-				
-				if ($max) {
-					if ($w / $h > $ratio_orig) {
-						$w = $h * $ratio_orig;
-					} else {
-						$h = $w / $ratio_orig;
-					}
-				}
-				else {
-					if ($w / $h > $ratio_orig) {
-						$h = $h / $ratio_orig;
-					} else {
-						$w = $w * $ratio_orig;
-					}
-				}
-				
-				$thumbpath = ZfApplication::$_data_path . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR . "thumb" . DIRECTORY_SEPARATOR . $file->nid . "_" . intval ( $w ) . "_" . intval ( $h ) . ($max ? "_max" : "");
-				if (! file_exists ( $thumbpath )) {
-					// Resample
-					$image_p = imagecreatetruecolor ( $w, $h );
-					switch ($file->mimetype) {
-						case "image/jpeg" :
-							$image = imagecreatefromjpeg ( $file->getPath () );
-							break;
-						
-						case "image/png" :
-							$image = imagecreatefrompng ( $file->getPath () );
-							break;
-						
-						case "image/wbmp" :
-							$image = imagecreatefromwbmp ( $file->getPath () );
-							break;
-						
-						case "image/gif" :
-							$image = imagecreatefromgif ( $file->getPath () );
-							break;
-					}
-					imagecopyresampled ( $image_p, $image, 0, 0, 0, 0, $w, $h, $width_orig, $height_orig );
-					
-					// Write to file
-					imagepng ( $image_p, $thumbpath, 0 );
-				}
-				// Content type
-				header ( 'Content-type: image/png' );
-				//Output
-				$path = $thumbpath;
-			} else {
-				// Content type
-				header ( 'Content-type: image/png' );
-				//Output
-				$path = $file->getPath ();
-			}
-		}
 		echo file_get_contents ( $path );
-		Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
-        $this->getHelper('layout')->disableLayout();
-        $this->getHelper('viewRenderer')->setNoRender();
 	}
 	
 	/**
@@ -205,6 +157,8 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	public function browseAction() {
 		ini_set('memory_limit', '64M');
 		$this->view->jQuery()->enable()->uiEnable();
+		$this->view->jQuery()->addJavascriptFile('http://www.javascripttoolbox.com/lib/contextmenu/source/jquery.contextmenu.js', 'text/javascript');
+		$this->view->headLink()->appendStylesheet('http://www.javascripttoolbox.com/lib/contextmenu/jquery.contextmenu.css');
 		$this->view->jQuery()->addJavascriptFile('/js/jquery/treeview/jquery.treeview.js', 'text/javascript');
 		$this->view->headLink()->appendStylesheet('/js/jquery/treeview/jquery.treeview.css');
 		
@@ -226,6 +180,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
                                                     0);
         $tree = new Zoo_Object_Tree($categories, 'id', 'pid');
         $this->view->assign('tree', $tree->toArray());
+        
         if ($this->getRequest()->getParam('connectTo')) {
         	$this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
 			$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css');
@@ -255,8 +210,29 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	        $this->view->assign('connectTo', $item->id);
 	        $this->view->assign('type', $this->getRequest()->getParam('type'));
         }
+        
+        $configure_form = new Zend_Form(array('action' => "#", 'id' => "configure-form", 'method' => 'get'));
+		$order_element = new Zend_Form_Element_Select('order');
+		$order_element->setLabel('Order');
+		$order_element->setAttrib('onchange', 'selectCategory();');
+		$order_element->addMultiOptions(array('created ASC' => 'created ASC', 
+												'created DESC' => 'created DESC', 
+												'title ASC' => 'title ASC', 
+												'title DESC' => 'title DESC'));
+		
+		$limit_element = new Zend_Form_Element_Select('limit');
+		$limit_element->setLabel('Per page');
+		$limit_element->addMultiOptions(array(20 => 20,50 => 50,100 => 100,200 => 200,500 => 500));
+		$limit_element->setAttrib('onchange', 'selectCategory();');
+		
+		$configure_form->addElements(array($order_element, $limit_element));
+		$this->view->configureform = $configure_form;
 	}
 	
+	/**
+	 * Connect a file to a node
+	 * @return void
+	 */
 	public function connectAction() {
 		if ($this->getRequest()->isPost() ) {
 			$item = Zoo::getService('content')->find($this->getRequest()->getParam('image'))->current();
@@ -279,6 +255,10 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		}
 	}
 	
+	/**
+	 * Remove a connection between a file and a node
+	 * @return void
+	 */
 	public function removeAction() {
 		$item = Zoo::getService('content')->find($this->getRequest()->getParam('id'))->current();
     	if ($this->getRequest()->isPost()) {
@@ -374,8 +354,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	}
 	
 	/**
-	 * List categories - should be in another controller, but which?
-	 * @todo move to another controller
+	 * List categories
 	 */
 	public function categoriesAction() {
 		$categories = Zoo::getService('content')->getContent(
@@ -401,7 +380,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$limit = $this->getRequest()->getParam('limit', 20);
 		// Offset = items per page multiplied by the page number minus 1
 		$offset = ($this->getRequest()->getParam('page', 1) - 1) * $limit;
-		$order = $this->getRequest()->getParam('order', "published DESC");
+		$order = $this->getRequest()->getParam('order', "created DESC");
 		$nodetype = $this->getRequest()->getParam('nodetype', "filemanager_file");
 		
 		$options =  array ( 'active' => true, 
@@ -414,19 +393,25 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 																	$offset, 
 																	$limit );
 
+		$this->view->items = Zoo::getService('content')->getContent($options, $offset, $limit);
+		
+		// Pagination
+		Zend_Paginator::setDefaultScrollingStyle('Elastic');
+		Zend_View_Helper_PaginationControl::setDefaultViewPartial('file/pagination_control.phtml');
+		
 		$adapter = new Zend_Paginator_Adapter_DbSelect ( $select );
 		$paginator = new Zend_Paginator ( $adapter );
 		$paginator->setItemCountPerPage($limit);
 		$paginator->setCurrentPageNumber($this->getRequest()->getParam('page', 1));
-		Zend_Paginator::setDefaultScrollingStyle('Elastic');
-		Zend_View_Helper_PaginationControl::setDefaultViewPartial('file/pagination_control.phtml');
 		$paginator->setView($this->view);
 		$this->view->assign('paginator', $paginator);
-		
-		$this->view->items = Zoo::getService('content')->getContent($options, $offset, $limit);
-
 	}
 	
+	/**
+	 * Reorder files connected to a node
+	 * 
+	 * @return void
+	 */
 	public function performreorderAction() {
         // Reorder files
         $item = Zoo::getService('content')->find($this->getRequest()->getParam('id'))->current();

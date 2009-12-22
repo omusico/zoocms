@@ -94,10 +94,7 @@
 </form>
 		
  <script type="text/javascript">
- 	var catId = <?php echo $this->catId;?>;
- 	
-    function createUploader() {
-                var myUpload = fluid.progressiveEnhanceableUploader(".flc-uploader", ".fl-progEnhance-basic", {
+    fluid.progressiveEnhanceableUploader(".flc-uploader", ".fl-progEnhance-basic", {
                     uploadManager: {
             		    type: "fluid.swfUploadManager",
 
@@ -106,7 +103,7 @@
             		       uploadURL: "<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'performupload' ), 'default', true );?>",
 
             		       // Add post parameters
-            		       postParams: {parent: catId },
+            		       postParams: {parent: <?php echo $this->catId;?> },
 
             		       // This option points to the location of the SWFUpload Flash object that ships with Fluid Infusion.
             		       flashURL: "<?php echo Zend_Controller_Front::getInstance()->getBaseUrl();?>/js/infusion/lib/swfupload/flash/swfupload.swf"
@@ -139,7 +136,4 @@
                     }]
                 });
                 
-            };
-
-createUploader();
 </script>
