@@ -13,6 +13,8 @@
 class Content_Block_Spotlight extends Zoo_Block_Abstract  {
     public $template = "spotlight";
     
+    private $can_edit = false;
+    
     /**
      * Retrieve galleries listing
      * 
@@ -20,14 +22,7 @@ class Content_Block_Spotlight extends Zoo_Block_Abstract  {
      */
     function getTemplateVars() {
     	$item = Zoo::getService('content')->getContent($this->getSelectOptions(), 0, 1);
-    	$can_edit = false;
-    	try {
-	        $can_edit = Zoo::getService('acl')->checkItemAccess($item, 'edit');
-        }
-        catch (Zoo_Exception_Service $e) {
-        	// No acl service installed
-        }
-        return array('item' => array_shift($item), 'can_edit' => $can_edit);
+        return array('item' => array_shift($item), 'can_edit' => $this->can_edit);
     }
     
     /**
@@ -39,14 +34,13 @@ class Content_Block_Spotlight extends Zoo_Block_Abstract  {
     	$rowset = Zoo::getService('content')->fetchAll($select);
     	foreach ($rowset as $item) {
     		// Will only be one item
-    		$can_edit = "";
 	    	try {
-		        $can_edit = Zoo::getService('acl')->checkItemAccess($item, 'edit') ? "_edit" : "";
+		        $this->can_edit = Zoo::getService('acl')->checkItemAccess($item, 'edit');
 	        }
 	        catch (Zoo_Exception_Service $e) {
 	        	// No acl service installed
 	        }
-    		return parent::getCacheId().$can_edit;
+    		return parent::getCacheId(). ($can_edit ? "_edit" : "");
     	}
     }
     
