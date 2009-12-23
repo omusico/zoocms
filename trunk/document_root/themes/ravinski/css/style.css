@@ -51,7 +51,7 @@ h2 {
 	padding-top: 3px;
 	padding-left: 3px;
 	margin-bottom: 5px;
-	border-bottom: 1px solid gray;
+	border-bottom: 1px solid black;
 }
 h3, div.block-title {
 	padding: 0;
@@ -357,13 +357,13 @@ float:right;
 div.debug {
     padding: 5px;
     margin-top: 5px;
-    border: 1px solid gray;
+    border: 1px solid black;
 }
 
 /* CONTENT */
 div.content-item {
     padding: 5px;
-    border-bottom: 1px solid gray;
+    border-bottom: 1px solid black;
 }
 
 div.content-item h2 {
@@ -529,7 +529,7 @@ div.gallery_node_list {
 }
 
 .gallery-subgalleries{
-	border-bottom: 1px solid gray;
+	border-bottom: 1px solid black;
 }
 
 /* MOVEABLE LAYOUT */
