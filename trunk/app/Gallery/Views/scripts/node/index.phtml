@@ -17,7 +17,7 @@
 		</div>
 	<?php 
 	}
-	if ($this->item->hooks['gallery_nodes'] && count($this->item->hooks['gallery_nodes'] > 0)) {
+	if ($this->item->hooks['gallery_nodes'] && count($this->item->hooks['gallery_nodes']) > 0) {
 	    $i = 0;
 	    echo "<h2>".$this->translate('%s images', count($this->item->hooks['gallery_nodes']))."</h2>";
 	    foreach ($this->item->hooks['gallery_nodes'] as $image) {?>
