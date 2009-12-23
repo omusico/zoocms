@@ -6,7 +6,6 @@ body {
 	/*font-family: Arial, Helvetica, sans-serif;*/
 	font-family: Trebuchet MS, Verdana, Geneva, Arial, Helvetica, sans-serif;
 	font-size: 10pt;
-	color: #444444;
     background-color: #000;
 }
 a {
@@ -511,7 +510,7 @@ div.filemanager_file_list img {
 }
 
 .content-gallery_node-list {
-	width: 33%;
+	width: 30%;
 	float: left;
 	border: none !important;
 }
