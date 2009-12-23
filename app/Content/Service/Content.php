@@ -137,12 +137,15 @@ class Content_Service_Content extends Zoo_Service {
         if (!is_array($ids)) {
             $ids = array($ids);
         }
+
         foreach ($ids as $id) {
             
             $cacheid = "Content_node".$type."_".$id;
             try {
                 $cached = Zoo::getService("cache")->load($cacheid);
-                $content[] = $cached;
+                if ($cached) {
+                	$content[] = $cached;
+                }
             }
             catch (Zoo_Exception_Service $e) {
                 // Cache service unavailable, set content to empty string
