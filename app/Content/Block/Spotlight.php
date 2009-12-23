@@ -40,7 +40,7 @@ class Content_Block_Spotlight extends Zoo_Block_Abstract  {
 	        catch (Zoo_Exception_Service $e) {
 	        	// No acl service installed
 	        }
-    		return parent::getCacheId(). ($can_edit ? "_edit" : "");
+    		return parent::getCacheId(). ($this->can_edit ? "_edit" : "");
     	}
     }
     
