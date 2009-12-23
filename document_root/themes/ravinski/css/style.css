@@ -513,7 +513,7 @@ div.filemanager_file_list img {
 	width: 30%;
 	float: left;
 	border: none !important;
-	white-space: no-wrap;
+	white-space: nowrap;
 	overflow: hidden;
 }
 
