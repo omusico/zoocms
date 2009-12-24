@@ -24,7 +24,7 @@
 	    	<?php if (($i % 4) == 0) {echo '<br class="clear" />';} ?>
 	        <div class="content-item gallery_node_list">
 	            <p>
-	                <a rel="lightbox[gallery]" href="<?php echo $image->hooks['filemanager_file']->getUrl();?>" title="<?php echo $image['content'] ? str_replace('"', "'", $this->escape($image)) : "*"; ?>">
+	                <a rel="lightbox[gallery]" href="<?php echo $image->hooks['filemanager_file']->getUrl(800,600);?>" title="<?php echo $image['content'] ? str_replace('"', "'", $this->escape($image)) : "*"; ?>">
 	                    <img src="<?php echo $image->hooks['filemanager_file']->getUrl(135, 135);?>"
 	                         alt="<?php echo $this->translate('Billede: ').$image['title'];?>" />
 	                </a>
