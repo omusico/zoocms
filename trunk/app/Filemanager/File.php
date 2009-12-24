@@ -68,7 +68,8 @@ class Filemanager_File extends Zend_Db_Table_Row_Abstract {
     	}
 		// Get new dimensions
 		list ( $width_orig, $height_orig ) = getimagesize ( $this->getPath () );
-		
+		$w = min($w, $width_orig);
+		$h = min($h, $height_orig);
 		$ratio_orig = $width_orig / $height_orig;
 		
 		if ($max) {
