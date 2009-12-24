@@ -99,7 +99,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 				// Content type
 				header ( 'Content-type: image/png' );
 				//Output
-				$path = $file->getThumbnail($this->getRequest()->getParam('width', 1024), $this->getRequest()->getParam('height', 1024), $this->getRequest()->getParam('max'));
+				$path = $file->getThumbnail($this->getRequest()->getParam('width', 1024), $this->getRequest()->getParam('height', 1024), $this->getRequest()->getParam('max', 1));
 			} else {
 				// Content type
 				header ( 'Content-type: image/png' );
