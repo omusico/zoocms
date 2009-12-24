@@ -215,10 +215,10 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$order_element = new Zend_Form_Element_Select('order');
 		$order_element->setLabel('Order');
 		$order_element->setAttrib('onchange', 'selectCategory();');
-		$order_element->addMultiOptions(array('created ASC' => 'created ASC', 
-												'created DESC' => 'created DESC', 
-												'title ASC' => 'title ASC', 
-												'title DESC' => 'title DESC'));
+		$order_element->addMultiOptions(array('created DESC' => 'created DESC',
+												'created ASC' => 'created ASC',
+												'title DESC' => 'title DESC',
+												'title ASC' => 'title ASC'));
 		
 		$limit_element = new Zend_Form_Element_Select('limit');
 		$limit_element->setLabel('Per page');

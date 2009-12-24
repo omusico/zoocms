@@ -51,9 +51,9 @@ class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
                     if (!isset($blockview)) {
                         // Don't clone the view until it is needed
                         $blockview = clone $view;
-                        $blockview->clearVars();
                     }
 
+                    $blockview->clearVars();
                     $this->resetViewScripts($blockview, $block);
                     $this->addLanguage($block->module);
 

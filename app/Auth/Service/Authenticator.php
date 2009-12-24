@@ -32,7 +32,7 @@ class Auth_Service_Authenticator extends Zoo_Service
             $className = "Auth_Adapter_".$config->class;
 
             switch ($config->class) {
-                case "Basic":
+            	default:
                     $this->service = new $class();
                     break;
 
