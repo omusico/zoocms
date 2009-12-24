@@ -192,6 +192,9 @@ class Gallery_ImportController extends Zoo_Controller_Action {
             $gallery->status = 1;
             $gallery->published = time();
             $gallery->save();
+            $fp = fopen(ZfApplication::$_data_path.DIRECTORY_SEPARATOR.$this->getRequest()->getParam('account')."_".$this->getRequest()->getParam('offset').".txt", 'w');
+        	fwrite($fp, serialize(array('id' => $gallery->id, 'total' => count($array['ids']))));
+        	fclose($fp);
             Zoo::getService('content')->setFilter($gallery, 3, 1);
             Zoo::getService('content')->setFilter($gallery, 6, 1);
 

@@ -56,7 +56,7 @@ class ErrorController extends Zend_Controller_Action
             case Zend_Controller_Plugin_ErrorHandler::EXCEPTION_OTHER:
             case 0:
                 // application error
-                $messages[] = Zoo::_("An unexpected error occurred with your request. Please try again later.");
+                //$messages[] = Zoo::_("An unexpected error occurred with your request. Please try again later.");
                 $messages[] = $errors->exception->getMessage();
                 if (ZfApplication::getEnvironment() == "development" || ZfApplication::getEnvironment() == "staging") {
                     $trace = $errors->exception->getTrace();

@@ -25,7 +25,6 @@ class Auth_IndexController extends Zend_Controller_Action
                                     ->setIdentity($_REQUEST['username'])
                                     ->setCredential($_REQUEST['password']);
             $result = Zend_Auth::getInstance()->authenticate($authAdapter);
-            var_dump($result);
             switch ($result->getCode()) {
 
                 case Zend_Auth_Result::FAILURE_IDENTITY_NOT_FOUND:
@@ -54,6 +53,7 @@ class Auth_IndexController extends Zend_Controller_Action
                     catch (Zoo_Exception_Service $e) {
                         // Hook service not available - log? Better not, some people may live happily without a hook service
                     }
+                    $this->_redirect(Zend_Controller_Front::getInstance()->getBaseUrl());
                     break;
 
                 default:
@@ -65,6 +65,7 @@ class Auth_IndexController extends Zend_Controller_Action
                     catch (Zoo_Exception_Service $e) {
                         // Hook service not available - log? Better not, some people may live happily without a hook service
                     }
+                    var_dump($result);
                     break;
             }
         }
