@@ -454,7 +454,7 @@ div.filemanager_file_list img {
 }
 
 #folder-list {
-	width: 15%;
+	width: 20%;
 	float: left;
 	border-right: 5px solid #E3E3C7;
 	font-family: 'Microsoft Sans Serif',Tahoma,Arial,Verdana,Sans-Serif;
@@ -484,7 +484,7 @@ div.filemanager_file_list img {
 }
 
 #uploader-contents {
-	width: 84%;
+	width: 79%;
 	float: left;
 	margin: 0px 0px 10px;
 }
