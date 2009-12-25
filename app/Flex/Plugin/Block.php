@@ -24,6 +24,13 @@ class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
     		// No layout, no blocks
     		return;
     	}
+    	if (Zend_Layout::getMvcInstance()->getInflectorTarget() == ':script/popup.:suffix') {
+    		// If using popups, no block
+    		/**
+    		 * @todo change this to be more generic - something like ZfApplication::hasBlocks()... but where should this method be?
+    		 */
+    		return;
+    	}
         // Retrieve blocks to be shown on this page
         $factory = new Flex_Block_Factory();
         $blocks = $factory->getBlocks();
