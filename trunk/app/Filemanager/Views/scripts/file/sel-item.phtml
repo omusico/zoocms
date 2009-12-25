@@ -12,11 +12,6 @@
         </div>
         <div class="flc-reorderer-imageTitle fl-reorderer-imageTitle">
             <?php echo $image['title'];?>
-            <img class="gallery-remove-image" src="<?php echo Zend_Controller_Front::getInstance()->getBaseUrl();?>/images/crystal_project/16x16/actions/editdelete.png" 
-            	 alt="<?php echo $this->escape($this->translate('Remove %s', $image->title));?>" 
-            	 onclick="removeDialog(<?php echo $image->id;?>); return false;"
-            	 title="<?php echo $this->escape($this->translate('Remove %s', $image->title));?>" 
-            />
         </div>
     </div>
 	<input id="gallery:::gallery-thumbs:::lightbox-cell:<?php echo $image->id;?>:reorder-index" name="image[]" value="<?php echo $image->id;?>" type="hidden"/>
