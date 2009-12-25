@@ -64,7 +64,7 @@
 		if (catId > 0) {
 			$('#filemanager-configure-form').hide();
 			$('#filemanager-upload-form').show();
-			$('#filemanager-upload-form').html('<iframe src="/Filemanager/file/upload/catid/' + catId + '" width="100%" height="310"></iframe>');
+			$('#filemanager-upload-form').html('<iframe src="/Filemanager/file/upload/catid/' + catId + '/connectTo/<?php echo $this->connectTo; ?>" width="100%" height="310"></iframe>');
 		}
 		else {
 			alert("<?php echo $this->translate('Please select a folder');?>");
@@ -102,7 +102,6 @@
 		        complete: function (data, ajaxStatus) {
 					$("#selected-file-list").append(data.responseText);
 					$("#selected").show();
-					enableReorder();
 					setContext();
 		        }
 		    });
@@ -201,5 +200,9 @@
 	$('#filemanager-upload-form').hide();
 	$('#filemanager-configure-form').hide();
 	$("#editDialog").dialog({width: 620, autoOpen: false});
+
+	<?php if (isset($this->connectTo)) {?>
+		selectCategory(<?php echo $this->connectTo;?>);
+	<?php }?>
 
 </script>

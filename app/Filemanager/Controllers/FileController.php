@@ -292,6 +292,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		Zend_Layout::getMvcInstance()->setInflectorTarget(':script/popup.:suffix');
 		
 		$this->view->assign('catId', intval($this->getRequest()->getParam('catid')));
+		$this->view->assign('connectTo', intval($this->getRequest()->getParam('connectTo', 0)));
 	}
 	
 	/**

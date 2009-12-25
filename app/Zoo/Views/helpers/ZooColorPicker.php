@@ -43,18 +43,22 @@ class Zend_View_Helper_ZooColorPicker extends ZendX_JQuery_View_Helper_UiWidget
 	    }
 
         $js = sprintf('%s("#%s").ColorPicker({onSubmit: function(hsb, hex, rgb, el) {
-											$(el).val(hex);
-											$(el).ColorPickerHide();
+											%s(el).val(hex);
+											%s(el).ColorPickerHide();
 										},
 										onBeforeShow: function () {
-											$(this).ColorPickerSetColor(this.value);
+											%s(this).ColorPickerSetColor(this.value);
 										}
 									})
 									.bind("keyup", function(){
-										$(this).ColorPickerSetColor(this.value);
+										%s(this).ColorPickerSetColor(this.value);
 									});',
             ZendX_JQuery_View_Helper_JQuery::getJQueryHandler(),
             $attribs['id'],
+            ZendX_JQuery_View_Helper_JQuery::getJQueryHandler(),
+            ZendX_JQuery_View_Helper_JQuery::getJQueryHandler(),
+            ZendX_JQuery_View_Helper_JQuery::getJQueryHandler(),
+            ZendX_JQuery_View_Helper_JQuery::getJQueryHandler(),
             $params
         );
 
