@@ -288,6 +288,10 @@ div#footer {
 	border-bottom: 3px solid #005572;
 }
 
+div.rcleft ul {
+	list-style: none;
+}
+
 ul {
     padding: 0px 0px 0px 20px;
     margin: 0px;

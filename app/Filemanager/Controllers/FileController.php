@@ -157,8 +157,8 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	public function browseAction() {
 		ini_set('memory_limit', '64M');
 		$this->view->jQuery()->enable()->uiEnable();
-		$this->view->jQuery()->addJavascriptFile('http://www.javascripttoolbox.com/lib/contextmenu/source/jquery.contextmenu.js', 'text/javascript');
-		$this->view->headLink()->appendStylesheet('http://www.javascripttoolbox.com/lib/contextmenu/jquery.contextmenu.css');
+		$this->view->jQuery()->addJavascriptFile('/js/jquery/contextmenu/jquery.contextmenu.js', 'text/javascript');
+		$this->view->headLink()->appendStylesheet('/js/jquery/contextmenu/jquery.contextmenu.css');
 		$this->view->jQuery()->addJavascriptFile('/js/jquery/treeview/jquery.treeview.js', 'text/javascript');
 		$this->view->headLink()->appendStylesheet('/js/jquery/treeview/jquery.treeview.css');
 		
