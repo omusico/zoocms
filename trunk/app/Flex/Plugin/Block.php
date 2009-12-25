@@ -58,7 +58,7 @@ class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
                     $this->addLanguage($block->module);
 
                     $blockview->assign($block->getTemplateVars());
-                    $content = $blockview->render($block->template);
+                    $content .= $blockview->render($block->template);
 
                     try {
                         Zoo::getService('cache')->save($content,

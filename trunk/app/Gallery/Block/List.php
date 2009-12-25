@@ -14,6 +14,24 @@ class Gallery_Block_List extends Zoo_Block_Abstract  {
     public $template = "list";
     
     /**
+     * Get cache ID - although this also benefits from the fact that this code is never cached, so HEAD javascript can be added
+     * @see library/Zoo/Block/Zoo_Block_Abstract#getCacheId()
+     */
+    function getCacheId() {
+    	$view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
+    	$view->jQuery()->enable()->uiEnable();
+		$view->jQuery()->addJavascriptFile('/js/jquery/treeview/jquery.treeview.js', 'text/javascript');
+		$view->jQuery()->addStylesheet('/js/jquery/treeview/jquery.treeview.css');
+		
+		$js = '$(document).ready(function(){
+				$("#treeview").treeview({collapsed: true, persist: "location"});
+  			   });';
+		$view->jQuery()->addOnLoad($js);
+		
+		return parent::getCacheId();
+    }
+    
+    /**
      * Retrieve galleries listing
      * 
      * @return array
