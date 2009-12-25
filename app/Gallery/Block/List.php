@@ -20,7 +20,6 @@ class Gallery_Block_List extends Zoo_Block_Abstract  {
     function getCacheId() {
     	$view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
     	$view->jQuery()->enable()->uiEnable();
-    	ZendX_JQuery_View_Helper_JQuery::enableNoConflictMode();
 		$view->jQuery()->addJavascriptFile('/js/jquery/treeview/jquery.treeview.js', 'text/javascript');
 		$view->jQuery()->addStylesheet('/js/jquery/treeview/jquery.treeview.css');
 		

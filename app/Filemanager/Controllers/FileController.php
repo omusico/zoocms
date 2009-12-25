@@ -162,8 +162,8 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$this->view->jQuery()->addJavascriptFile('/js/jquery/treeview/jquery.treeview.js', 'text/javascript');
 		$this->view->headLink()->appendStylesheet('/js/jquery/treeview/jquery.treeview.css');
 		
-		$js = '$(document).ready(function(){
-				$("#treeview").treeview({collapsed: true});
+		$js = ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'(document).ready(function(){
+				'.ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'("#treeview").treeview({collapsed: true});
   			   });';
 		$this->view->jQuery()->addOnLoad($js);
 		

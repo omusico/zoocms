@@ -61,6 +61,7 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             $view->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.1/scriptaculous.js?load=effects,builder', 'text/javascript');
             $view->headScript()->appendFile($theme_folder.'/js/lightbox.js', 'text/javascript');
             $view->headLink()->appendStylesheet($theme_folder."/css/lightbox.css");
+            ZendX_JQuery_View_Helper_JQuery::enableNoConflictMode();
             
             if ($bg_image_style || $bg_color_style) {
             	$view->headStyle()->appendStyle(".gallery-node-item {{$bg_image_style}{$bg_color_style}}");
