@@ -4,9 +4,12 @@
 <div class="gallery-node-item">
 	<?php if (isset($this->item->hooks['top_image'])) {?>
 		<div class="gallery-top-image"><img src="<?php echo $this->item->hooks['top_image']->hooks['filemanager_file']->getUrl();?>" /></div>
-	<?php }?>
-	<div class="content-item"><?php echo $this->escape($this->item);?></div>
-	<?php
+	<?php 
+	}
+	if ($this->item->content) {?>
+		<div class="content-item"><?php echo $this->escape($this->item);?></div>
+	<?php 
+	}
 	if ($this->item->hooks['subgalleries']) {?>
 		<div class="gallery-subgalleries">
 			<?php foreach ($this->item->hooks['subgalleries'] as $subgallery) {
