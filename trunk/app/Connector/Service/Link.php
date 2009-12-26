@@ -164,7 +164,7 @@ class Connector_Service_Link extends Zoo_Service
 			return true;
 		}
         $factory->getAdapter()->query("UPDATE ".$factory->info(Zend_Db_Table_Abstract::NAME)." SET ".$set);
-        $moved->weight = $target->weight;
+        $moved->weight = $newweight;
         return $moved->save();
     }
 }
