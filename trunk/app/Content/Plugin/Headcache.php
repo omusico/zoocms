@@ -26,6 +26,7 @@ class Content_Plugin_Headcache extends Zend_Controller_Plugin_Abstract {
         $this->manageHeaders('headLink', $tag);
         $this->manageHeaders('headMeta', $tag);
         $this->manageHeaders('headStyle', $tag);
+        $this->addJquery();
     }
 
     /**
@@ -64,6 +65,69 @@ class Content_Plugin_Headcache extends Zend_Controller_Plugin_Abstract {
             Zoo::getService('cache')->save($to_cache,
                                             $cacheid,
                                             array($type, $tag),
+                                            null);
+        }
+    }
+    
+    private function addJquery() {
+    	$view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
+        /* @var $view Zend_View_Abstract */
+        $cacheid = "jquery_".md5($_SERVER['REQUEST_URI']);
+    	$update_cache = false;
+    	$add = array();
+    	if ($view->jQuery ()->isEnabled ()) {
+	        $add['scripts'] = $view->jQuery()->getJavascriptFiles();
+	        $add['css'] = $view->jQuery()->getStylesheets();
+	        $add['onLoad'] = $view->jQuery()->getOnLoadActions();
+			$to_cache = array ();
+			if (isset($add['scripts'])) {
+				foreach ( $add['scripts'] as $item ) {
+					$to_cache['scripts'] [] = $item;
+					$update_cache = true;
+				}
+			}
+    		if (isset($add['css'])) {
+				foreach ( $add['css'] as $item ) {
+					$to_cache['css'] [] = $item;
+					$update_cache = true;
+				}
+			}
+    		if (isset($add['onLoad'])) {
+				foreach ( $add['onLoad'] as $item ) {
+					$to_cache['onLoad'] [] = $item;
+					$update_cache = true;
+				}
+			}
+    	}
+
+        $from_cache = Zoo::getService('cache')->load($cacheid);
+        if ($from_cache) {
+            foreach ($from_cache as $item) {
+            	if (isset($from_cache['scripts'])) {
+            		foreach ($from_cache['scripts'] as $item) {
+                		$view->jQuery()->addJavascriptFile($item);
+                		$to_cache['scripts'][] = $item;
+            		}
+            	}
+            	if (isset($from_cache['css'])) {
+            		foreach ($from_cache['css'] as $item) {
+                		$view->jQuery()->addStylesheet($item);
+                		$to_cache['css'][] = $item;
+            		}
+            	}
+            	if (isset($from_cache['onLoad'])) {
+            		foreach ($from_cache['onLoad'] as $item) {
+                		$view->jQuery()->addOnLoad($item);
+                		$to_cache['onLoad'][] = $item;
+            		}
+            	}
+            }
+        }
+
+        if ($update_cache) {
+            Zoo::getService('cache')->save($to_cache,
+                                            $cacheid,
+                                            array(),
                                             null);
         }
     }
