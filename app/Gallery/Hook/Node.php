@@ -52,16 +52,17 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             }
             
             // Add Lightbox JS
-            $layout = Zend_Layout::getMvcInstance();
             $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
 
-            $theme_folder = Zend_Controller_Front::getInstance()->getBaseUrl()."/themes/".$layout->getLayout();
-
-            $view->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/prototype/1.6.0.3/prototype.js', 'text/javascript');
-            $view->headScript()->appendFile('http://ajax.googleapis.com/ajax/libs/scriptaculous/1.8.1/scriptaculous.js?load=effects,builder', 'text/javascript');
-            $view->headScript()->appendFile($theme_folder.'/js/lightbox.js', 'text/javascript');
-            $view->headLink()->appendStylesheet($theme_folder."/css/lightbox.css");
-            ZendX_JQuery_View_Helper_JQuery::enableNoConflictMode();
+            $view->jQuery()->enable()->uiEnable();
+			$view->jQuery()->addJavascriptFile('/js/jquery/lightbox/js/jquery.lightbox-0.5.js', 'text/javascript');
+			$view->jQuery()->addStylesheet('/js/jquery/lightbox/css/jquery.lightbox-0.5.css');
+			
+			$js = ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'(document).ready(function(){
+					'.ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'(".gallery_node_list a").lightBox({fixedNavigation:true,txtImage: "Billede",
+	txtOf: "af"});
+	  			   });';
+			$view->jQuery()->addOnLoad($js);
             
             if ($bg_image_style || $bg_color_style) {
             	$view->headStyle()->appendStyle(".gallery-node-item {{$bg_image_style}{$bg_color_style}}");
