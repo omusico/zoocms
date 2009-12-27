@@ -9,7 +9,7 @@
      * @todo: CREATE thumbnail function
      */
 ?>
-    <img src="<?php echo $this->item->hooks['filemanager_file']->getUrl();?>" alt="<?php echo $this->translate('Billede: ').$this->item['title'];?>" />
+    <img src="<?php echo $this->item->hooks['filemanager_file']->getUrl();?>" alt="<?php echo $this->translate('Image: ').$this->item['title'];?>" />
 <?php else:?>
     <a href="<?php echo $this->item->hooks['filemanager_file']->getUrl();?>">
         <img src="<?php echo $this->getTypeImage($this->item->hooks['filemanager_file']->mimetype);?>"

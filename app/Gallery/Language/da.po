@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ZooCMS\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-13 13:47+0100\n"
+"POT-Creation-Date: 2009-12-27 19:26+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jan <jkp@cusix.dk>\n"
 "Language-Team: ZooCMS Crew\n"
@@ -24,28 +24,27 @@ msgstr "Indhold ikke fundet"
 msgid "Access denied - insufficient privileges"
 msgstr "Du har ikke adgang til dette indhold"
 
-#: Gallery/Controllers/GalleryController.php:73
-msgid "Image removed"
-msgstr "Billedet er fjernet"
+#: Gallery/Hook/Node.php:62
+msgid "Image"
+msgstr "Billede"
 
-#: Gallery/Controllers/GalleryController.php:76
-#, php-format
-msgid "Are you sure, you want to remove %s from the gallery?"
-msgstr "Er du sikker på, at du vil fjerne %s fra galleriet?"
+#: Gallery/Hook/Node.php:62
+msgid "of"
+msgstr "af"
 
-#: Gallery/Hook/Node.php:121
+#: Gallery/Hook/Node.php:122
 msgid "Background colour"
 msgstr "Baggrundsfarve"
 
-#: Gallery/Hook/Node.php:137
+#: Gallery/Hook/Node.php:138
 msgid "Top image"
 msgstr "Topbillede"
 
-#: Gallery/Hook/Node.php:140
+#: Gallery/Hook/Node.php:141
 msgid "Background image"
 msgstr "Baggrundsbillede"
 
-#: Gallery/Hook/Node.php:144
+#: Gallery/Hook/Node.php:145
 msgid "Gallery extras"
 msgstr "Extra indstillinger"
 
@@ -64,10 +63,6 @@ msgid "Edit"
 msgstr "Rediger"
 
 #: Gallery/Views/scripts/gallery/top.phtml:4
-msgid "Reorder"
-msgstr "Rækkefølge"
-
-#: Gallery/Views/scripts/gallery/top.phtml:6
 msgid "Images"
 msgstr "Billeder"
 
@@ -75,16 +70,21 @@ msgstr "Billeder"
 msgid "Galleries"
 msgstr "Gallerier"
 
-#: Gallery/Views/scripts/node/index.phtml:22
+#: Gallery/Views/scripts/node/index.phtml:25
 #, php-format
 msgid "%s images"
 msgstr "%s billeder"
 
-#: Gallery/Views/scripts/node/index.phtml:28
-msgid "Billede: "
-msgstr "Billede:"
-
-#: Gallery/Views/scripts/node/list.phtml:12
+#: Gallery/Views/scripts/node/list.phtml:13
 msgid "images"
 msgstr "Billeder"
+
+#~ msgid "Image removed"
+#~ msgstr "Billedet er fjernet"
+#~ msgid "Are you sure, you want to remove %s from the gallery?"
+#~ msgstr "Er du sikker på, at du vil fjerne %s fra galleriet?"
+#~ msgid "Reorder"
+#~ msgstr "Rækkefølge"
+#~ msgid "Billede: "
+#~ msgstr "Billede:"
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Zoo Content Module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-13 13:45+0100\n"
+"POT-Creation-Date: 2009-12-27 19:54+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jan <jkp@cusix.dk>\n"
 "Language-Team: ZooCrew\n"
@@ -59,23 +59,23 @@ msgstr "Rediger %s"
 msgid "Add %s"
 msgstr "Tilføj ny %s"
 
-#: Content\Node/Form.php:46
+#: Content\Node/Form.php:52
 msgid "Status"
 msgstr "Status"
 
-#: Content\Node/Form.php:47
+#: Content\Node/Form.php:53
 msgid "Unpublished"
 msgstr "Ikke publiseret"
 
-#: Content\Node/Form.php:48
+#: Content\Node/Form.php:54
 msgid "Published"
 msgstr "Publiseret"
 
-#: Content\Node/Form.php:52
+#: Content\Node/Form.php:58
 msgid "Publish date"
 msgstr "Publiseringsdato"
 
-#: Content\Node/Form.php:55
+#: Content\Node/Form.php:61
 msgid "Publish settings"
 msgstr "Publiseringsindstillinger"
 
@@ -83,20 +83,19 @@ msgstr "Publiseringsindstillinger"
 msgid "Filters"
 msgstr "Filtre"
 
-#: Content\Views/scripts/blocks/admin.phtml:6
-#: Content/Views/scripts/blocks/admin.phtml:6
-msgid "File manager"
-msgstr "Filhåndtering"
+#: Content\Views/scripts/blocks/spotlight.phtml:3
+#: Content\Views/scripts/node/index.phtml:3
+#: Content/Views/scripts/blocks/spotlight.phtml:3
+msgid "Edit"
+msgstr "Rediger"
 
 #: Content\Views/scripts/node/form.phtml:4
 #, php-format
 msgid "Back to'%s'"
 msgstr "Tilbage til '%s'"
 
-#: Content\Views/scripts/node/index.phtml:3
-msgid "Edit"
-msgstr "Rediger"
-
+#~ msgid "File manager"
+#~ msgstr "Filhåndtering"
 #~ msgid "Add item"
 #~ msgstr "Add content"
 

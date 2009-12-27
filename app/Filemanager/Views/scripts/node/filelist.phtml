@@ -3,14 +3,14 @@
         <p>
             <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
                 <img src="<?php echo $this->item->hooks['filemanager_file']->getUrl(145);?>"
-                     alt="<?php echo $this->translate('Billede: ').$this->item['title'];?>" />
+                     alt="<?php echo $this->translate('Image').': '.$this->item['title'];?>" />
             </a>
         </p>
     <?php else:?>
         <p>
             <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
                 <img src="<?php echo $this->getTypeImage($this->item->hooks['filemanager_file']->mimetype);?>"
-                     alt="<?php echo $this->translate('Fil: ').$this->item['title'];?>" />
+                     alt="<?php echo $this->translate('File').': '.$this->item['title'];?>" />
             </a>
         </p>
     <?php endif;?>

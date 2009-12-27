@@ -26,6 +26,19 @@ abstract class Zoo_Hook_Abstract {
         /* @var $view Zend_View_Abstract */
 
         $this->view = clone $view;
+        
+        try {
+        	$module = substr(get_class($this), 0, strpos(get_class($this), "_"));
+        	if (file_exists(ZfApplication::$_base_path."/app/".$module."/Language")) {
+	        	Zoo::getService('translator')->addTranslation(
+	            	    ZfApplication::$_base_path."/app/".$module."/Language",
+	                	null,
+	                	array('scan' => Zend_Translate::LOCALE_FILENAME ));
+        	}
+        }
+        catch (Zoo_Exception_Service $e) {
+        	// No translation service - doesn't matter
+        }
     }
 
     /**
