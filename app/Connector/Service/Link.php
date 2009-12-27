@@ -86,6 +86,11 @@ class Connector_Service_Link extends Zoo_Service
      * @return bool
      */
     function connect($from, $to, $type = 'link') {
+    	$item = $this->find($from, $to, $type);
+    	if ($item) {
+    		return false;
+    	}
+    	
     	$weight = $this->getNextWeight($from, $type);
 
         $gnode = $this->createRow();
@@ -96,6 +101,14 @@ class Connector_Service_Link extends Zoo_Service
         return $gnode->save();
     }
     
+    /**
+     * Remove a connection between a node and another
+     * 
+     * @param int $from
+     * @param int $to
+     * @param int $type
+     * @return bool
+     */
     function remove($from, $to, $type = 'link') {
     	$factory = $this->getFactory();
     	$where = array();

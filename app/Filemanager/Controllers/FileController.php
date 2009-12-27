@@ -182,33 +182,10 @@ class Filemanager_FileController extends Zoo_Controller_Action {
         $this->view->assign('tree', $tree->toArray());
         
         if ($this->getRequest()->getParam('connectTo')) {
-        	$this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
-			$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css');
-			$this->view->headLink()->appendStylesheet('/js/infusion/components/reorderer/css/Reorderer.css');
-			$this->view->headLink()->appendStylesheet('/js/infusion/components/reorderer/css/ImageReorderer.css');
-			$this->view->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css');
-			
-        	$found = Zoo::getService('content')->find($this->getRequest()->getParam('connectTo'));
-	        if ($found->count() == 0) {
-	            throw new Zend_Controller_Action_Exception(Zoo::_("Content not found"), 404);
-	        }
-	        $item = $found->current();
-	        
-	        try {
-		    	if (!Zoo::getService('acl')->checkItemAccess($item, 'edit')) {
-		        	throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
-		        }
-	        }
-	    	catch (Zoo_Exception_Service $e) {
-	        	// No acl service installed
-	        }
-	        
-	        // Find files connected to the item
-			$item->hooks ['connected_nodes'] = Zoo::getService('link')->getLinkedNodes($item, $this->getRequest()->getParam('type'));
-	
-	        $this->view->assign('item', $item);
-	        $this->view->assign('connectTo', $item->id);
-	        $this->view->assign('type', $this->getRequest()->getParam('type'));
+        	$this->selectedAction(true);
+        }
+        else {
+        	$this->view->connectTo = 0;
         }
         
         $configure_form = new Zend_Form(array('action' => "#", 'id' => "configure-form", 'method' => 'get'));
@@ -234,24 +211,26 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 	 * @return void
 	 */
 	public function connectAction() {
+		Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
+        $this->getHelper('layout')->disableLayout();
+			
 		if ($this->getRequest()->isPost() ) {
 			$item = Zoo::getService('content')->find($this->getRequest()->getParam('image'))->current();
 			// Connect image to gallery_node
-	        Zoo::getService('link')->connect($this->getRequest()->getParam('id'), $item->id, $this->getRequest()->getParam('type'));
-				
-			// Call hooks for item
-			try {
-				$items = array($item);
-				Zoo::getService ( "hook" )->trigger ( "Node", "List", $items);
-			} catch ( Zoo_Exception_Service $e ) {
-				// Hook service not available - log? Better not, some people may live happily without a hook service
-			}
-	        
-	        $this->view->image = $item;
-	        
-	        Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
-	        $this->getHelper('layout')->disableLayout();
-			$this->render("sel-item");
+	        if (Zoo::getService('link')->connect($this->getRequest()->getParam('id'), $item->id, $this->getRequest()->getParam('type'))) {
+				// Call hooks for item
+				try {
+					$items = array($item);
+					Zoo::getService ( "hook" )->trigger ( "Node", "List", $items);
+				} catch ( Zoo_Exception_Service $e ) {
+					// Hook service not available - log? Better not, some people may live happily without a hook service
+				}
+		        $this->view->image = $item;
+		        $this->render("sel-item");
+	        }
+	        else {
+	        	$this->getHelper('viewRenderer')->setNoRender();
+	        }
 		}
 	}
 	
@@ -432,5 +411,40 @@ class Filemanager_FileController extends Zoo_Controller_Action {
     	
         $this->getHelper('layout')->disableLayout();
 		$this->getHelper('viewRenderer')->setNoRender();
+    }
+    
+    public function selectedAction($included = false) {
+    	$this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
+		$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css');
+		$this->view->headLink()->appendStylesheet('/js/infusion/components/reorderer/css/Reorderer.css');
+		$this->view->headLink()->appendStylesheet('/js/infusion/components/reorderer/css/ImageReorderer.css');
+		$this->view->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css');
+		
+        $found = Zoo::getService('content')->find($this->getRequest()->getParam('connectTo'));
+        if ($found->count() == 0) {
+            throw new Zend_Controller_Action_Exception(Zoo::_("Content not found"), 404);
+        }
+        $item = $found->current();
+        
+        try {
+	    	if (!Zoo::getService('acl')->checkItemAccess($item, 'edit')) {
+	        	throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
+	        }
+        }
+    	catch (Zoo_Exception_Service $e) {
+        	// No acl service installed
+        }
+        
+        // Find files connected to the item
+		$item->hooks ['connected_nodes'] = Zoo::getService('link')->getLinkedNodes($item, $this->getRequest()->getParam('type'));
+
+        $this->view->assign('item', $item);
+        $this->view->assign('connectTo', $item->id);
+        $this->view->assign('type', $this->getRequest()->getParam('type'));
+        
+        if (!$included) {
+        	$this->getHelper('layout')->disableLayout();
+			$this->render("sel-list");
+        }
     }
 }

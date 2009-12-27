@@ -84,6 +84,7 @@
 
 	function afterUpload() {
 		selectCategory();
+		$("#selected").load("<?php echo $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'selected', 'connectTo' => $this->connectTo, 'type' => $this->type), 'default', true);?>", null, setContext);
 	}
 
 	function selectImage(id, ele) {
@@ -195,6 +196,7 @@
     
 	function setContext() {
 		$('.filemanager-file-listed').contextMenu(menu2,{theme:'vista'});
+		$('.filemanager-file-selected').contextMenu(menu,{theme:'vista'});
 	};
 	
 	$('.filemanager-file-selected').contextMenu(menu,{theme:'vista'});  
