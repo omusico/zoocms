@@ -14,7 +14,7 @@ class Utility_Plugin_Translator extends Zend_Controller_Plugin_Abstract {
      *
      * @param Zend_Controller_Request_Abstract $request
      */
-    public function routeStartup($request = null) {
+    public function dispatchLoopStartup($request = null) {
          // Add translator
         $translate = Zoo::getService("translator");
         Zend_Registry::set("Zend_Translate", $translate);

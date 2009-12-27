@@ -10,12 +10,12 @@
 	
 	<div id="uploader-contents">
 		<div class="filemanager-toolbar">
-			<span class="toolbar-upload" onclick="toggleUploader();">Upload</span>
-			<span class="toolbar-refresh" onclick="selectCategory();">Refresh</span>
-			<span class="toolbar-configure" onclick="toggleConfigure();">Settings</span>
+			<span class="toolbar-upload" onclick="toggleUploader();"><?php echo $this->translate('Upload');?></span>
+			<span class="toolbar-refresh" onclick="selectCategory();"><?php echo $this->translate('Refresh');?></span>
+			<span class="toolbar-configure" onclick="toggleConfigure();"><?php echo $this->translate('Settings');?></span>
 			<?php if (isset($this->connectTo)) {?>
-				<span class="toolbar-selected" onclick="$('#selected').toggle(100);">Show Selected</span>
-				<span class="toolbar-reorder" onclick="enableReorder();">Reorder</span>
+				<span class="toolbar-selected" onclick="$('#selected').toggle(100);"><?php echo $this->translate('Show Selected');?></span>
+				<span class="toolbar-reorder" onclick="enableReorder();"><?php echo $this->translate('Reorder');?></span>
 			<?php }?>
 		</div>
 		<div id="filemanager-configure-form">

@@ -7,14 +7,14 @@ foreach ($this->items as $item) {?>
     <p>
         <a href="<?php echo $this->url(array('id' => $item['id']), $item['type']);?>">
             <img src="<?php echo $item->hooks['filemanager_file']->getUrl(145);?>"
-                 alt="<?php echo $this->translate('Billede: ').$item['title'];?>" />
+                 alt="<?php echo $this->translate('Image').': '.$item['title'];?>" />
         </a>
     </p>
     <?php else:?>
     <p>
         <a href="<?php echo $this->url(array('id' => $item['id']), $item['type']);?>">
             <img src="<?php echo $this->getTypeImage($item->hooks['filemanager_file']->mimetype);?>"
-                 alt="<?php echo $this->translate('Fil: ').$item['title'];?>" />
+                 alt="<?php echo $this->translate('File').': '.$item['title'];?>" />
         </a>
     </p>
     <?php endif;?>

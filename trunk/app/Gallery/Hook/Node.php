@@ -59,7 +59,7 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
 			$view->jQuery()->addStylesheet('/js/jquery/lightbox/css/jquery.lightbox-0.5.css');
 			
 			$js = ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'(document).ready(function(){
-					'.ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'(".gallery_node_list a").lightBox({txtImage: "'.Zoo::_('Billede').'", txtOf: "'.Zoo::_('af').'"});
+					'.ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'(".gallery_node_list a").lightBox({txtImage: "'.Zoo::_('Image').'", txtOf: "'.Zoo::_('of').'"});
 	  			   });';
 			$view->jQuery()->addOnLoad($js);
             
