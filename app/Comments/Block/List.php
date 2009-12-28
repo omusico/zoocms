@@ -28,7 +28,7 @@ class Comments_Block_List extends Zoo_Block_Abstract  {
             $groups = "";
         }
         if (Zend_Registry::isRegistered('content_id')) {
-            return get_class($this)."_".Zend_Registry::get('content_id').$groups;
+            return get_class($this)."_".Zend_Registry::get('content_id')."_".$groups;
         }
         return get_class($this)."_".$this->id;
     }
