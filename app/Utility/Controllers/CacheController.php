@@ -44,6 +44,8 @@ class Utility_CacheController extends Zend_Controller_Action
     	}
     	else {
         	Zoo::getService('cache')->clean();
+        	Zoo::getService('cache')->getCache('metadata')->clean();
+        	Zoo::getService('cache')->getCache('acl')->clean();
     	}
     }
 
