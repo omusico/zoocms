@@ -10,7 +10,7 @@ body {
 }
 a {
 	color: #000;
-	text-decoration: none !important;
+	text-decoration: none;
 }
 b {
 	font-size: 10pt;
@@ -579,4 +579,20 @@ div.gallery_node_list {
 
 .fl-reorderer-image-inner-container {
   position: relative;
+}
+
+/* GUESTBOOK */
+.guestbook_entry {
+  border: 3px solid #AAAAAA;
+  margin: 20px;
+  padding: 5px;
+}
+
+.guestbook_entry ul {
+  list-style: none;
+  font-size: 0.9em;
+}
+
+.guestbook_entry a {
+  text-decoration: underline;
 }

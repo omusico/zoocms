@@ -84,8 +84,7 @@ class Acl_Service_Acl extends Zoo_Service {
             $this->service->allow($role, $resource, $privileges);
         }
         try {
-            Zoo::getService("cache")->getCache('acl')->save($this->service,
-                                           "acl");
+            Zoo::getService("cache")->getCache('acl')->save($this->service, "acl");
         }
         catch (Zoo_Exception_Service $e) {
             // Cache unavailable
@@ -178,7 +177,7 @@ class Acl_Service_Acl extends Zoo_Service {
              * Decision made not to, since this is more transparent to the developer
              */
             $roles = Zoo::getService('user')->getCurrentUser()->getGroups();
-
+            
             foreach ($roles as $role) {
                 if ($this->isAllowed($role, 'content.node', $privilege) ||
                     $this->isAllowed($role, 'content.node', $privilege.'.'.$item->type)) {
