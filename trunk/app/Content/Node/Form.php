@@ -37,7 +37,7 @@ class Content_Node_Form extends ZendX_JQuery_Form {
         $factory = new Content_Type_Factory();
         $type = $factory->fetchRow($factory->select()->where('type = ?', $target->type));
         $legend = $target->id > 0 ? Zoo::_("Edit %s") : Zoo::_("Add %s");
-        $legend = sprintf($legend, $type->name);
+        $legend = sprintf($legend, mb_strtolower($type->name));
         $this->addDisplayGroup(array('title', 'content'), 'content_add', array('legend' => $legend ));
         
         try {
