@@ -90,6 +90,7 @@ class Content_NodeController extends Zoo_Controller_Action
     	catch (Zoo_Exception_Service $e) {
         	// No acl service installed
         }
+        $this->view->pagetitle = Zoo::getService('content')->getType($type)->name;
         $this->view->item = $item;
         $this->view->type = Zoo::getService('content')->getType($item->type);
         $this->view->form = $item->getForm($this->_helper->getHelper('url')
@@ -115,6 +116,7 @@ class Content_NodeController extends Zoo_Controller_Action
 	        }
             $this->view->item = $item;
             $this->view->type = Zoo::getService('content')->getType($item->type);
+            $this->view->pagetitle = $this->view->type->name;
             $this->view->form = $item->getForm($this->_helper->getHelper('url')
                                                     ->direct('save', 'node', 'Content'));
 			if ($this->getRequest()->isXmlHttpRequest()) {
