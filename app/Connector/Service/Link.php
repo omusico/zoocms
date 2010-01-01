@@ -87,7 +87,7 @@ class Connector_Service_Link extends Zoo_Service
      */
     function connect($from, $to, $type = 'link') {
     	$item = $this->find($from, $to, $type);
-    	if ($item) {
+    	if ($item->current()) {
     		return false;
     	}
     	
