@@ -167,22 +167,16 @@ class Acl_Service_Acl extends Zoo_Service {
      */
     function checkItemAccess(Zoo_Content_Interface $item, $privilege = "index") {
         try {
+        	$user = Zoo::getService('user')->getCurrentUser();
             if ($privilege == "editown") {
-                if ($item->uid != Zoo::getService('user')->getCurrentUser()->id) {
+                if ($item->uid != $user->id) {
                     return false;
                 }
             }
-            /**
-             * Should this be shortened?
-             * Decision made not to, since this is more transparent to the developer
-             */
-            $roles = Zoo::getService('user')->getCurrentUser()->getGroups();
-            
-            foreach ($roles as $role) {
-                if ($this->isAllowed($role, 'content.node', $privilege) ||
-                    $this->isAllowed($role, 'content.node', $privilege.'.'.$item->type)) {
-                    return true;
-                }
+			if ($this->checkAccess($privilege, $user) ||
+                $this->checkAccess($privilege.'.'.$item->type, $user)) {
+                // Explicit true/false returning for better readability
+                return true;
             }
         }
         catch (Zend_Acl_Exception $e) {
@@ -191,5 +185,25 @@ class Acl_Service_Acl extends Zoo_Service {
             // Log?
         }
         return false;
+    }
+    
+    /**
+     * Check access for a user for a given privilege on a resource
+     * 
+     * @param $user
+     * @param $privilege
+     * @param $resource
+     * @return bool
+     */
+    function checkAccess($privilege, $user = null, $resource = "content.node") {
+    	if ($user == null) {
+    		$user = Zoo::getService('user')->getCurrentUser();
+    	}
+    	$roles = $user->getGroups();
+        foreach ($roles as $role) {
+            if ($this->isAllowed($role, $resource, $privilege)) {
+                return true;
+            }
+        }
     }
 }

@@ -24,6 +24,13 @@ class Guestbook_Hook_Node extends Zoo_Hook_Abstract {
             $factory = new Guestbook_Node_Factory();
             $guestbook = $factory->find($item->id)->current();
             $item->hooks['guestbook_entry'] = $guestbook;
+            
+            try {
+            	$item->hooks['can_edit'] = Zoo::getService('acl')->checkItemAccess($item, 'edit');
+            }
+            catch (Zoo_Exception_Service $e) {
+            	$item->hooks['can_edit'] = false;
+            }
         }
     }
 

@@ -85,16 +85,17 @@
   </div>
   <div id="footer">
   	<?php if (isset($this->blocks[5])):?>
-            <div>
-                <?php foreach ($this->blocks[5] as $block):
-                    if ($block['title']):
-                        echo '<div class="block-title">'.$block['title']."</div>";
-                    endif;
-                    echo $block['content'];
-                endforeach;
-            ?></div>
-        <?php endif;?>
-  	<div class="clear"><?php echo $this->footer;?></div>
+        <div>
+            <?php foreach ($this->blocks[5] as $block):
+                if ($block['title']):
+                    echo '<div class="block-title">'.$block['title']."</div>";
+                endif;
+                echo $block['content'];
+            endforeach;
+        ?></div>
+    <?php endif;?>
+	<div class="clear"><?php echo $this->footer;?></div>
+  </div>
 </div>
 
 <?php if ($this->debug) {

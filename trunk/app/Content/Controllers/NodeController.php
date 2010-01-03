@@ -210,7 +210,9 @@ class Content_NodeController extends Zoo_Controller_Action
                 Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('node_'.$item->pid));
             }
             if ($this->getRequest()->isXmlHttpRequest()) {
-            	exit;
+            	$this->getHelper ( 'layout' )->disableLayout ();
+				$this->getHelper ( 'viewRenderer' )->setNoRender ();
+				return;
             }
             $this->_helper->redirector->gotoRoute(array('id' => $item->id), $item->type);
         }
@@ -219,6 +221,37 @@ class Content_NodeController extends Zoo_Controller_Action
         $this->view->type = Zoo::getService('content')->getType($item->type);
         $this->render('form');
     }
+    
+	/**
+	 * Perform deletion of guestbook entry, if privileges allow
+	 * 
+	 * @todo move this to Content module and delete guestbook-specific content through hooks
+	 * @return void
+	 */
+	public function deleteAction() {
+		$id = $this->getRequest()->getParam('id');
+        $item = Zoo::getService('content')->find($id)->current();
+        if ($item) {
+        	try {
+	            if (!Zoo::getService('acl')->checkItemAccess($item, 'edit') && !Zoo::getService('acl')->checkItemAccess($item, 'deleteown')) {
+	                throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
+	            }
+	            $item->delete();
+	            Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('node_'.$item->id, 'nodelist'));
+		        try {
+	                Zoo::getService("hook")->trigger("Node", "Delete", $item);
+	            }
+	            catch (Zoo_Exception_Service $e) {
+	                // Hook service not available - log? Better not, some people may live happily without a hook service
+	            }
+        	}
+	        catch (Zoo_Exception_Service $e) {
+	        	// No acl service installed
+	        }
+        }
+        $this->getHelper ( 'layout' )->disableLayout ();
+		$this->getHelper ( 'viewRenderer' )->setNoRender ();
+	}
 
     /**
      * Loads view script paths and translations for another module
