@@ -19,7 +19,13 @@ class Guestbook_IndexController extends Zoo_Controller_Action {
 	 */
 	public function indexAction() {
 		$method = __METHOD__;
-        $cacheid = str_replace("::", "_", $method).intval($this->getRequest()->getParam('page', 1));;
+        $cacheid = str_replace("::", "_", $method).intval($this->getRequest()->getParam('page', 1));
+        
+        $can_edit = false;
+        if (Zoo::getService('acl')->checkAccess('edit')) {
+        	$cacheid .= "_edit";
+        	$can_edit = true;
+        }
 
         $content = $this->checkCache($cacheid);
         if (!$content) {
@@ -44,7 +50,8 @@ class Guestbook_IndexController extends Zoo_Controller_Action {
 			$paginator->setCurrentPageNumber($this->getRequest()->getParam('page', 1));
 			$paginator->setView($this->view);
 			$this->view->assign('paginator', $paginator);
-
+			
+			$this->view->can_edit = $can_edit;
 
             $content = $this->getContent();
             $this->cache($content, $cacheid, array('nodelist', 'guestbook_list'));

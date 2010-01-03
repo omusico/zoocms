@@ -8,6 +8,9 @@ if (isset ( $ele ['children'] )) {
 	foreach ( $ele ['children'] as $child ) {
 		echo $this->partial ( 'blocks/listitem.phtml', array ('gallery' => $child ) );
 	}
+	if ($this->i == 1) {
+		echo "<li><a href='".$this->url(array(), 'guestbook_entry')."'>Gæstebog</a></li>";
+	}
 	echo "</ul>";
 }
 if (isset ( $ele ['element'] )) {
