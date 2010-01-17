@@ -70,7 +70,7 @@ class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
                     try {
                         Zoo::getService('cache')->save($content,
                                                        $cacheid,
-                                                       array('block', 'block_'.$block->id),
+                                                       array('block', 'block_'.$block->id, 'block_'.get_class($block)),
                                                        $block->cache_time);
                     }
                     catch (Zoo_Exception_Service $e) {
