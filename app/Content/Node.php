@@ -33,7 +33,13 @@ class Content_Node extends Zend_Db_Table_Row_Abstract implements Zoo_Content_Int
      */
     public function url()
     {
-        $router = Zend_Controller_Front::getInstance()->getRouter();
-        return $router->assemble(array('id' => $this->id), $this->type);
+    	try {
+    		$path_service = Zoo::getService('path');
+    		return $path_service->getNodeUrl($this->id);
+    	}
+    	catch (Zend_Exception $e) {
+        	$router = Zend_Controller_Front::getInstance()->getRouter();
+        	return $router->assemble(array('id' => $this->id), $this->type);
+    	}
     }
 }

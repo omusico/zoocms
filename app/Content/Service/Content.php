@@ -13,6 +13,18 @@
  * @version    1.0
  */
 class Content_Service_Content extends Zoo_Service {
+	/**
+	 * @var string
+	 */
+	public $action = "index";
+	/**
+	 * @var string
+	 */
+	public $controller = "node";
+	/**
+	 * @var string
+	 */
+	public $module = "Content";
     /**
      *
      * @var Zend_View
@@ -231,9 +243,9 @@ class Content_Service_Content extends Zoo_Service {
         $this->view->setScriptPath(null);
 
         // Build new ones for blocks
-        $this->view->addBasePath(ZfApplication::$_base_path."/app/$module/Views", $module."_View");
-        $this->view->addScriptPath(ZfApplication::$_base_path."/app/Content/Views/scripts/node");
-        $this->view->addScriptPath(ZfApplication::$_base_path."/app/$module/Views/scripts/node");
+        $this->view->addBasePath(ZfApplication::$_base_path."/app/$module/views", $module."_View");
+        $this->view->addScriptPath(ZfApplication::$_base_path."/app/Content/views/scripts/node");
+        $this->view->addScriptPath(ZfApplication::$_base_path."/app/$module/views/scripts/node");
         $this->view->addScriptPath($layout->getLayoutPath()."default/templates/$module/node");
         $this->view->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/$module/node");
     }
