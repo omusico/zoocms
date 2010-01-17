@@ -102,7 +102,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 				$path = $file->getThumbnail($this->getRequest()->getParam('width', 1024), $this->getRequest()->getParam('height', 1024), $this->getRequest()->getParam('max', 1));
 			} else {
 				// Content type
-				header ( 'Content-type: image/png' );
+				header ( 'Content-type: '.$file->mimetype );
 				//Output
 				$path = $file->getPath ();
 			}
@@ -154,6 +154,9 @@ class Filemanager_FileController extends Zoo_Controller_Action {
         $this->getHelper('viewRenderer')->setNoRender();
 	}
 	
+	/**
+	 * File browser action
+	 */
 	public function browseAction() {
 		ini_set('memory_limit', '64M');
 		$this->view->jQuery()->enable()->uiEnable();
@@ -413,6 +416,10 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		$this->getHelper('viewRenderer')->setNoRender();
     }
     
+    /**
+     * Show nodes connected to a given node with a given connection type
+     * @param bool $included whether the content is included in another request or is a stand-alone action. If not included, layout will be disabled and the list rendered
+     */
     public function selectedAction($included = false) {
     	$this->view->headScript()->appendFile('/js/infusion/InfusionAll.js', 'text/javascript');
 		$this->view->headLink()->appendStylesheet('/js/infusion/framework/fss/css/fss-layout.css');
