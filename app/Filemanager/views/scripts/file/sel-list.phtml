@@ -4,7 +4,7 @@
 <input type="hidden" name="id" value="<?php echo $this->item['id'];?>" />
 <div id="selected-file-list" class="flc-imageReorderer">
 <?php
-if ($this->item->hooks['connected_nodes']) {
+if (isset($this->item->hooks['connected_nodes']) && $this->item->hooks['connected_nodes']) {
     foreach ($this->item->hooks['connected_nodes'] as $image) {
         echo $this->partial("file/sel-item.phtml", array('image' => $image));
     }
