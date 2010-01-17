@@ -28,7 +28,7 @@ class Comments_Hook_Node extends Zoo_Hook_Abstract {
         $nids = array();
         foreach ($items as $item) {
             $nids[] = $item->id;
-            $url[$item->id] = $this->url(array('id' => $item['id']), $item['type']);
+            $url[$item->id] = $item->url();
         }
         // Count comments per node
         $comments = Zoo::getService('content')->countChildren($nids, 'comment');
