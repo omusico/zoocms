@@ -32,18 +32,19 @@ class Rewrite_Hook_Node extends Zoo_Hook_Abstract {
 			$options = array ('legend' => Zoo::_ ( "URL Rewriting" ) );
 			$form->addDisplayGroup ( array ('rewrite_path' ), 'rewrite_path_options', $options );
 			
-			// Fetch estate object
-			$factory = new Rewrite_Path_Factory ( );
-			$path = $factory->find ( $item->id )->current ();
-			if ($path) {
-				$form->populate ( array ('rewrite_path' => $path->path ) );
-			} else {
-				// Find parent's path
-				$path = $factory->find ( $item->pid )->current ();
+			if ($item->id > 0) {
+				$factory = new Rewrite_Path_Factory ( );
+				$path = $factory->find ( $item->id )->current ();
 				if ($path) {
-					$form->populate ( array ('rewrite_path' => $path->path . "/" . $item->id ) );
+					$form->populate ( array ('rewrite_path' => $path->path ) );
 				} else {
-					$form->populate ( array ('rewrite_path' => $item->url () ) );
+					// Find parent's path
+					$path = $factory->find ( $item->pid )->current ();
+					if ($path) {
+						$form->populate ( array ('rewrite_path' => $path->path . "/" . $item->id ) );
+					} else {
+						$form->populate ( array ('rewrite_path' => $item->url () ) );
+					}
 				}
 			}
         }
