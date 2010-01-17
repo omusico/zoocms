@@ -57,7 +57,7 @@ abstract class Zoo_Hook_Abstract {
         $this->view->setScriptPath(null);
 
         // Build new ones for hooks
-        $this->view->addBasePath(ZfApplication::$_base_path."/app/$module/Views", $module."_View");
+        $this->view->addBasePath(ZfApplication::$_base_path."/app/$module/views", $module."_View");
         //$this->view->addScriptPath(ZfApplication::$_base_path."/app/$module/Views/");
         $this->view->addScriptPath($layout->getLayoutPath()."default/templates/$module");
         $this->view->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/$module");

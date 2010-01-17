@@ -39,12 +39,12 @@ class Zoo_View_Php extends Zend_View_Abstract {
                 $this->assign(Zend_Registry::get("config")->site->toArray() );
             }
 
-            $this->addBasePath(ZfApplication::$_base_path."/app/$module/Views", $module."_View");
+            $this->addBasePath(ZfApplication::$_base_path."/app/$module/views", $module."_View");
             $this->addScriptPath($layout->getLayoutPath()."default/templates/$module/");
             $this->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/$module/");
         }
         else {
-            $this->addBasePath(ZfApplication::$_base_path."/app/$module/Views", $module."_View");
+            $this->addBasePath(ZfApplication::$_base_path."/app/$module/views", $module."_View");
         }
     }
 
