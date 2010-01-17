@@ -11,6 +11,22 @@
  * @version    1.0
  */
 class Taxonomy_Hook_Node extends Zoo_Hook_Abstract {
+	/**
+     * Hook for node display - fetches items in the category
+     *
+     * @param Zoo_Content_Interface $item
+     *
+     * @return void
+     */
+	public function nodeDisplay(&$item) {
+		if ($item->type == "taxonomy_category") {
+			$items = Zoo::getService ( 'content' )->getContent ( array ('active' => true, 
+																		'group' => 'content', 
+																		'parent' => $item->id, 
+																		'render' => true ) );
+			$item->hooks['taxonomy_items'] = $items;
+		}
+	}
 
     /**
      * Hook for node form, add extra fields
