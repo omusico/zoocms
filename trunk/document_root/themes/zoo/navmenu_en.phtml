@@ -1,5 +1,7 @@
 <a href="<?php echo Zend_Controller_Front::getInstance()->getBaseUrl();?>/" class="home" id="home-link">Home</a>
-<a href="<?php echo $this->url(array(), 'content');?>" class="home" id="articles-link">Articles</a>
+<a href="/zoocms-a-brief-overview" class="home" id="articles-link">ZooCMS</a>
+<a href="/bundled-modules" class="home" id="articles-link">Modules</a>
+<a href="/zoocms-crew" class="home" id="articles-link">Team</a>
 <?php if (Zend_Auth::getInstance()->hasIdentity()) {
   echo '<a href="'.$this->url(array(), 'auth_logout').'">Logout ('.$this->escape(Zend_Auth::getInstance()->getIdentity()->username).')</a>';
 }
