@@ -101,7 +101,7 @@ class Zoo_Plugin_Boot_Http extends Zoo_Plugin_Boot
         $doctypeHelper->doctype('XHTML1_STRICT');
 
         // Add core module's view helper path
-        $viewRenderer->view->addHelperPath(ZfApplication::$_base_path."/app/Zoo/Views/helpers");
+        $viewRenderer->view->addHelperPath(ZfApplication::$_base_path."/app/Zoo/views/helpers");
         
         // Add JQuery support
         $viewRenderer->view->addHelperPath('ZendX/JQuery/View/Helper/', 'ZendX_JQuery_View_Helper');
