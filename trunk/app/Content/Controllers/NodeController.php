@@ -214,7 +214,7 @@ class Content_NodeController extends Zoo_Controller_Action
 				$this->getHelper ( 'viewRenderer' )->setNoRender ();
 				return;
             }
-            $this->_helper->redirector->gotoRoute(array('id' => $item->id), $item->type);
+            $this->_redirect($item->url());
         }
         $this->view->form = $form;
         $this->view->form->populate($_REQUEST);
@@ -263,7 +263,7 @@ class Content_NodeController extends Zoo_Controller_Action
         if (strcasecmp($module, "content") != 0) {
             $layout = Zend_Layout::getMvcInstance();
             // Add module paths to view scripts
-            $this->view->addBasePath(ZfApplication::$_base_path."/app/$module/Views", $module."_View");
+            $this->view->addBasePath(ZfApplication::$_base_path."/app/$module/views", $module."_View");
             $this->view->addScriptPath($layout->getLayoutPath()."default/templates/$module/");
             $this->view->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/$module/");
 
