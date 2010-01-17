@@ -8,7 +8,7 @@
  * @package Utility
  * @subpackage Hook
  */
-class Utility_Hook_Form extends Zend_Dojo_Form {
+class Utility_Hook_Form extends Zend_Form {
     /**
      * Object added/edited by the form
      *
