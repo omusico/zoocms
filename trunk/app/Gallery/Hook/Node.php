@@ -208,6 +208,9 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             $arguments = $form->getValues();
             $gnode->bgcolor = $arguments['gallery_bgcolor'];
             $gnode->save();
+            
+            // Clear block cache for gallery listing block
+            Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('block_Gallery_Block_List'));
         }
         elseif ($item->type == "filemanager_file") {
         	$connectTo = Zend_Controller_Front::getInstance()->getRequest()->getParam('connectTo');
