@@ -1,7 +1,7 @@
 <?php
 $ele = $this->gallery;
 if (isset ( $ele ['element'] )) {
-	echo "<li><a href='".$this->url(array('id' => $ele['element']['id']), $ele['element']['type'])."'>" . $this->escape($ele ['element'] ['title']) . "</a>";
+	echo "<li><a href='".$ele['element']->url()."'>" . $this->escape($ele ['element'] ['title']) . "</a>";
 }
 if (isset ( $ele ['children'] )) {
 	echo "<ul".($this->i == 1 ? " id='treeview'" : "").">";
