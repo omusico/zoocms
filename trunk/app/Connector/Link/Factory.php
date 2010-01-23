@@ -32,7 +32,7 @@ class Connector_Link_Factory extends Zoo_Db_Table {
             }
             $nodes = $content_factory->fetchAll($select);
             foreach ($nodes as $node) {
-                Zoo::getService('content')->load($node, 'List');
+                $node = Zoo::getService('content')->load($node, 'List');
             }
             return $nodes;
         }
