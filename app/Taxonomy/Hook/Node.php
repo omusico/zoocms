@@ -58,6 +58,7 @@ class Taxonomy_Hook_Node extends Zoo_Hook_Abstract {
         $categories = Zoo::getService('content')->getContent(
                                                     array('group' => 'category',
                                                           'order' => 'title',
+                                                          'viewtype' => 'Short',
                                                     	  'hooks' => false),
                                                     0,
                                                     0);
