@@ -59,6 +59,7 @@ class Utility_Service_Cache extends Zoo_Service
             if ($backendOptions) {
                 $config->merge($backendOptions);
             }
+            $config->frontendOptions->cache_id_prefix = str_replace(array(".", "/"), "_", Zend_Registry::get('config')->site->host)."_".$prefix."_";
 
             if ($config->backendOptions->cache_dir) {
                 $config->backendOptions->cache_dir = ZfApplication::$_base_path.$config->backendOptions->cache_dir.DIRECTORY_SEPARATOR.$prefix;

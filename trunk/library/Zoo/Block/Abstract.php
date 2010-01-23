@@ -104,6 +104,14 @@ abstract class Zoo_Block_Abstract {
     function getCacheId() {
         return get_class($this)."_".$this->id;
     }
+    
+    /**
+     * Get cache tags for the block's content
+     * @return array
+     */
+    function getCacheTags() {
+        return array();
+    }
 
     /**
      * Return an array of vars to be assigned to the Zend_View_Abstract object for use in the block's template
