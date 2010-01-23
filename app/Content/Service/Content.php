@@ -350,7 +350,7 @@ class Content_Service_Content extends Zoo_Service {
 		            $node = $this->find($id)->current();
 		        }
 			    Zoo::getService ( "hook" )->trigger ( "Node", ucfirst ( $type ), $node );
-			    Zoo::getService('cache')->save($node, $cacheid = "node_".$id.'_'.$type, array('node_'.$node->id));
+			    //Zoo::getService('cache')->save($node, $cacheid = "node_".$id.'_'.$type, array('node_'.$node->id));
 			    $item = $node;
 		    }
 		    return $item;

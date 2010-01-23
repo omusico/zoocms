@@ -26,7 +26,7 @@ class Content_NodeController extends Zoo_Controller_Action
          */
         Zend_Registry::set('content_id', $id);
 
-        $item = Zoo::getService('content')->load($id, 'Display');
+        $item = Zoo::getService('content')->find($id)->current();
         if (!$item) {
             throw new Zend_Controller_Action_Exception(Zoo::_("Content not found"), 404);
         }
@@ -47,6 +47,8 @@ class Content_NodeController extends Zoo_Controller_Action
         if (!$content) {
             $this->view->assign('can_edit', $can_edit);
             $this->view->assign('item', $item);
+            
+            Zoo::getService ( "hook" )->trigger ( "Node", 'Display', $item);
 
             // Emulate
             $module = substr($item->type, 0, strpos($item->type, "_"));
