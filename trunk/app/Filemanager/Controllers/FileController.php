@@ -218,16 +218,9 @@ class Filemanager_FileController extends Zoo_Controller_Action {
         $this->getHelper('layout')->disableLayout();
 			
 		if ($this->getRequest()->isPost() ) {
-			$item = Zoo::getService('content')->find($this->getRequest()->getParam('image'))->current();
+			$item = Zoo::getService('content')->load($this->getRequest()->getParam('image'), 'List');
 			// Connect image to gallery_node
 	        if (Zoo::getService('link')->connect($this->getRequest()->getParam('id'), $item->id, $this->getRequest()->getParam('type'))) {
-				// Call hooks for item
-				try {
-					$items = array($item);
-					Zoo::getService ( "hook" )->trigger ( "Node", "List", $items);
-				} catch ( Zoo_Exception_Service $e ) {
-					// Hook service not available - log? Better not, some people may live happily without a hook service
-				}
 		        $this->view->image = $item;
 		        $this->render("sel-item");
 	        }

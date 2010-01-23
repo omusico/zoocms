@@ -36,6 +36,7 @@ class Gallery_Block_List extends Zoo_Block_Abstract  {
         $galleries = Zoo::getService('content')->getContent(
                                                     array('active' => true,
                                                     	  'nodetype' => 'gallery_node',
+                                                    	  'viewtype' => "Short",
                                                           'order' => 'published'),
                                                     0,
                                                     0);

@@ -222,7 +222,6 @@ class Zoo_Cache_Backend_Tags extends Zend_Cache_Backend implements Zend_Cache_Ba
             return true;
 
         } else {
-
             return $this->_backend->clean($mode, $tags);
 
         }

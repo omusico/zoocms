@@ -37,16 +37,14 @@ class Guestbook_Hook_Node extends Zoo_Hook_Abstract {
     /**
      * Hook for node listing - fetches Guestbook Node information
      *
-     * @param array $items
+     * @param Zoo_Content_Interface $items
      *
      * @return void
      *
      * @todo Change to fetch all information for all guestbook nodes in one go
      */
-    public function nodeList(&$items) {
-        foreach ($items as $item) {
-            $this->nodeDisplay($item);
-        }
+    public function nodeList(&$item) {
+        $this->nodeDisplay($item);
     }
 
     /**

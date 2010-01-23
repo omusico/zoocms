@@ -30,16 +30,14 @@ class Estate_Hook_Node extends Zoo_Hook_Abstract {
     /**
      * Hook for node listing - fetches Estate Node information
      *
-     * @param array $items
+     * @param Zoo_Content_Interface $item
      *
      * @return void
      *
      * @todo Change to fetch all information for all estate nodes in one go
      */
-    public function nodeList(&$items) {
-        foreach ($items as $item) {
-            $this->nodeDisplay($item);
-        }
+    public function nodeList(&$item) {
+        $this->nodeDisplay($item);
     }
 
     /**
