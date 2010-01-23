@@ -39,8 +39,7 @@ class Rewrite_Hook_Node extends Zoo_Hook_Abstract {
 					$form->populate ( array ('rewrite_path' => $path->path ) );
 				} else {
 					// Find parent's path
-					$path = $factory->find ( $item->pid )->current ();
-					if ($path) {
+					if ($item->pid && $path = $factory->find ( $item->pid )->current ()) {
 						$form->populate ( array ('rewrite_path' => $path->path . "/" . $item->id ) );
 					} else {
 						$form->populate ( array ('rewrite_path' => $item->url () ) );

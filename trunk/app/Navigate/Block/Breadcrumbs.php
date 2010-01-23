@@ -19,7 +19,7 @@ class Navigate_Block_Breadcrumbs extends Zoo_Block_Abstract  {
     function getTemplateVars() {
         $menu = null;
         if (Zend_Registry::isRegistered('content_id')) {
-            $node = Zoo::getService('content')->find(Zend_Registry::get('content_id'))->current();
+            $node = Zoo::getService('content')->load(Zend_Registry::get('content_id'), 'Short');
             $menu = Zoo::getService('menu')->getBreadcrumbsFromNode($node);
         }
         return array('menu' => $menu);

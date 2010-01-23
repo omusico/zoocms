@@ -33,14 +33,17 @@ class Content_Node extends Zend_Db_Table_Row_Abstract implements Zoo_Content_Int
      */
     public function url()
     {
-    	try {
-    		$path_service = Zoo::getService('path');
-    		return $path_service->getNodeUrl($this->id);
-    	}
-    	catch (Zend_Exception $e) {
-        	$router = Zend_Controller_Front::getInstance()->getRouter();
-        	return $router->assemble(array('id' => $this->id), $this->type);
-    	}
+        if ($this->id > 0) {
+        	try {
+        		$path_service = Zoo::getService('path');
+        		return $path_service->getNodeUrl($this->id);
+        	}
+        	catch (Zend_Exception $e) {
+            	$router = Zend_Controller_Front::getInstance()->getRouter();
+            	return $router->assemble(array('id' => $this->id), $this->type);
+        	}
+        }
+        return "";
     }
     
     /**
@@ -48,6 +51,6 @@ class Content_Node extends Zend_Db_Table_Row_Abstract implements Zoo_Content_Int
      * @return Zend_Db_Table_Row_Abstract
      */
     public function getParent() {
-        return $this->getTable()->fetchRow($this->getTable()->select()->where('id = ?', $this->pid));
+        return $this->getTable() ? $this->getTable()->fetchRow($this->getTable()->select()->where('id = ?', $this->pid)) : false;
     }
 }

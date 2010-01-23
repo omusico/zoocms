@@ -63,9 +63,7 @@ class Zend_View_Helper_FileBrowser extends ZendX_JQuery_View_Helper_UiWidget
             $endTag= '>';
         }
         
-        $file = Zoo::getService('filemanager')->find($value)->current();
-
-        if ($file) {
+        if ($value && $file = Zoo::getService('filemanager')->find($value)->current()) {
         	$xhtml = '<img id="'.$attribs['id'].'_image" src="'.($file->getUrl(150,150)).'" '.$endTag;
         }
         else {
