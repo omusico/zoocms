@@ -22,7 +22,7 @@ class Rewrite_Hook_Node extends Zoo_Hook_Abstract {
         $item =& array_shift($arguments);
         
         $content_type = Zoo::getService('content')->getType($item->type);
-        if ($content_type->group != "comment") {
+        if ($content_type->has_parent_url == 0) {
 			
 			$path = new Zend_Form_Element_Text ( 'rewrite_path', array ('size' => 65 ) );
 			$path->setLabel ( 'URL' );

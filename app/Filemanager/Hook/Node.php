@@ -31,30 +31,13 @@ class Filemanager_Hook_Node extends Zoo_Hook_Abstract {
     /**
      * Hook for node listing - fetches Filemanager Node information
      *
-     * @param array $items
+     * @param Zoo_Content_Interface $item
      *
      * @return void
      *
      */
-    public function nodeList(&$items) {
-    	$factory = new Filemanager_File_Factory();
-    	$ids = array();
-        foreach ($items as $item) {
-        	if ($item->type == "filemanager_file") {
-            	$ids[] = $item->id;
-        	}
-        }
-        $files = $factory->find($ids);
-        foreach ($files as $file) {
-        	$file_obj[$file->nid] = $file;
-        }
-		foreach ( $items as $item ) {
-			if ($item->type == "filemanager_file") {
-				if (isset ( $file_obj [$item->id] )) {
-					$item->hooks ['filemanager_file'] = $file_obj [$item->id];
-				}
-			}
-        }
+    public function nodeList(&$item) {
+    	$this->nodeDisplay($item);
     }
 
     /**

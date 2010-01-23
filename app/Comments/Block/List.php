@@ -50,13 +50,6 @@ class Comments_Block_List extends Zoo_Block_Abstract  {
                                                                   'parent' => $id,
                                                                   'render' => false));
             if ($items->count()) {
-                try {
-                    Zoo::getService("hook")->trigger("Node", "List", $items);
-                }
-                catch (Zoo_Exception_Service $e) {
-                    // Hook service not available - log? Better not, some people may live happily without a hook service
-                }
-
                 // Fetch comment authors
                 foreach ($items as $item) {
                     $uids[] = $item->uid;

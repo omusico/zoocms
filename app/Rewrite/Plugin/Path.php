@@ -20,8 +20,7 @@ class Rewrite_Plugin_Path extends Zend_Controller_Plugin_Abstract {
 	 */
 	public function routeShutdown(Zend_Controller_Request_Abstract $request) {
 		$factory = new Rewrite_Path_Factory();
-    	$path = $factory->findPath($request->getRequestUri());
-    	if ($path) {
+    	if ($request->getRequestUri() != "/" && $path = $factory->findPath($request->getRequestUri())) {
 	    	$content_service = Zoo::getService ( 'content' );
 			$request->setActionName($content_service->action);
 			$request->setControllerName($content_service->controller);

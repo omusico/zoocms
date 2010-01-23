@@ -31,16 +31,8 @@ class Connector_Link_Factory extends Zoo_Db_Table {
             	$select->limit($limit);
             }
             $nodes = $content_factory->fetchAll($select);
-            // Call hooks for items
-            /*
-             * @todo this shouldn't be here, I think... but there is currently not a "Get THESE content items" on the
-             * content service
-             */
-            try {
-                Zoo::getService("hook")->trigger("Node", "List", $nodes);
-            }
-            catch (Zoo_Exception_Service $e) {
-                // Hook service not available - log? Better not, some people may live happily without a hook service
+            foreach ($nodes as $node) {
+                Zoo::getService('content')->load($node, 'List');
             }
             return $nodes;
         }

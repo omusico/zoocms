@@ -16,35 +16,25 @@ class Comments_Hook_Node extends Zoo_Hook_Abstract {
     /**
      * Hook for node listing - fetches comment count
      *
-     * @param Content_Node|array $items
+     * @param Zoo_Content_Interface $item
      *
      * @return void
      *
      */
-    public function nodeList(&$items) {
-    	if (count($items) == 0) {
-    		return;
-    	}
-        $nids = array();
-        foreach ($items as $item) {
-            $nids[] = $item->id;
-            $url[$item->id] = $item->url();
-        }
+    public function nodeList(&$item) {
         // Count comments per node
-        $comments = Zoo::getService('content')->countChildren($nids, 'comment');
+        $comments = Zoo::getService('content')->countChildren($item->id, 'comment');
         foreach ($comments as $comment_count) {
             $counts[$comment_count->pid] = $comment_count->comment;
         }
-        foreach ($items as $item) {
-            $count = isset($counts[$item->id]) ? ($counts[$item->id]) : 0;
-            if ($count > 0) {
-            	$this->view->url = $url[$item->id];
-            	$this->view->count = $count;
-            	/**
-	             * Render HTML
-	             */
-            	$item->hooks['comments'] = $this->render('nodelist', 'Comments');
-            }
+        $count = isset($counts[$item->id]) ? ($counts[$item->id]) : 0;
+        if ($count > 0) {
+        	$this->view->url = $item->url();
+        	$this->view->count = $count;
+        	/**
+             * Render HTML
+             */
+        	$item->hooks['comments'] = $this->render('nodelist', 'Comments');
         }
     }
 

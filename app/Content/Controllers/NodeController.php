@@ -26,11 +26,10 @@ class Content_NodeController extends Zoo_Controller_Action
          */
         Zend_Registry::set('content_id', $id);
 
-        $found = Zoo::getService('content')->find($id);
-        if ($found->count() == 0) {
+        $item = Zoo::getService('content')->load($id, 'Display');
+        if (!$item) {
             throw new Zend_Controller_Action_Exception(Zoo::_("Content not found"), 404);
         }
-        $item = $found->current();
 
         $can_edit = false;
         try {
@@ -46,13 +45,6 @@ class Content_NodeController extends Zoo_Controller_Action
         $cacheid = "Content_nodeDisplay_".$id.($can_edit ? "_edit" : "");
         $content = $this->checkCache($cacheid);
         if (!$content) {
-            try {
-                Zoo::getService("hook")->trigger("Node", "Display", $item);
-            }
-            catch (Zoo_Exception_Service $e) {
-                // Hook service not available - log? Better not, some people may live happily without a hook service
-            }
-
             $this->view->assign('can_edit', $can_edit);
             $this->view->assign('item', $item);
 

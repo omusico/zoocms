@@ -59,19 +59,24 @@ class Utility_Service_Hook extends Zoo_Service {
      * @throws Zend_Db_Exception if trouble with database or tables
      */
     protected function getHooks($type, $action) {
-        $factory = new Utility_Hook_Factory();
-        $hooks = $factory->fetchAll(
-                     array('type = ?' => $type,
-                           'action = ?' => $action),
-                     'weight ASC'
-                 );
-        $ret = array();
-        if ($hooks->count() > 0) {
-            foreach ($hooks as $hook) {
-                $class = $hook->class."_Hook_".$type;
-                $ret[] = new $class();
+        static $hook_cache = array();
+        if (!isset($hook_cache[$type][$action])) {
+            $factory = new Utility_Hook_Factory();
+            $hooks = $factory->fetchAll(
+                         array('type = ?' => $type,
+                               'action = ?' => $action),
+                         'weight ASC'
+                     );
+            if ($hooks->count() > 0) {
+                foreach ($hooks as $hook) {
+                    $class = $hook->class."_Hook_".$type;
+                    $hook_cache[$type][$action][] = new $class();
+                }
+            }
+            else {
+                $hook_cache[$type][$action] = array();
             }
         }
-        return $ret;
+        return $hook_cache[$type][$action];
     }
 }
