@@ -36,7 +36,7 @@
 	<?php endif; ?>
 
     <div id="maincontent">
-      <?php echo $this->layout()->content;
+      <?php 
       if (isset($this->blocks[1])):
         foreach ($this->blocks[1] as $block):
             if ($block['title']):
@@ -44,7 +44,8 @@
             endif;
             echo $block['content'];
         endforeach;
-      endif;?>
+      endif;
+      echo $this->layout()->content;?>
     </div>
     <!--RIGHT COLUM-->
 

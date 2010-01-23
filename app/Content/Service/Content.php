@@ -118,7 +118,7 @@ class Content_Service_Content extends Zoo_Service {
         	$options['hooks'] = true;
         }
         $select = $this->getContentSelect($options, $start, $limit);
-        
+
         $items = $this->fetchAll($select);
         if (!isset($options['render']) || $options['render'] == false) {
         	if ($options ['hooks']) {

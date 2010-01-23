@@ -7,5 +7,5 @@
  */
 
 class Navigate_Module extends Zoo_Module {
-    protected $dependencies = array('db');
+    protected $dependencies = array('db', 'content');
 }

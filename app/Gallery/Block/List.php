@@ -11,8 +11,6 @@
  * @version    1.0
  */
 class Gallery_Block_List extends Zoo_Block_Abstract  {
-    public $template = "list";
-    
     /**
      * Get cache ID - although this also benefits from the fact that this code is never cached, so HEAD javascript can be added
      * @see library/Zoo/Block/Zoo_Block_Abstract#getCacheId()
@@ -23,9 +21,7 @@ class Gallery_Block_List extends Zoo_Block_Abstract  {
 		$view->jQuery()->addJavascriptFile('/js/jquery/treeview/jquery.treeview.js', 'text/javascript');
 		$view->jQuery()->addStylesheet('/js/jquery/treeview/jquery.treeview.css');
 		
-		$js = ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'(document).ready(function(){
-				'.ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'("#treeview").treeview({collapsed: true, persist: "location"});
-  			   });';
+		$js = ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'("#treeview").treeview({collapsed: true, persist: "location"});';
 		$view->jQuery()->addOnLoad($js);
 		
 		return parent::getCacheId();

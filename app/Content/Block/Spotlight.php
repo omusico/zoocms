@@ -11,8 +11,6 @@
  * @version    1.0
  */
 class Content_Block_Spotlight extends Zoo_Block_Abstract  {
-    public $template = "spotlight";
-    
     private $can_edit = false;
     private $content_id = 0;
     

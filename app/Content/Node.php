@@ -42,4 +42,12 @@ class Content_Node extends Zend_Db_Table_Row_Abstract implements Zoo_Content_Int
         	return $router->assemble(array('id' => $this->id), $this->type);
     	}
     }
+    
+    /**
+     * Get parent node
+     * @return Zend_Db_Table_Row_Abstract
+     */
+    public function getParent() {
+        return $this->getTable()->fetchRow($this->getTable()->select()->where('id = ?', $this->pid));
+    }
 }
