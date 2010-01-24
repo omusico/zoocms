@@ -13,7 +13,7 @@
 
 class Filemanager_Hook_Node extends Zoo_Hook_Abstract {
     /**
-     * Hook for node display - fetches Filemanager Node information, if the node is an Filemanager Node
+     * Hook for node display - fetches Filemanager Node information, if the node is a Filemanager Node
      *
      * @param Zoo_Content_Interface $item
      *

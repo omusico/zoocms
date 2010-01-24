@@ -120,23 +120,11 @@ class Content_Service_Content extends Zoo_Service {
         $select = $this->getContentSelect($options, $start, $limit);
 
         $items = $this->fetchAll($select);
-        /*
-        if (!isset($options['render']) || $options['render'] == false) {
-        	if ($options ['hooks']) {
-				// Call hooks for items
-				try {
-					Zoo::getService ( "hook" )->trigger ( "Node", ucfirst ( $options ['viewtype'] ), $items );
-				} catch ( Zoo_Exception_Service $e ) {
-					// Hook service not available - log? Better not, some people may live happily without a hook service
-				}
-			}
-            return $items;
-        }
-		*/
+        
         $ids = array();
         foreach ($items as $item) {
             $ids[] = $item->id;
-            $item = $this->load($item, $options['viewtype']);
+            $item = $this->loadFromNode($item, $options['viewtype']);
         }
         if (!isset($options['render']) || $options['render'] == false) {
             return $items;
@@ -224,10 +212,9 @@ class Content_Service_Content extends Zoo_Service {
     }
 
     /**
-     * Reset the view's script paths and set new ones for use in the block
+     * Reset the view's script paths and set new ones
      *
-     * @param Zend_View_Abstract $view
-     * @param Zoo_Block_Abstract $block
+     * @param string $module
      */
     private function resetView($module) {
         $module = ucfirst($module);
@@ -339,23 +326,53 @@ class Content_Service_Content extends Zoo_Service {
         }
     }
     
-    public function load($node, $type) {
+    /**
+     * Load a node from cache, or fetch from db, run hooks and cache result
+     * 
+     * @param int $node
+     * @param string $type
+     * @return Zoo_Content_Interface
+     */
+    public function load($id, $type) {
         // Call hooks for items
 		try {
-		    $id = (is_object($node)) ? $node->id : $node;
-		    $cacheid = "node_".$id.'_'.$type;
-		    $item = Zoo::getService('cache')->load($cacheid);
-		    if (!$item) {
-		        if (!is_object($node)) {
-		            $node = $this->find($id)->current();
-		        }
-			    Zoo::getService ( "hook" )->trigger ( "Node", ucfirst ( $type ), $node );
-			    //Zoo::getService('cache')->save($node, $cacheid = "node_".$id.'_'.$type, array('node_'.$node->id));
-			    $item = $node;
+		    $cacheid = "load_node_".$id.'_'.$type;
+		    $node = Zoo::getService('cache')->load($cacheid);
+		    if (!$node) {
+	            $node = $this->find($id)->current();
+			    $node = Zoo::getService ( "hook" )->trigger ( "Node", ucfirst ( $type ), $node );
+			    Zoo::getService('cache')->save($node, $cacheid, array('node_'.$id));
 		    }
-		    return $item;
+		    
+		    return $node;
 		} catch ( Zoo_Exception_Service $e ) {
-			// Hook service not available - log? Better not, some people may live happily without a hook service
+			$node = $this->find($id)->current();
+			return Zoo::getService ( "hook" )->trigger ( "Node", ucfirst ( $type ), $node );
+		}
+    }
+    
+ /**
+     * Load a node from cache, or fetch from db, run hooks and cache result
+     * 
+     * @param Zoo_Content_Interface $node
+     * @param string $type
+     * @return Zoo_Content_Interface
+     */
+    public function loadFromNode(&$node, $type) {
+        // Call hooks for items
+		try {
+		    $id = $node->id;
+		    $cacheid = "load_node_".$id.'_'.$type;
+		    $node = Zoo::getService('cache')->load($cacheid);
+		    if (!$node) {
+		        $node = $this->find($id)->current();
+			    Zoo::getService ( "hook" )->trigger ( "Node", ucfirst ( $type ), $node );
+			    Zoo::getService('cache')->save($node, $cacheid, array('node_'.$id));
+		    }
+		    return $node;
+		    
+		} catch ( Zoo_Exception_Service $e ) {
+			return Zoo::getService ( "hook" )->trigger ( "Node", ucfirst ( $type ), $node );
 		}
     }
 }

@@ -17,13 +17,14 @@ class Connector_Link_Factory extends Zoo_Db_Table {
 	 * @param Zoo_Content_Interface $node
 	 * @param string $type
 	 * @param string $order
-	 * @return Zend_Db_Table_Rowset
+	 * @param int $limit
+	 * @return array
 	 */
 	function getLinkedNodes($node, $type = 'link', $order = "weight", $limit = 0) {
 		try {
             $content_factory = Zoo::getService('content')->getFactory();
-            $select = $content_factory->select()->from(array('c' => $content_factory->info(Zend_Db_Table_Abstract::NAME)));
-            $select->join(array('cl' => $this->info(Zend_Db_Table_Abstract::NAME)), 'cl.tonid = c.id', array());
+            $select = $content_factory->select()->from(array('c' => $content_factory->info(self::NAME)));
+            $select->join(array('cl' => $this->info(self::NAME)), 'cl.tonid = c.id', array());
             $select->where('cl.nid = ?', $node->id);
             $select->where('cl.type = ?', $type);
             $select->order($order);
@@ -31,10 +32,11 @@ class Connector_Link_Factory extends Zoo_Db_Table {
             	$select->limit($limit);
             }
             $nodes = $content_factory->fetchAll($select);
+            $ret = array();
             foreach ($nodes as $node) {
-                $node = Zoo::getService('content')->load($node, 'List');
+                $ret[] = Zoo::getService('content')->loadFromNode($node, 'List');
             }
-            return $nodes;
+            return $ret;
         }
         catch (Exception $e) {
             // Return empty array
@@ -50,6 +52,7 @@ class Connector_Link_Factory extends Zoo_Db_Table {
      * @note NOT concurrency protected
      * 
      * @param int $itemId
+     * @param string $type 
      * @return int
      */
     public function getNextWeight($itemId, $type = 'link') {

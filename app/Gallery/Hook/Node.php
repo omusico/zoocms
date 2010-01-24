@@ -26,12 +26,12 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             
             $bg_image_style = $bg_color_style = "";
             $top_image = Zoo::getService('link')->getLinkedNodes($item, 'top_image');
-            if ($top_image->count() > 0) {
+            if (count($top_image) > 0) {
             	$item->hooks['top_image'] = $top_image[0];
             }
             
         	$bg_image = Zoo::getService('link')->getLinkedNodes($item, 'bg_image');
-            if ($bg_image->count() > 0) {
+            if (count($bg_image) > 0) {
             	$bg_image_style = "background-image: url('".$bg_image[0]->hooks['filemanager_file']->getUrl()."');";
             }
             
@@ -144,10 +144,10 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             if ($item->id > 0) {
                 // Fetch extra information
 	            $top_image = Zoo::getService('link')->getLinkedNodes($item, 'top_image');
-	            $populate['gallery_topimage'] = ($top_image->count() > 0) ? $top_image[0]->id : 0; 
+	            $populate['gallery_topimage'] = (count($top_image) > 0) ? $top_image[0]->id : 0; 
 
 	            $bg_image = Zoo::getService('link')->getLinkedNodes($item, 'bg_image');
-	            $populate['gallery_bgimage'] = ($bg_image->count() > 0) ? $bg_image[0]->id : 0; 
+	            $populate['gallery_bgimage'] = (count($bg_image) > 0) ? $bg_image[0]->id : 0; 
 	            
 	        	$factory = new Gallery_Node_Factory();
 	            $gnode = false;

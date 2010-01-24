@@ -45,9 +45,8 @@ class Utility_Service_Hook extends Zoo_Service {
                 	echo $e->getMessage().$e->getTraceAsString();
                 }
             }
-            return;
         }
-        return;
+        return $target;
     }
 
     /**
