@@ -18,6 +18,6 @@ class Taxonomy_CategoryController extends Zoo_Controller_Action
      */
     public function indexAction()
     {
-        $this->view->menu = Zoo::getService('menu')->getContentMenu();
+        
     }
 }

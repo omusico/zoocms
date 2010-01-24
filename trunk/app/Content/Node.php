@@ -15,6 +15,15 @@ class Content_Node extends Zend_Db_Table_Row_Abstract implements Zoo_Content_Int
      * @var array
      */
     public $hooks = array();
+    
+     /**
+     * Store table, primary key and data in serialized object
+     *
+     * @return array
+     */
+    public function __sleep() {
+        return array_merge(array('hooks'), parent::__sleep());
+    }
     /**
      * Get the form for adding content nodes
      *
@@ -51,6 +60,9 @@ class Content_Node extends Zend_Db_Table_Row_Abstract implements Zoo_Content_Int
      * @return Zend_Db_Table_Row_Abstract
      */
     public function getParent() {
-        return $this->getTable() ? $this->getTable()->fetchRow($this->getTable()->select()->where('id = ?', $this->pid)) : false;
+        if (!$this->getTable()) {
+            $this->setTable(new Content_Node_Factory());
+        }
+        return $this->getTable()->fetchRow($this->getTable()->select()->where('id = ?', $this->pid));
     }
 }
