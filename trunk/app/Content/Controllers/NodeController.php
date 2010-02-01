@@ -26,11 +26,11 @@ class Content_NodeController extends Zoo_Controller_Action
          */
         Zend_Registry::set('content_id', $id);
 
-        $item = Zoo::getService('content')->find($id)->current();
+        $item = Zoo::getService('content')->load($id, 'Display');
         if (!$item) {
             throw new Zend_Controller_Action_Exception(Zoo::_("Content not found"), 404);
         }
-
+        
         $can_edit = false;
         try {
 	        if (!(Zoo::getService('acl')->checkItemAccess($item))) {
@@ -42,19 +42,11 @@ class Content_NodeController extends Zoo_Controller_Action
         	// No acl service installed
         }
         
+        
         $cacheid = "Content_nodeDisplay_".$id.($can_edit ? "_edit" : "");
         $content = $this->checkCache($cacheid);
         if (!$content) {
-            $this->view->assign('can_edit', $can_edit);
-            $this->view->assign('item', $item);
-            
-            Zoo::getService ( "hook" )->trigger ( "Node", 'Display', $item);
-
-            // Emulate
-            $module = substr($item->type, 0, strpos($item->type, "_"));
-            $this->emulateModule($module);
-
-            $content = $this->getContent();
+            list($content) = Zoo::getService('content')->getRenderedContent($id, 'Display');
             $this->cache($content, $cacheid, array('node', 'node_'.$item->type, 'node_'.$item->id));
         }
         
@@ -245,6 +237,31 @@ class Content_NodeController extends Zoo_Controller_Action
         }
         $this->getHelper ( 'layout' )->disableLayout ();
 		$this->getHelper ( 'viewRenderer' )->setNoRender ();
+	}
+	
+	public function autocompleteAction() {
+	    $results = $found = array();
+	    try {
+	        $res = Zoo::getService('search')->search($this->_request->getParam('q'), $this->_request->getParam('limit'));
+    	    $hits = array();
+            foreach ($res['results'] as $hit) {
+                $found[] = Zoo::getService('content')->load($hit->nid, 'Short');
+            }
+	    }
+	    catch (Exception $e) {
+	        $select = Zoo::getService('content')->getContentSelect(array(), 0, $this->_request->getParam('limit'));
+	        $select->where('title LIKE ?', $this->_request->getParam('q')."%");
+	        $found = Zoo::getService('content')->fetchAll($select); 
+	    }
+	    
+	    $types = Zoo::getService('content')->getTypes();
+	    foreach ($found as $item) {
+	        $results[] = str_replace(array("\n", "\r"), "", array_shift(Zoo::getService('content')->getRenderedContent($item->id, 'Short')))
+	                        . " (".$types[$item->type]->name." ID:".$item->id.")";
+	    }
+	    Zend_Controller_Action_HelperBroker::addHelper ( new ZendX_JQuery_Controller_Action_Helper_AutoComplete ( ) );
+	    $this->_helper->autoComplete($results);
+	    //$this->getHelper('viewRenderer')->setNoRender();
 	}
 
     /**

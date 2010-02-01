@@ -24,7 +24,7 @@ class Search_SearchController extends Zoo_Controller_Action
         }
         if (count($hits) > 0) {
             try {
-                $items = Zoo::getService('content')->getRenderedContentById(array_unique($hits));
+                $items = Zoo::getService('content')->getRenderedContent(array_unique($hits));
             }
             catch (Zoo_Service_Exception $e) {
                 $items = array();

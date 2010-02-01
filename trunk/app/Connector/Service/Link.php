@@ -176,7 +176,7 @@ class Connector_Service_Link extends Zoo_Service
 			// No change
 			return true;
 		}
-        $factory->getAdapter()->query("UPDATE ".$factory->info(Zend_Db_Table_Abstract::NAME)." SET ".$set);
+        Zoo::getService('db')->getDb('master')->query("UPDATE ".$factory->info(Zend_Db_Table_Abstract::NAME)." SET ".$set);
         $moved->weight = $newweight;
         return $moved->save();
     }

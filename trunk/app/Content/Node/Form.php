@@ -22,23 +22,7 @@ class Content_Node_Form extends ZendX_JQuery_Form {
         $this->setAction($action)->setMethod('post');
         $this->setAttrib('id', 'content_form');
 
-        $title = new Zend_Form_Element_Text('title', array('class' => 'content_title'));
-        $title->setLabel('Title');
-        $title->setRequired(true)->addValidator(new Zend_Validate_StringLength(2,255));
-
-        $content = new Zoo_Form_Element_Wysiwyg('content');
-        $content->setRequired(false)->setLabel('Content')->setAttrib('cols', 50);
-
-        $submit = new Zend_Form_Element_Submit('save');
-        $submit->setLabel('Save');
-
-        $this->addElements(array($title, $content));
-        
         $type = Zoo::getService('content')->getType($target->type);
-        $legend = $target->id > 0 ? Zoo::_("Edit %s") : Zoo::_("Add %s");
-        $legend = sprintf($legend, mb_strtolower($type->name));
-        $this->addDisplayGroup(array('title', 'content'), 'content_add', array('legend' => $legend ));
-        
         try {
             Zoo::getService("hook")->trigger("Node", "Form", $this, $target);
         }
@@ -67,11 +51,16 @@ class Content_Node_Form extends ZendX_JQuery_Form {
         	$view->headLink()->appendStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/smoothness/jquery-ui.css');
         }
         
+        $submit = new Zend_Form_Element_Submit('save');
+        $submit->setLabel('Save');
         $this->addElement($submit);
         if ($target->id > 0) {
             $id_ele = new Zend_Form_Element_Hidden('id');
             $id_ele->setValue(intval($target->id));
             $this->addElement($id_ele);
+        }
+        else {
+            $target->status = 0;
         }
         $this->addElement(new Zend_Form_Element_Hidden('type', array('value' => $target->type)));
         $this->addElement(new Zend_Form_Element_Hidden('pid', array('value' => $target->pid)));

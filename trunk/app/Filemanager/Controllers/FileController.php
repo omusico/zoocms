@@ -370,7 +370,6 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 																	$limit );
 
 		$this->view->items = Zoo::getService('content')->getContent($options, $offset, $limit);
-		
 		// Pagination
 		Zend_Paginator::setDefaultScrollingStyle('Elastic');
 		Zend_View_Helper_PaginationControl::setDefaultViewPartial('file/pagination_control.phtml');

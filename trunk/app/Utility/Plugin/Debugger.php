@@ -19,7 +19,7 @@ class Utility_Plugin_Debugger extends Zend_Controller_Plugin_Abstract {
      */
     public function dispatchLoopShutdown()
     {
-        $profiler = Zoo::getService("db")->getProfiler();
+        $profiler = Zoo::getService("db")->getDb()->getProfiler();
         if ($profiler->getEnabled() && !($profiler instanceof Zend_Db_Profiler_Firebug) && ($queryCount = $profiler->getTotalNumQueries()) > 0) {
             $longestTime  = 0;
             $longestQuery = null;

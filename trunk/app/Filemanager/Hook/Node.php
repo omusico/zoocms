@@ -39,6 +39,18 @@ class Filemanager_Hook_Node extends Zoo_Hook_Abstract {
     public function nodeList(&$item) {
     	$this->nodeDisplay($item);
     }
+    
+ 	/**
+     * Hook for short node listing - fetches Filemanager Node information
+     *
+     * @param Zoo_Content_Interface $item
+     *
+     * @return void
+     *
+     */
+    public function nodeShort(&$item) {
+    	$this->nodeDisplay($item);
+    }
 
     /**
      * Hook for node form - if type is Filemanager Node, add extra fields
