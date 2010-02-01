@@ -19,6 +19,18 @@ class Content_Hook_Node extends Zoo_Hook_Abstract {
      */
     public function nodeForm(Zend_Form &$form, &$arguments) {
         $item =& array_shift($arguments);
+        
+        $title = new Zend_Form_Element_Text('title', array('class' => 'content_title'));
+        $title->setLabel('Title');
+        $title->setRequired(true)->addValidator(new Zend_Validate_StringLength(2,255));
+
+        $content = new Zoo_Form_Element_Wysiwyg('content');
+        $content->setRequired(false)->setLabel('Content')->setAttrib('cols', 50);
+        
+        $form->addElements(array($title, $content));
+        
+        $form->addDisplayGroup(array('title', 'content'), 'content_add', array('legend' => Zoo::_('Content')));
+        
         if (Zend_Auth::getInstance()->hasIdentity()) {
             $identity = Zend_Auth::getInstance()->getIdentity();
             $uid = $identity->id;

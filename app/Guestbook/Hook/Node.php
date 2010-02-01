@@ -57,15 +57,15 @@ class Guestbook_Hook_Node extends Zoo_Hook_Abstract {
         $item =& array_shift($arguments);
         if ($item->type == "guestbook_entry") {
             // Add guestbook fields
-            $name = new Zend_Form_Element_Text('guestbook_name', array('size' => 25));
+            $name = new Zend_Form_Element_Text('guestbook_name', array('size' => 35));
             $name->setLabel('Name');
             $name->setRequired(true);
 
-            $email = new Zend_Form_Element_Text('guestbook_email', array('size' => 25));
+            $email = new Zend_Form_Element_Text('guestbook_email', array('size' => 35));
             $email->setLabel('Email');
             $email->setRequired(true)->addValidator(new Zend_Validate_StringLength(6))->addValidator(new Zend_Validate_EmailAddress());
 
-            $url = new Zend_Form_Element_Text('guestbook_homepage', array('size' => 25));
+            $url = new Zend_Form_Element_Text('guestbook_homepage', array('size' => 35));
             $url->setLabel('Homepage');
             $url->setRequired(false)->addValidator(new Zend_Validate_StringLength(4))->addValidator(new Zend_Validate_Hostname());
 

@@ -38,7 +38,7 @@ class Auth_Service_Authenticator extends Zoo_Service
 
                 case "Db":
                     try {
-                        $this->service = new Zend_Auth_Adapter_DbTable(Zoo::getService('db'));
+                        $this->service = new Zend_Auth_Adapter_DbTable(Zoo::getService('db')->getDb('slave'));
                         $this->service
                                     ->setTableName('Auth_User')
                                     ->setIdentityColumn('username')

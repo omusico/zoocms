@@ -15,7 +15,7 @@ class Dbmanager_Plugin_Database extends Zend_Controller_Plugin_Abstract {
      * @param Zend_Controller_Request_Abstract $request
      */
     public function routeStartup($request = null) {
-        Zend_Db_Table_Abstract::setDefaultAdapter(Zoo::getService('db'));
+        Zend_Db_Table_Abstract::setDefaultAdapter(Zoo::getService('db')->getDb());
         $frontendOptions = new Zend_Config(array('lifetime' => 86400));
         try {
             $metacache = Zoo::getService('cache')->getCache('metadata', 'Core', $frontendOptions);

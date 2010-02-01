@@ -33,7 +33,7 @@ class Zoo_Object_Tree {
 	 * @param   string     $parentId   attribute name of parent object ID
 	 * @param   string     $rootId     attribute name of root object ID
 	 **/
-	function __construct(SeekableIterator $objects, $myId, $parentId, $rootId = null)
+	function __construct($objects, $myId, $parentId, $rootId = null)
 	{
 		$this->_objects = $objects;
 		$this->_myId = $myId;

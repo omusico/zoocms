@@ -1,0 +1,6 @@
+<?php if ($this->item->hooks['filemanager_file']->isImage()):?>
+    <img src="<?php echo $this->item->hooks['filemanager_file']->getUrl(100,70);?>" alt="<?php echo $this->translate('Image').': '.$this->item['title'];?>" />
+<?php else:?>
+    <img src="<?php echo $this->getTypeImage($this->item->hooks['filemanager_file']->mimetype);?>" alt="<?php echo $this->translate('File').': '.$this->item['title'];?>" />
+<?php endif;
+echo $this->escape($this->item['title']);

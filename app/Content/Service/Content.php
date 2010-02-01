@@ -76,6 +76,9 @@ class Content_Service_Content extends Zoo_Service {
             $select->where('status = ?', 1)
                     ->where('published <= ?', time());
         }
+        if (isset($options['ids']) && is_array($options['ids']) && count($options['ids']) > 0) {
+            $select->where('id IN (?)', $options['ids']);
+        }
         if (isset($options['group'])) {
             $type_table = new Content_Type_Factory();
             $type_table_name = $type_table->info(Zend_Db_Table_Abstract::NAME);
@@ -120,16 +123,15 @@ class Content_Service_Content extends Zoo_Service {
         $select = $this->getContentSelect($options, $start, $limit);
 
         $items = $this->fetchAll($select);
-        
-        $ids = array();
-        foreach ($items as $item) {
-            $ids[] = $item->id;
-            $item = $this->loadFromNode($item, $options['viewtype']);
+
+        $ret = array();
+        foreach ($items as $key => $item) {
+            $ret[] = $this->loadFromNode($item, $options['viewtype']);
         }
         if (!isset($options['render']) || $options['render'] == false) {
-            return $items;
+            return $ret;
         }
-        return count($ids) > 0 ? $this->getRenderedContentById($ids, $options['viewtype']) : array();
+        return count($ret) > 0 ? $this->getRenderedContent($ret, $options['viewtype']) : array();
     }
 
     /**
@@ -138,14 +140,20 @@ class Content_Service_Content extends Zoo_Service {
      * @param string $type
      * @return array Rendered content items
      */
-    function getRenderedContentById($ids, $type = 'List') {
+    function getRenderedContent($ids, $type = 'List') {
         if (!is_array($ids)) {
             $ids = array($ids);
         }
 
         foreach ($ids as $id) {
-            
-            $cacheid = "Content_node".$type."_".$id;
+            if (!is_object($id)) {
+                    $item = $this->load($id, $type);
+            }
+            else {
+                $item = $id;
+            }
+            $can_edit = Zoo::getService('acl')->checkItemAccess($item, 'edit');
+            $cacheid = "Content_node".$type."_".$can_edit."_".$item->id;
             try {
                 $cached = Zoo::getService("cache")->load($cacheid);
                 if ($cached) {
@@ -157,7 +165,6 @@ class Content_Service_Content extends Zoo_Service {
                 $cached = false;
             }
             if (!$cached) {
-                $item = $this->load($id, $type);
                 // Render content item
                 if (!($this->view)) {
                     $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
@@ -172,7 +179,8 @@ class Content_Service_Content extends Zoo_Service {
                 $this->addLanguage($module);
 
                 $this->view->assign('item', $item);
-                $rendered = $this->view->render($type == "Display" ? "index.phtml" : $type);
+                $this->view->assign('can_edit', $can_edit);
+                $rendered = $this->view->render($type == "Display" ? "index" : $type);
                 $content[] = $rendered;
 
                 try {
@@ -213,6 +221,7 @@ class Content_Service_Content extends Zoo_Service {
 
     /**
      * Reset the view's script paths and set new ones
+     * @todo: Move elsewhere - it shouldn't be in a service
      *
      * @param string $module
      */

@@ -1,11 +1,11 @@
 <?php
 /**
- * @package    ZooLib
+ * @package    Zoo
  * @subpackage Db
  */
 
 /**
- * @package    ZooLib
+ * @package    Zoo
  * @subpackage Db
  * @copyright  Copyright (c) 2008 ZooCMS
  *
@@ -63,5 +63,43 @@ class Zoo_Db_Table extends Zend_Db_Table_Abstract {
             $this->_name = $this->getRowClass();
         }
         parent::_setupTableName();
+    }
+    
+    /**
+     * Inserts a new row.
+     * Switches to master db connection 
+     *
+     * @param  array  $data  Column-value pairs.
+     * @return mixed         The primary key of the row inserted.
+     */
+    public function insert(array $data)
+    {
+        $this->_setAdapter(Zoo::getService('db')->getDb('master'));
+        return parent::insert($data);
+    }
+    
+/**
+     * Updates existing rows.
+     *
+     * @param  array        $data  Column-value pairs.
+     * @param  array|string $where An SQL WHERE clause, or an array of SQL WHERE clauses.
+     * @return int          The number of rows updated.
+     */
+    public function update(array $data, $where)
+    {
+        $this->_setAdapter(Zoo::getService('db')->getDb('master'));
+        return parent::update($data, $where);
+    }
+    
+	/**
+     * Deletes existing rows.
+     *
+     * @param  array|string $where SQL WHERE clause(s).
+     * @return int          The number of rows deleted.
+     */
+    public function delete($where)
+    {
+        $this->_setAdapter(Zoo::getService('db')->getDb('master'));
+        return parent::delete($where);
     }
 }

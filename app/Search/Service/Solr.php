@@ -40,7 +40,8 @@ class Search_Service_Solr extends Search_Service_Abstract {
         $document = new Apache_Solr_Document();
   		$document->nid = $item->id;
   		$document->title = $item->title;
-  		$document->contents = strip_tags($item->content);
+  		list($content) = Zoo::getService('content')->getRenderedContent($item->id, 'Display');
+  		$document->contents = strip_tags($content);
   		$document->link = $item->url();
   		$document->type = $item->type;
   		$document->uid = $item->uid;

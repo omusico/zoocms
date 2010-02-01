@@ -61,11 +61,11 @@ class Zoo_Plugin_Boot_Http extends Zoo_Plugin_Boot
                     }
                 }
                 Zend_Session::setOptions($options);
-                //            $savehandlerClass = $config->session.save_handler;
-                //            Zend_Session::setSaveHandler(new $savehandlerClass()); // Not ready yet
-
+                if ($config->save_handler) {
+                    $savehandlerClass = $config->save_handler;
+                    Zend_Session::setSaveHandler(new $savehandlerClass()); // Not ready yet                    
+                }
             }
-
             Zend_Session::start();
         }
     }

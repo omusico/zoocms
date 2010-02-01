@@ -12,7 +12,7 @@
  */
 class Rewrite_Path_Factory extends Zoo_Db_Table {
 	public function findPath($path) {
-	    $cacheid = "rewrite_".str_replace(array('/', '-'), '_', $path);
+	    $cacheid = "rewrite_".str_replace(array('/', '-', '?', '=', '%', '&', '+', '(', ')'), '_', $path);
 	    try {
 	        $ret = Zoo::getService('cache')->load($cacheid);
 	        if (!$ret) {
