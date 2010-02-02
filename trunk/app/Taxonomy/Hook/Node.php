@@ -73,14 +73,14 @@ class Taxonomy_Hook_Node extends Zoo_Hook_Abstract {
 
         $form->addElement($category);
         
-        $parent = new Zoo_Form_Element_Autocomplete('autocompleteparent');
-        $parent->setJQueryParam('source', "/Content/node/autocomplete")
-               ->setLabel('Parent')->setAttrib('style', 'width: 400px;');
-        $form->addElement($parent);
+        //$parent = new Zoo_Form_Element_Autocomplete('autocompleteparent');
+        //$parent->setJQueryParam('source', "/Content/node/autocomplete")
+        //       ->setLabel('Parent')->setAttrib('style', 'width: 400px;');
+        //$form->addElement($parent);
         
 
         $options = array('legend' => Zoo::_("Category"));
-        $form->addDisplayGroup(array('category', 'autocompleteparent'), 'category_select', $options);
+        $form->addDisplayGroup(array('category'), 'category_select', $options);
 
         $form->populate(array('category' => $item->pid));
     }
