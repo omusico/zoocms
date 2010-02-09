@@ -61,7 +61,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 				
 		$last = filemtime ( $thumbpath );
 		$expires = date ( 'r', strtotime ( "+ 1 year" ) );
-		header ( "Cache-Control: maxage=".$expires);
+		header ( "Cache-Control: max-age=".(86400*365));
 		header ( "Pragma: public");
 		header ( "Last-Modified: " . date ( 'r', $last ) );
 		header ( "Expires: " . $expires );
@@ -75,6 +75,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 			exit;
 		}
 		//Output
+		header ( "Content-Length: ".filesize($thumbpath));
 		echo file_get_contents ( $thumbpath );
 	}
 	
@@ -113,7 +114,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 		 */
 		$last = filemtime ( $path );
 		$expires = date ( 'r', strtotime ( "+ 1 year" ) );
-		header ( "Cache-Control: maxage=".$expires);
+		header ( "Cache-Control: max-age=".(86400*365));
 		header ( "Pragma: public");
 		header ( "Last-Modified: " . date ( 'r', $last ) );
 		header ( "Expires: " . $expires );
@@ -123,7 +124,7 @@ class Filemanager_FileController extends Zoo_Controller_Action {
 			header('HTTP/1.0 304 Not Modified');
 			exit;
 		}
-		
+		header ( "Content-Length: ".filesize($path));
 		echo file_get_contents ( $path );
 	}
 	
