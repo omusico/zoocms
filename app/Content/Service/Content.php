@@ -153,7 +153,7 @@ class Content_Service_Content extends Zoo_Service {
                 $item = $id;
             }
             $can_edit = Zoo::getService('acl')->checkItemAccess($item, 'edit');
-            $cacheid = "Content_node".$type."_".$can_edit."_".$item->id;
+            $cacheid = "Content_node".$type."_".$item->id.($can_edit ? "_edit" : "");
             try {
                 $cached = Zoo::getService("cache")->load($cacheid);
                 if ($cached) {
