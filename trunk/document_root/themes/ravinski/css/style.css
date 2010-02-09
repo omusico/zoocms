@@ -539,6 +539,38 @@ div.gallery_node_list {
 	border-bottom: 1px solid black;
 }
 
+.gallery-file {
+	text-align: center;
+}
+
+.gallery-file-navigation {
+	padding: 10px;
+}
+
+.gallery-file-navigation div {
+	width: 33%;
+	float: left;
+}
+
+.gallery-previous {
+	text-align: left;
+}
+
+.gallery-overview {
+	text-align: center;
+}
+
+.gallery-overview a {
+	background: url('../images/overview.gif');
+	height: 17px;
+	padding-left: 30px;
+	background-repeat: no-repeat;
+}
+
+.gallery-next {
+	text-align: right;
+}
+
 /* MOVEABLE LAYOUT */
 .fl-uploader-queue-header {
 	background-color: #E3E3C7;

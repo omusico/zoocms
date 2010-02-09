@@ -17,7 +17,7 @@ class Search_SearchController extends Zoo_Controller_Action
      *
      */
     function indexAction() {
-        $res = Zoo::getService('search')->search($this->_request->getParam('term'), 2);
+        $res = Zoo::getService('search')->search($this->_request->getParam('term'), 20);
         $hits = $items = array();
         foreach ($res['results'] as $hit) {
             $hits[] = $hit->nid;
