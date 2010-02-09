@@ -4,13 +4,13 @@
 <br class="clear" />
 <div class="gallery-file">
     <div class="gallery-file-navigation">
-    	<div class="gallery-previous">
+    	<div class="gallery-previous">&nbsp;
         	<?php if ($this->previous) {?>
         	    <a href='<?php echo $this->url(array('id' => $this->item->id, 'file_id' => $this->previous->id), 'gallery_image', true);?>'><?php echo $this->translate('Previous');?></a>
         	<?php }?>
     	</div>
     	<div class="gallery-overview"><a href='<?php echo $this->item->url();?>'><?php echo $this->translate('Overview');?></a></div>
-    	<div class="gallery-next">
+    	<div class="gallery-next">&nbsp;
     	    <?php if ($this->next) {?>
     	    	<a href='<?php echo $this->url(array('id' => $this->item->id, 'file_id' => $this->next->id), 'gallery_image', true);?>'><?php echo $this->translate('Next');?></a>
     	    <?php }?>
@@ -34,13 +34,13 @@
         <p><?php echo $this->escape($this->image);?></p>
     </div>
     <div class="gallery-file-navigation">
-    	<div class="gallery-previous">
+    	<div class="gallery-previous">&nbsp;
         	<?php if ($this->previous) {?>
         	    <a href='<?php echo $this->url(array('id' => $this->item->id, 'file_id' => $this->previous->id), 'gallery_image', true);?>'><?php echo $this->translate('Previous');?></a>
         	<?php }?>
     	</div>
     	<div class="gallery-overview"><a href='<?php echo $this->item->url();?>'><?php echo $this->translate('Overview');?></a></div>
-    	<div class="gallery-next">
+    	<div class="gallery-next">&nbsp;
     	    <?php if ($this->next) {?>
     	    	<a href='<?php echo $this->url(array('id' => $this->item->id, 'file_id' => $this->next->id), 'gallery_image', true);?>'><?php echo $this->translate('Next');?></a>
     	    <?php }?>
