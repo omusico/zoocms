@@ -56,7 +56,8 @@ class Search_Service_Lucene extends Search_Service_Abstract {
         $doc->addField(Zend_Search_Lucene_Field::unStored('type', $item->type));
         $doc->addField(Zend_Search_Lucene_Field::unStored('published', $item->published));
         $doc->addField(Zend_Search_Lucene_Field::unStored('uid', $item->uid));
-        $doc->addField(Zend_Search_Lucene_Field::unStored('contents', strip_tags($item->content)));
+        list($content) = Zoo::getService('content')->getRenderedContent($item->id, 'Display');
+        $doc->addField(Zend_Search_Lucene_Field::unStored('contents', strip_tags($content)));
 
         return $doc;
     }
@@ -76,9 +77,7 @@ class Search_Service_Lucene extends Search_Service_Abstract {
     function search($term, $limit = 10, $offset = 0, $params = array()) {
         $this->index->setResultSetLimit($limit);
         $hits = $this->index->find(strtolower($term));
-        /**
-         * Duplicating the search to find the number of matched docs, since Zend_Search_Lucene doesn't return that
-         */
+
         $count = $this->getTotalResults($term);
 
         return array('count' => $count, 'results' => $hits);

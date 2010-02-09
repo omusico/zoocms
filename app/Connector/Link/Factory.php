@@ -47,6 +47,56 @@ class Connector_Link_Factory extends Zoo_Db_Table {
         }
 	}
 	
+	/**
+	 * Get the next item - if any - of a given type
+	 * @param Zoo_Content_Interface $item
+	 * @param string $type
+	 * @return Zoo_Content_Interface|false
+	 */
+	public function getNext($nid, $tonid, $type = "link") {
+	    $select = $this->select();
+    	$select->where('nid = ?', $nid);
+    	$select->where('tonid = ?', $tonid);
+    	$select->where('type = ?', $type);
+		$row = $this->fetchRow($select);
+		
+	    $select = $this->select();
+	    $select->where('nid = ?', $nid);
+    	$select->where('type = ?', $type);
+    	$select->where('weight > ?', $row->weight);
+    	$select->order('weight ASC');
+    	$row = $this->fetchRow($select);
+    	if ($row) {
+    	    return Zoo::getService('content')->load($row->tonid, 'List');
+    	}
+    	return false;
+	}
+	
+	/**
+	 * Get the previous item - if any - of a given type
+	 * @param Zoo_Content_Interface $item
+	 * @param string $type
+	 * @return Zoo_Content_Interface|false
+	 */
+	public function getPrevious($nid, $tonid, $type = "link") {
+	    $select = $this->select();
+	    $select->where('nid = ?', $nid);
+    	$select->where('tonid = ?', $tonid);
+    	$select->where('type = ?', $type);
+		$row = $this->fetchRow($select);
+
+		$select = $this->select();
+		$select->where('nid = ?', $nid);
+    	$select->where('type = ?', $type);
+    	$select->where('weight < ?', $row->weight);
+    	$select->order('weight DESC');
+    	$row = $this->fetchRow($select);
+    	if ($row) {
+    	    return Zoo::getService('content')->load($row->tonid, 'List');
+    	}
+    	return false;
+	}
+	
 /**
      * Get next weight for a linked node
      * @note NOT concurrency protected

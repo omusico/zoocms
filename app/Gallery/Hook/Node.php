@@ -41,7 +41,7 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             				 'order' => 'published ASC');
             $item->hooks['subgalleries'] = Zoo::getService('content')->getContent($options, 0, 0);
             
-            // Find Estate node extra information
+            // Find Gallery node extra information
             $factory = new Gallery_Node_Factory();
             $extra = $factory->find($item->id)->current();
             if ($extra) {
@@ -51,17 +51,20 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
             	$bg_color_style = "background-color: ".$extra->bgcolor.";";
             }
             
-            // Add Lightbox JS
-            $view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
-
-            $view->jQuery()->enable()->uiEnable();
-			$view->jQuery()->addJavascriptFile('/js/jquery/lightbox/js/jquery.lightbox-0.5.js', 'text/javascript');
-			$view->jQuery()->addStylesheet('/js/jquery/lightbox/css/jquery.lightbox-0.5.css');
-			
-			$js = ZendX_JQuery_View_Helper_JQuery::getJQueryHandler().'(".gallery_node_list a").lightBox({txtImage: "'.Zoo::_('Image').'", txtOf: "'.Zoo::_('of').'"});';
-			$view->jQuery()->addOnLoad($js);
-            
+            $item->hooks ['gallery_config'] = Zoo::getConfig ( 'gallery', 'module' );
+            if ($item->hooks ['gallery_config']->lightbox) {
+                // Add Lightbox JS
+                $view = Zend_Controller_Action_HelperBroker::getStaticHelper ( 'viewRenderer' )->view;
+                
+                $view->jQuery ()->enable ()->uiEnable ();
+                $view->jQuery ()->addJavascriptFile ( '/js/jquery/lightbox/js/jquery.lightbox-0.5.js', 'text/javascript' );
+                $view->jQuery ()->addStylesheet ( '/js/jquery/lightbox/css/jquery.lightbox-0.5.css' );
+                
+                $js = ZendX_JQuery_View_Helper_JQuery::getJQueryHandler () . '(".gallery_node_list a").lightBox({txtImage: "' . Zoo::_ ( 'Image' ) . '", txtOf: "' . Zoo::_ ( 'of' ) . '"});';
+                $view->jQuery()->addOnLoad($js);
+            }
             if ($bg_image_style || $bg_color_style) {
+                $view = Zend_Controller_Action_HelperBroker::getStaticHelper ( 'viewRenderer' )->view;
             	$view->headStyle()->appendStyle(".gallery-node-item {{$bg_image_style}{$bg_color_style}}");
             }
         }

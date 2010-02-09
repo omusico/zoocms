@@ -27,7 +27,13 @@
 	    	<?php if (($i % 4) == 0) {echo '<br class="clear" />';} ?>
 	        <div class="content-item gallery_node_list">
 	            <p>
-	                <a rel="lightbox[gallery]" href="<?php echo $image->hooks['filemanager_file']->getUrl(800,600);?>" title="<?php echo $image['content'] ? str_replace('"', "'", $this->escape($image)) : ""; ?>">
+	                <?php 
+	                if ($this->item->hooks['gallery_config']->lightbox == 1) { ?>
+	                	<a rel="lightbox[gallery]" href="<?php echo $image->hooks['filemanager_file']->getUrl(800,600);?>" title="<?php echo $image['content'] ? str_replace('"', "'", $this->escape($image)) : ""; ?>">
+	                <?php }
+	                else {?>
+	                    <a href="<?php echo $this->url(array('id' => $this->item->id, 'file_id' => $image->id), 'gallery_image', true);?>" title="<?php echo $image['content'] ? str_replace('"', "'", $this->escape($image)) : ""; ?>">
+	                <?php }?>
 	                    <img src="<?php echo $image->hooks['filemanager_file']->getUrl(135, 135);?>"
 	                         alt="<?php echo $this->translate('Image').': '.$image['title'];?>" />
 	                </a>
@@ -37,7 +43,7 @@
 	        $i++;
 	    }
 	}
-	unset($this->item->hooks['gallery_nodes'], $this->item->hooks['top_image']);
+	unset($this->item->hooks['gallery_nodes'], $this->item->hooks['top_image'], $this->item->hooks['gallery_config']);
 	?>
 	<br class="clear" />
 </div>
