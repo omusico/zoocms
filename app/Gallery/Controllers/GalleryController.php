@@ -23,11 +23,10 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
          */
         Zend_Registry::set('content_id', $id);
 
-        $found = Zoo::getService('content')->find($id);
-        if ($found->count() == 0) {
+        $item = Zoo::getService('content')->load($id, 'Display');
+        if (!$item) {
             throw new Zend_Controller_Action_Exception(Zoo::_("Content not found"), 404);
         }
-        $item = $found->current();
         
         try {
 	    	if (!Zoo::getService('acl')->checkItemAccess($item)) {
