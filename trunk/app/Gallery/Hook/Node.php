@@ -13,6 +13,24 @@
 
 class Gallery_Hook_Node extends Zoo_Hook_Abstract {
     /**
+     * Add menu items to a node edit block menu
+     * @param Zoo_Content_Service $item
+     * @return void
+     */
+    public function nodeMenu($item) {
+        if ($item->type == "gallery_node") {
+            $item->hooks['menu'][] = new Zend_Navigation_Page_Mvc(array('label' => Zoo::_('Images'),
+                                                                        'route' => 'default',
+            															'module' => 'Filemanager',
+            															'controller' => 'file', 
+            															'action' => 'browse',
+                                                                        'target' => '_blank', 
+            															'params' => array('connectTo' => $item->id,
+                                                                                          'type' => 'gallery_image')));
+        }
+    }
+    
+    /**
      * Hook for node display - fetches Gallery Node
      *
      * @param Zoo_Content_Interface $item

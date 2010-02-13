@@ -219,11 +219,18 @@ class Filemanager_FileController extends Zoo_Controller_Action {
         $this->getHelper('layout')->disableLayout();
 			
 		if ($this->getRequest()->isPost() ) {
-			$item = Zoo::getService('content')->loadFromId($this->getRequest()->getParam('image'), 'List');
+			$item = Zoo::getService('content')->load($this->getRequest()->getParam('image'), 'List');
 			// Connect image to gallery_node
 	        if (Zoo::getService('link')->connect($this->getRequest()->getParam('id'), $item->id, $this->getRequest()->getParam('type'))) {
-		        $this->view->image = $item;
-		        $this->render("sel-item");
+                $this->view->image = $item;
+                $this->render ( "sel-item" );
+                try {
+                    Zoo::getService ( 'cache' )->remove ( "Content_nodeDisplay_" . $item->id );
+                    Zoo::getService ( 'cache' )->remove ( "Content_nodeDisplay_" . $item->id . "_edit" );
+                }
+                catch ( Zoo_Exception_Service $e ) {
+                    // No caching service installed, nothing to remove
+                }
 	        }
 	        else {
 	        	$this->getHelper('viewRenderer')->setNoRender();
