@@ -81,6 +81,14 @@ class Navigate_Service_Menu extends Zoo_Service {
         }
         return $container;
     }
+    
+    /**
+     * Recursive method to get an array of all parent nodes as Zend_Navigation_Page objects
+     *
+     * @param Zoo_Content_Interface $node
+     * @param array $array
+     * @return array 
+     */
     function getNodeParentPath($node, $array = array()) {
         $array [] = $this->nodeToPage ( $node, true );
         if ($parent = $node->getParent ()) {

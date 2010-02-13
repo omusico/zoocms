@@ -64,14 +64,18 @@ class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
                         $this->resetViewScripts ( $blockview, $block );
                         $this->addLanguage ( $block->module );
                         
-                        $blockview->assign ( $block->getTemplateVars () );
-                        $content .= $blockview->render ( $block->template );
-                        
-                        try {
-                            Zoo::getService ( 'cache' )->save ( $content, $cacheid, array_merge ( array ('block', 'block_' . $block->id, 'block_' . get_class ( $block ) ), $block->getCacheTags () ), $block->cache_time );
+                        $vars = $block->getTemplateVars();
+                        if ($vars !== false) {
+                            $blockview->assign ( $block->getTemplateVars () );
+                            $content .= $blockview->render ( $block->template );
                         }
-                        catch ( Zoo_Exception_Service $e ) {
-                            // Cache service not available, do nothing
+                        if ($block->cache_time > 0) {
+                            try {
+                                Zoo::getService ( 'cache' )->save ( $content, $cacheid, array_merge ( array ('block', 'block_' . $block->id, 'block_' . get_class ( $block ) ), $block->getCacheTags () ), $block->cache_time );
+                            }
+                            catch ( Zoo_Exception_Service $e ) {
+                                // Cache service not available, do nothing
+                            }
                         }
                     }
                     

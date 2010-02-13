@@ -11,6 +11,26 @@
  * @version    1.0
  */
 class Content_Hook_Node extends Zoo_Hook_Abstract {
+    public function nodeMenu($item) {
+        $item->hooks['menu'][] = new Zend_Navigation_Page_Mvc(array('label' => Zoo::_('Edit'),
+        															'route' => 'default',
+        															'module' => 'Content', 
+                                                                    'controller' => 'node',
+                                                                    'action' => 'edit',
+                                                                    'reset_params' => true,
+                                                                    'resource' => 'content.node', 
+                                                                    'privilege' => 'edit.' . $item->type,
+                                                                    'params' => array('id' => $item->id)));
+        $item->hooks['menu'][] = new Zend_Navigation_Page_Mvc(array('label' => Zoo::_('Delete'),
+                                                                    'route' => 'default',
+        															'module' => 'Content', 
+                                                                    'controller' => 'node',
+                                                                    'action' => 'delete',
+                                                                    'reset_params' => true,
+                                                                    'resource' => 'content.node', 
+                                                                    'privilege' => 'edit.' . $item->type,
+                                                                    'params' => array('id' => $item->id)));
+    }
     /**
      * Hook for node form - if type is Estate Node, add extra fields
      *

@@ -387,6 +387,18 @@ div.content-item .comment-count {
     width: 100%;
 }
 
+.content-navigation ul li {
+	display: inline;
+	list-style: none;
+	padding: 5px;
+	margin: 5px 0px;
+}
+
+.content-navigation a {
+	color: #FF0000;
+	font-weight: bold;
+}
+
 /* FILEMANAGER */
 div#filemanager {
 	background-color: #F1F1E3;
@@ -499,17 +511,6 @@ div.filemanager_file_list img {
 /* GALLERY */
 .gallery_block_list ul li {
     list-style-image: url('../images/pictures.gif');
-}
-
-.gallery_edit_navigation {
-	border-bottom: 1px solid #FF0000;
-	padding: 5px;
-	margin: 5px 0px;
-}
-
-.gallery_edit_navigation a {
-	color: #FF0000;
-	font-weight: bold;
 }
 
 .gallery-remove-image {

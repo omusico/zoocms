@@ -14,6 +14,12 @@ class Content_NodeController extends Zoo_Controller_Action
 		$ajaxContext = $this->_helper->getHelper ( 'AjaxContext' );
 		$ajaxContext->addActionContext ( 'edit', 'html' )
 					->initContext ();
+					
+		$id = intval($this->getRequest()->getParam('id'));
+        /**
+         * @todo more generic sanitation than intval??
+         */
+        Zend_Registry::set('content_id', $id);
 	}
     /**
      * Display a node
@@ -21,10 +27,6 @@ class Content_NodeController extends Zoo_Controller_Action
      */
     function indexAction() {
         $id = intval($this->getRequest()->getParam('id'));
-        /**
-         * @todo more generic sanitation than intval??
-         */
-        Zend_Registry::set('content_id', $id);
 
         $item = Zoo::getService('content')->load($id, 'Display');
         if (!$item) {
@@ -223,8 +225,8 @@ class Content_NodeController extends Zoo_Controller_Action
 	                throw new Exception(Zoo::_("Access denied - insufficient privileges"), 403);
 	            }
 	            $item->delete();
-	            Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('node_'.$item->id, 'nodelist'));
 		        try {
+		            Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('node_'.$item->id, 'nodelist'));
 	                Zoo::getService("hook")->trigger("Node", "Delete", $item);
 	            }
 	            catch (Zoo_Exception_Service $e) {
