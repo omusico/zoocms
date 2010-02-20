@@ -30,7 +30,7 @@ class Navigate_Block_Breadcrumbs extends Zoo_Block_Abstract  {
      * @see library/Zoo/Block/Zoo_Block_Abstract#getCacheId()
      */
     function getCacheId() {
-        if (Zend_Registry::isRegistered('content_id')) {
+        if (Zend_Registry::isRegistered('content_id') && Zend_Registry::get('content_id') > 0) {
    		    return parent::getCacheId(). md5(Zend_Controller_Front::getInstance()->getRequest()->getRequestUri());
         }
         return false;

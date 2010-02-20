@@ -3,7 +3,7 @@
 <?php echo $this->render('gallery/top');?>
 
 <div class="content-node-item"><?php echo $this->escape($this->item);?></div>
-<form id="reorderform" action="<?php echo $this->url(array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'performReorder', 'id' => $this->item['id']), 'default', true);?>" onsubmit="return false;">
+<form id="reorderform" action="<?php echo $this->url(array('module' => 'gallery', 'controller' => 'gallery', 'action' => 'performReorder', 'id' => $this->item['id']), 'default', true);?>" onsubmit="return false;">
 <input type="hidden" name="id" value="<?php echo $this->item['id'];?>" />
 <div id="gallery:::gallery-thumbs:::" class="flc-imageReorderer">
 <?php
@@ -44,12 +44,12 @@ if ($this->item->hooks['gallery_nodes']) {
 <script type="text/javascript">
 $("#editDialog").dialog({width: 620, autoOpen: false});
 function editDialog(id) {
-	$("#editDialog").load("<?php echo $this->url ( array ('module' => 'Content', 'controller' => 'node', 'action' => 'edit', 'format' => 'html'), 'default', true );?>/id/" + id);
+	$("#editDialog").load("<?php echo $this->url ( array ('module' => 'content', 'controller' => 'node', 'action' => 'edit', 'format' => 'html'), 'default', true );?>/id/" + id);
 	$("#editDialog").dialog('open');
 }
 
 function removeDialog(id) {
-	$("#editDialog").load("<?php echo $this->url ( array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'remove'), 'default', true );?>/id/" + id);
+	$("#editDialog").load("<?php echo $this->url ( array('module' => 'gallery', 'controller' => 'gallery', 'action' => 'remove'), 'default', true );?>/id/" + id);
 	$("#editDialog").dialog('option', 'buttons', { "Cancel": function() { $(this).dialog("close"); },
 												   "Remove": function() { removeAction(id); $(this).dialog("close"); }
 												    } );
@@ -59,7 +59,7 @@ function removeDialog(id) {
 function removeAction(id) {
 	$.ajax({
         type: "POST",
-        url: "<?php echo $this->url(array('module' => 'Gallery', 'controller' => 'gallery', 'action' => 'remove', 'id' => $this->item->id), 'default', true);?>/image/" + id, 
+        url: "<?php echo $this->url(array('module' => 'gallery', 'controller' => 'gallery', 'action' => 'remove', 'id' => $this->item->id), 'default', true);?>/image/" + id, 
         complete: function (data, ajaxStatus) {
             // Handle success or failure by being nice to the user.
 			alert(data.responseText);

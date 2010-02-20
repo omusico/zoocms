@@ -14,7 +14,7 @@ class Content_Hook_Node extends Zoo_Hook_Abstract {
     public function nodeMenu($item) {
         $item->hooks['menu'][] = new Zend_Navigation_Page_Mvc(array('label' => Zoo::_('Edit'),
         															'route' => 'default',
-        															'module' => 'Content', 
+        															'module' => 'content', 
                                                                     'controller' => 'node',
                                                                     'action' => 'edit',
                                                                     'reset_params' => true,
@@ -23,7 +23,7 @@ class Content_Hook_Node extends Zoo_Hook_Abstract {
                                                                     'params' => array('id' => $item->id)));
         $item->hooks['menu'][] = new Zend_Navigation_Page_Mvc(array('label' => Zoo::_('Delete'),
                                                                     'route' => 'default',
-        															'module' => 'Content', 
+        															'module' => 'content', 
                                                                     'controller' => 'node',
                                                                     'action' => 'delete',
                                                                     'reset_params' => true,

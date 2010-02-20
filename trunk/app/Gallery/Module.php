@@ -21,13 +21,13 @@ class Gallery_Module extends Zoo_Module {
      * @var array
      */
     protected $routes = array('gallery_node' =>array('route'    => "galleri/:id",
-                                                     'defaults' => array('module'       => "Content",
+                                                     'defaults' => array('module'       => "content",
                                                                          'controller'   => "node",
                                                                          'action'       => "index"),
                                                      'reqs'     => array('id' => "\d+")
                                                    ),
                               'gallery_list' => array('route' => "galleri",
-                                                       'defaults' => array('module'     => "Gallery",
+                                                       'defaults' => array('module'     => "gallery",
                                                                            'controller' => "index",
                                                                            'action'     => "index"))
                              );

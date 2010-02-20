@@ -1,6 +1,6 @@
 <h1><?php echo $this->escape($this->item['title']);?></h1>
 
-<form id="reorderform" action="<?php echo $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'performReorder', 'id' => $this->item['id']), 'default', true);?>" onsubmit="return false;">
+<form id="reorderform" action="<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'performReorder', 'id' => $this->item['id']), 'default', true);?>" onsubmit="return false;">
 <input type="hidden" name="id" value="<?php echo $this->item['id'];?>" />
 <div id="selected-file-list" class="flc-imageReorderer">
 <?php

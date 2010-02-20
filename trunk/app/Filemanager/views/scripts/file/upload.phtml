@@ -100,7 +100,7 @@
 
             		    options: {
             		       // Set the uploadURL to the URL for posting files to your server.
-            		       uploadURL: "<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'performupload' ), 'default', true );?>",
+            		       uploadURL: "<?php echo $this->url ( array ('module' => 'filemanager', 'controller' => 'file', 'action' => 'performupload' ), 'default', true );?>",
 
             		       // Add post parameters
             		       postParams: {parent: <?php echo $this->catId; if ($this->connectTo) {echo ", connectTo: ".$this->connectTo;} ?> },

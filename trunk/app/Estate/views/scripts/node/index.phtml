@@ -1,5 +1,5 @@
 <h1><?php echo $this->escape($this->item['title']);?></h1>
-<a href="<?php echo $this->url(array('module' => 'Content', 'controller' => 'node', 'action' => 'edit', 'id' => $this->item['id']), 'default', true);?>"><?php echo $this->translate('Edit');?></a>
+<a href="<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'edit', 'id' => $this->item['id']), 'default', true);?>"><?php echo $this->translate('Edit');?></a>
 <table class="estate-display-node">
     <tr>
         <td><?php echo $this->translate('Price');?></td><td><?php echo $this->NumberFormat($this->item->hooks['estate_node']->price); ?></td>

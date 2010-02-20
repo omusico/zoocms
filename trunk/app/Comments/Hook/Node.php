@@ -23,10 +23,7 @@ class Comments_Hook_Node extends Zoo_Hook_Abstract {
      */
     public function nodeList(&$item) {
         // Count comments per node
-        $comments = Zoo::getService('content')->countChildren($item->id, 'comment');
-        foreach ($comments as $comment_count) {
-            $counts[$comment_count->pid] = $comment_count->comment;
-        }
+        $counts = Zoo::getService('content')->countChildren($item->id, 'comment');
         $count = isset($counts[$item->id]) ? ($counts[$item->id]) : 0;
         if ($count > 0) {
         	$this->view->url = $item->url();

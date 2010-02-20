@@ -42,8 +42,8 @@ class Zend_View_Helper_FormWysiwyg extends Zend_View_Helper_FormTextarea
          */
         $xhtml .= '<script type="text/javascript">
         				CKEDITOR.replace( "'. $this->view->escape($id) .'", {
-        					filebrowserBrowseUrl : "/Filemanager/file/browse",
-        					filebrowserImageBrowseUrl : "/Filemanager/file/browse?type=Images"
+        					filebrowserBrowseUrl : "/filemanager/file/browse",
+        					filebrowserImageBrowseUrl : "/filemanager/file/browse?type=Images"
     						} );
         			</script>';
         $this->instances += 1;

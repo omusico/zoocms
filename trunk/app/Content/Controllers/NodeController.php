@@ -82,7 +82,7 @@ class Content_NodeController extends Zoo_Controller_Action
         $this->view->item = $item;
         $this->view->type = Zoo::getService('content')->getType($item->type);
         $this->view->form = $item->getForm($this->_helper->getHelper('url')
-                                                    ->direct('save', 'node', 'Content'));
+                                                    ->direct('save', 'node', 'content'));
         $this->render("form");
     }
 
@@ -106,7 +106,7 @@ class Content_NodeController extends Zoo_Controller_Action
             $this->view->type = Zoo::getService('content')->getType($item->type);
             $this->view->pagetitle = $this->view->type->name;
             $this->view->form = $item->getForm($this->_helper->getHelper('url')
-                                                    ->direct('save', 'node', 'Content'));
+                                                    ->direct('save', 'node', 'content'));
 			if ($this->getRequest()->isXmlHttpRequest()) {
 				$this->view->form->setAttrib('onsubmit', 'submitForm(this);return false;');
 			}

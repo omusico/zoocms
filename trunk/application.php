@@ -169,7 +169,7 @@ class ZfApplication
                 $frontController->setDefaultModule($config->module->default);
             }
             else {
-                $frontController->setDefaultModule('Zoo');
+                $frontController->setDefaultModule('zoo');
             }
         }
         else {

@@ -79,7 +79,7 @@ class Utility_Hook_Form extends Zend_Form {
     public function init()
     {
         $url = Zend_Controller_Front::getInstance()->getRouter()
-                                                    ->assemble(array('module' => "Utility",
+                                                    ->assemble(array('module' => "utility",
                                                                      'controller' => 'hook',
                                                                      'action' => 'save'),
                                                                'default');

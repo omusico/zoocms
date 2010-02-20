@@ -49,5 +49,21 @@ class Utility_CacheController extends Zend_Controller_Action
     	}
     }
 
-
+    function apcAction() {
+        define("USE_AUTHENTICATION", 0);
+        
+        Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
+        //$this->getHelper('layout')->disableLayout();
+        $this->getHelper('viewRenderer')->setNoRender();
+        unset($_SERVER['PHP_SELF']);
+        include dirname(__FILE__)."/extra/apc.php";
+    }
+    
+    function memcacheAction() {
+        Zend_Controller_Front::getInstance()->getResponse()->clearHeaders();
+        //$this->getHelper('layout')->disableLayout();
+        $this->getHelper('viewRenderer')->setNoRender();
+        unset($_SERVER['PHP_SELF']);
+        include dirname(__FILE__)."/extra/memcache.php";
+    }
 }

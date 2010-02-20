@@ -21,7 +21,7 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
         if ($item->type == "gallery_node") {
             $item->hooks['menu'][] = new Zend_Navigation_Page_Mvc(array('label' => Zoo::_('Images'),
                                                                         'route' => 'default',
-            															'module' => 'Filemanager',
+            															'module' => 'filemanager',
             															'controller' => 'file', 
             															'action' => 'browse',
                                                                         'target' => '_blank', 
@@ -108,7 +108,7 @@ class Gallery_Hook_Node extends Zoo_Hook_Abstract {
 		        /**
 		         * @todo Query the filemanager service for this URL
 		         */
-		        $urlOptions = array('module' => 'Filemanager',
+		        $urlOptions = array('module' => 'filemanager',
 		                            'controller' => 'file',
 		                            'action' => 'combine',
 		                            'id1' => $ids[0],
