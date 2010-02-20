@@ -18,6 +18,7 @@
     	<br class="clear" />
     </div>
     <div class="clear">
+    	<a name="image"></a>
         <?php if ($this->image->hooks['filemanager_file']->isImage()):?>
             <img src="<?php echo $this->image->hooks['filemanager_file']->getUrl(630);?>" alt="<?php echo $this->translate('Image: ').$this->image['title'];?>" />
         <?php else:?>

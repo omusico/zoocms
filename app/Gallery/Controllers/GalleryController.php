@@ -87,13 +87,13 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
             if ($this->view->next) {
                 $next_js = "if(e.which == 78 || e.which == 39 ) {
                 		//n = next
-                		location.href = '".$this->_helper->getHelper('url')->url(array('id' => $this->item->id, 'file_id' => $this->view->next->id), 'gallery_image', true)."';
+                		location.href = '".$this->_helper->getHelper('url')->url(array('id' => $this->item->id, 'file_id' => $this->view->next->id), 'gallery_image', true)."#image';
                 	}";
             }
             if ($this->view->previous) {
                 $prev_js = "if(e.which == 80 || e.which == 37) {
                 		//p = previous
-                		location.href = '".$this->_helper->getHelper('url')->url(array('id' => $this->item->id, 'file_id' => $this->view->previous->id), 'gallery_image', true)."';
+                		location.href = '".$this->_helper->getHelper('url')->url(array('id' => $this->item->id, 'file_id' => $this->view->previous->id), 'gallery_image', true)."#image';
                 	}";
             }
         
