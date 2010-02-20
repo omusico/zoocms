@@ -83,7 +83,7 @@ class Filemanager_Hook_Node extends Zoo_Hook_Abstract {
                     else {
                         $imageid = 0;
                     }
-                    $urlOptions = array('module' => 'Filemanager',
+                    $urlOptions = array('module' => 'filemanager',
                                         'controller' => 'file',
                                         'action' => 'show',
                                         'id' => $imageid);

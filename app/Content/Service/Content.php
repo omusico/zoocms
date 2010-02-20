@@ -24,7 +24,7 @@ class Content_Service_Content extends Zoo_Service {
 	/**
 	 * @var string
 	 */
-	public $module = "Content";
+	public $module = "content";
     /**
      *
      * @var Zend_View
@@ -174,8 +174,8 @@ class Content_Service_Content extends Zoo_Service {
                     $this->view->clearVars();
                 }
                     
-                $module = substr($item->type, 0, strpos($item->type, "_"));
-                $this->resetView($module);
+                list($module, $nodetype) = explode('_', $item->type);
+                $this->resetView($module, $nodetype);
                 $this->addLanguage($module);
 
                 $this->view->assign('item', $item);
@@ -207,7 +207,7 @@ class Content_Service_Content extends Zoo_Service {
         $factory = $this->getFactory();
         $select = $factory->select()
                             ->from( array('c' => $factory->info(Zend_Db_Table_Abstract::NAME)),
-                                    array('pid', $group => 'COUNT(*)'))
+                                    array('pid', 'count' => 'COUNT(*)'))
                             ->where('pid IN (?)', $ids);
         if ($group != "") {
             $type_table = new Content_Type_Factory();
@@ -216,7 +216,12 @@ class Content_Service_Content extends Zoo_Service {
             $select->where('`group` = ?', $group);
         }
         $select->group('pid');
-        return $factory->fetchAll($select);
+        $ret = $factory->fetchAll($select);
+        $counts = array();
+        foreach ($ret as $child_count) {
+            $counts[$child_count->pid] = $child_count->count;
+        }
+        return $counts;
     }
 
     /**
@@ -224,19 +229,20 @@ class Content_Service_Content extends Zoo_Service {
      * @todo: Move elsewhere - it shouldn't be in a service
      *
      * @param string $module
+     * @param string $type
      */
-    private function resetView($module) {
+    private function resetView($module, $type) {
         $module = ucfirst($module);
         $layout = Zend_Layout::getMvcInstance();
         // Reset view script paths
         $this->view->setScriptPath(null);
 
         // Build new ones for blocks
-        $this->view->addBasePath(ZfApplication::$_base_path."/app/$module/views", $module."_View");
-        $this->view->addScriptPath(ZfApplication::$_base_path."/app/Content/views/scripts/node");
-        $this->view->addScriptPath(ZfApplication::$_base_path."/app/$module/views/scripts/node");
-        $this->view->addScriptPath($layout->getLayoutPath()."default/templates/$module/node");
-        $this->view->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/$module/node");
+        $this->view->addBasePath(ZfApplication::$_base_path."/app/".ucfirst($module)."/views", ucfirst($module)."_View");
+        $this->view->addScriptPath(ZfApplication::$_base_path."/app/Content/views/scripts/$type");
+        $this->view->addScriptPath(ZfApplication::$_base_path."/app/".ucfirst($module)."/views/scripts/$type");
+        $this->view->addScriptPath($layout->getLayoutPath()."default/templates/".ucfirst($module)."/$type");
+        $this->view->addScriptPath($layout->getLayoutPath().$layout->getLayout()."/templates/".ucfirst($module)."/$type");
     }
 
     /**
@@ -248,7 +254,7 @@ class Content_Service_Content extends Zoo_Service {
     function addLanguage($module) {
         try {
             Zoo::getService("translator")->addTranslation(
-                                                ZfApplication::$_base_path."/app/".$module."/Language",
+                                                ZfApplication::$_base_path."/app/".ucfirst($module)."/Language",
                                                 null,
                                                 array('scan' => Zend_Translate::LOCALE_FILENAME ));
         }

@@ -12,6 +12,16 @@
  */
 class Content_Block_Nodemenu extends Zoo_Block_Abstract  {
     /**
+     * Get cache ID for the block
+     * @see Zoo_Block_Abstract#getCacheId()
+     */   
+    function getCacheId() {
+        if (Zend_Registry::isRegistered('content_id') && Zend_Registry::get('content_id') > 0 ) {
+            return get_class($this)."_".Zend_Registry::get('content_id'); 
+        }
+        return false;
+    }
+    /**
      * Retrieve node menu items
      * 
      * @return array
@@ -20,7 +30,7 @@ class Content_Block_Nodemenu extends Zoo_Block_Abstract  {
      */
     function getTemplateVars() {
         if (Zend_Registry::getInstance()->isRegistered('content_id')) {
-            $item = Zoo::getService('content')->load(Zend_Registry::getInstance()->get('content_id'), 'Menu');
+            $item = Zoo::getService('content')->load(Zend_Registry::get('content_id'), 'Menu');
             $menu = new Zend_Navigation($item->hooks['menu']);
             return array('menu' => $menu);
         }

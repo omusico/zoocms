@@ -8,6 +8,6 @@ echo "</ul>";
 <div id="status"></div>
 <script type="text/javascript">
 	function ajaxGet(domain, offset) {
-		$("#status").load("<?php echo $this->url ( array ('module' => 'Gallery', 'controller' => 'import', 'action' => 'doimport' ), 'default', true );?>/account/" + domain + "/offset/" + offset);
+		$("#status").load("<?php echo $this->url ( array ('module' => 'gallery', 'controller' => 'import', 'action' => 'doimport' ), 'default', true );?>/account/" + domain + "/offset/" + offset);
 	}
 </script>

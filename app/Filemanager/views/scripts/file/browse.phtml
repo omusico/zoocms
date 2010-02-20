@@ -47,7 +47,7 @@
 		}
 		if (id > 0) {
 			$('#filemanager-upload-form').hide();
-			loadCategory("<?php echo $this->url ( array ('module' => 'Filemanager', 'controller' => 'file', 'action' => 'list', 'format' => 'html' ), 'default', true );?>/id/" + id + "?" + $("#configure-form").serialize());
+			loadCategory("<?php echo $this->url ( array ('module' => 'filemanager', 'controller' => 'file', 'action' => 'list', 'format' => 'html' ), 'default', true );?>/id/" + id + "?" + $("#configure-form").serialize());
 		}
 	}
 
@@ -64,7 +64,7 @@
 		if (catId > 0) {
 			$('#filemanager-configure-form').hide();
 			$('#filemanager-upload-form').show();
-			$('#filemanager-upload-form').html('<iframe src="/Filemanager/file/upload/catid/' + catId + '/connectTo/<?php echo $this->connectTo; ?>" width="100%" height="310"></iframe>');
+			$('#filemanager-upload-form').html('<iframe src="/filemanager/file/upload/catid/' + catId + '/connectTo/<?php echo $this->connectTo; ?>" width="100%" height="310"></iframe>');
 		}
 		else {
 			alert("<?php echo $this->translate('Please select a folder');?>");
@@ -84,11 +84,11 @@
 
 	function afterUpload() {
 		selectCategory();
-		$("#selected").load("<?php echo $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'selected', 'connectTo' => $this->connectTo, 'type' => $this->type), 'default', true);?>", null, setContext);
+		$("#selected").load("<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'selected', 'connectTo' => $this->connectTo, 'type' => $this->type), 'default', true);?>", null, setContext);
 	}
 
 	function selectImage(id, ele) {
-		var fileUrl = "<?php echo $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'show'), 'default', true);?>/id/" + id + "/width/150/height/150";
+		var fileUrl = "<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'show'), 'default', true);?>/id/" + id + "/width/150/height/150";
 		<?php if (isset($_REQUEST['CKEditorFuncNum'])) {?>
 			window.opener.CKEDITOR.tools.callFunction( <?php echo $this->escape($_REQUEST['CKEditorFuncNum']);?>, fileUrl);
 			window.close();
@@ -99,7 +99,7 @@
 			$.ajax({
 		        type: "POST",
 		        data: "image=" + id + "&id=<?php echo $this->connectTo;?>&type=<?php echo $this->escape($this->type);?>",
-		        url: "<?php echo $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'connect'), 'default', true);?>", 
+		        url: "<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'connect'), 'default', true);?>", 
 		        complete: function (data, ajaxStatus) {
 					$("#selected-file-list").append(data.responseText);
 					$("#selected").show();
@@ -110,12 +110,12 @@
 	}
 
 	function editDialog(id) {
-		$("#editDialog").load("<?php echo $this->url ( array ('module' => 'Content', 'controller' => 'node', 'action' => 'edit', 'format' => 'html'), 'default', true );?>/id/" + id);
+		$("#editDialog").load("<?php echo $this->url ( array ('module' => 'content', 'controller' => 'node', 'action' => 'edit', 'format' => 'html'), 'default', true );?>/id/" + id);
 		$("#editDialog").dialog('open');
 	}
 
 	function removeDialog(id) {
-		$("#editDialog").load("<?php echo $this->url ( array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'remove'), 'default', true );?>/id/" + id);
+		$("#editDialog").load("<?php echo $this->url ( array('module' => 'filemanager', 'controller' => 'file', 'action' => 'remove'), 'default', true );?>/id/" + id);
 		$("#editDialog").dialog('option', 'buttons', { "Cancel": function() { $("#editDialog").html(''); $(this).dialog("close"); },
 													   "Remove": function() { removeAction(id); $("#editDialog").html(''); $(this).dialog("close"); }
 													    } );
@@ -126,7 +126,7 @@
 		$.ajax({
 	        type: "POST",
 	        data: "type=<?php echo $this->escape($this->type);?>",
-	        url: "<?php echo $this->url(array('module' => 'Filemanager', 'controller' => 'file', 'action' => 'remove', 'id' => $this->item->id), 'default', true);?>/image/" + id, 
+	        url: "<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'remove', 'id' => $this->item->id), 'default', true);?>/image/" + id, 
 	        complete: function (data, ajaxStatus) {
 				var str = "#selected-file-list-image-" + id;
 				$(str).remove();

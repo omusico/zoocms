@@ -18,6 +18,7 @@ class Taxonomy_CategoryController extends Zoo_Controller_Action
      */
     public function indexAction()
     {
-        
+        $select = Zoo::getService('db')->getDb()->select()->from('nonexisting_table');
+        var_dump(Zoo::getService('db')->getDb()->fetchAll($select));
     }
 }

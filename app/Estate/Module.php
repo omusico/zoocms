@@ -27,7 +27,7 @@ class Estate_Module extends Zoo_Module {
                                                      'reqs'     => array('id' => "\d+")
                                                    ),
                               'estate_search' => array('route' => "bolig",
-                                                       'deafults' => array('module'     => "estate",
+                                                       'defaults' => array('module'     => "estate",
                                                                            'controller' => "index",
                                                                            'action'     => "index"))
                              );

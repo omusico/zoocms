@@ -31,7 +31,7 @@ class Flex_Block_Factory extends Zoo_Db_Table {
             // Do nothing
         }
         
-        $cacheid = str_replace(array("/", "?", "=", "&", "-"), "_", "Flex_blocks_page".Zend_Controller_Front::getInstance()->getRequest()->getRequestUri()."_".implode("_", $groups));
+        $cacheid = str_replace(array("/", "?", "=", "&", "-", '.'), "_", "Flex_blocks_page".Zend_Controller_Front::getInstance()->getRequest()->getRequestUri()."_".implode("_", $groups));
         try {
             $ret = Zoo::getService("cache")->load($cacheid);
         }

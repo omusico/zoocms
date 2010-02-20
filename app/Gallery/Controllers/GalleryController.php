@@ -80,6 +80,30 @@ class Gallery_GalleryController extends Zoo_Controller_Action {
             
             $content = $this->getContent();
             $this->cache($content, $cacheid, array('gallery', 'gallery_'.$item->pid, 'node_'.$item->pid));
+            
+            $this->view->jQuery()->enable();
+            
+            $next_js = $prev_js = "";
+            if ($this->view->next) {
+                $next_js = "if(e.which == 78 || e.which == 39 ) {
+                		//n = next
+                		location.href = '".$this->_helper->getHelper('url')->url(array('id' => $this->item->id, 'file_id' => $this->view->next->id), 'gallery_image', true)."';
+                	}";
+            }
+            if ($this->view->previous) {
+                $prev_js = "if(e.which == 80 || e.which == 37) {
+                		//p = previous
+                		location.href = '".$this->_helper->getHelper('url')->url(array('id' => $this->item->id, 'file_id' => $this->view->previous->id), 'gallery_image', true)."';
+                	}";
+            }
+        
+            $js = ZendX_JQuery_View_Helper_JQuery::getJQueryHandler()."(document).keyup(function(e) {
+            		$next_js
+                	$prev_js
+    			  });";
+        
+            $this->view->jQuery()->addOnLoad($js);
+        
         }
         
         $this->renderContent($content);

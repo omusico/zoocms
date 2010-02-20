@@ -38,7 +38,7 @@ class Zend_View_Helper_FileBrowser extends ZendX_JQuery_View_Helper_UiWidget
         $js = sprintf('%s("#%s").click(function(){window.open("%s", "%s", "location=0,status=1,scrollbars=1,width=800,height=500");});',
             ZendX_JQuery_View_Helper_JQuery::getJQueryHandler(),
             $attribs['id']."_image",
-            "/Filemanager/file/browse?elementid=".$attribs['id'],
+            "/filemanager/file/browse?elementid=".$attribs['id'],
             $attribs['id']."_window",
             $params
         );

@@ -13,6 +13,10 @@
  * @version    1.0
  */
 class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
+     public function dispatchLoopStartup() {
+         $view = Zend_Controller_Action_HelperBroker::getStaticHelper ( 'viewRenderer' )->view;
+         $view->assign('blocks', array());
+     }
     
     /**
      * Fetch and assign block content to view
@@ -87,13 +91,11 @@ class Flex_Plugin_Block extends Zend_Controller_Plugin_Abstract {
                     $block_arr ['title'] = $block->title;
                     $block_arr ['block'] = $block;
                     
-                    $rendered_blocks [$position] [] = $block_arr;
+                    $view->blocks[$position] [] = $block_arr;
                     unset ( $block_arr );
                 }
             }
         }
-        $view->assign ( 'blocks', $rendered_blocks );
-        
         return;
     }
     

@@ -45,7 +45,7 @@ class Zend_View_Helper_GetTypeImage {
      * @return string
      */
     public function getTypeImage($mimetype) {
-        $urlOptions = array('module' => 'Filemanager',
+        $urlOptions = array('module' => 'filemanager',
                             'controller' => 'file',
                             'action' => 'getTypeImage',
                             'mimetype' => str_replace("/", "_", $mimetype));
