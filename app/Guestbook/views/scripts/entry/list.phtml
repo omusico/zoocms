@@ -1,0 +1,19 @@
+<?php $guestbook = $this->item->hooks['guestbook_entry'];?>
+<div class="guestbook_entry">
+	<?php if ($this->item->hooks['can_edit']) {?>
+		<div class="delete"><a href="<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'delete', 'id' => $this->item->id), 'default', true);?>"><?php echo $this->translate('Delete');?></a></div>
+	<?php }?>
+    <h2>
+        <?php echo $this->escape($this->item['title'])." - ".$this->escape($guestbook['name'])." - ".date('d/m-Y', $this->item['published']);?> 
+    </h2>
+    <p><?php echo $this->filter($this->item, 'content'); ?></p>
+    <?php if ($guestbook['homepage']) {?><ul><li><?php echo $this->translate('Homepage').": <a href='".$this->escape($guestbook['homepage'])."'>". $this->escape($guestbook['homepage']);?></a></li></ul><?php }?>
+    
+    <?php
+    unset($this->item->hooks['guestbook_entry'], $this->item->hooks['can_edit']); 
+    if($this->item->hooks) {
+      foreach ($this->item->hooks as $name => $hook) {
+          echo $hook;
+      }
+    }?>
+</div>
