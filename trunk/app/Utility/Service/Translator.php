@@ -50,6 +50,9 @@ class Utility_Service_Translator extends Zoo_Service
         		$locale = new Zend_Locale($config->language->default);
             	Zend_Registry::set("Zend_Locale", $locale);
             }
+            else {
+                $locale = new Zend_Locale("en");
+            }
             $this->service = new Zend_Translate('gettext',
                                                 ZfApplication::$_base_path."/app/Zoo/Language",
                                                 $locale,
