@@ -42,7 +42,7 @@ class Guestbook_IndexController extends Zoo_Controller_Action {
 		
 			// Pagination
 			Zend_Paginator::setDefaultScrollingStyle('Elastic');
-			Zend_View_Helper_PaginationControl::setDefaultViewPartial(array('pagination_control.phtml', 'Zoo'));
+			Zend_View_Helper_PaginationControl::setDefaultViewPartial(array('pagination_control.phtml', 'zoo'));
 			
 			$adapter = new Zend_Paginator_Adapter_DbSelect ( $select );
 			$paginator = new Zend_Paginator ( $adapter );
