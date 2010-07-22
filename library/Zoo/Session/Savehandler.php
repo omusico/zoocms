@@ -21,7 +21,7 @@ class Zoo_Session_Savehandler implements Zend_Session_SaveHandler_Interface {
      * @param string $name
      */
     public function open($save_path, $name) {
-        $this->_storage = Zoo::getCache('session');
+        $this->_storage = Zoo::getService('cache')->getCache('session');
         return true;
     }
 

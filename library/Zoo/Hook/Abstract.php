@@ -28,13 +28,13 @@ abstract class Zoo_Hook_Abstract {
         $this->view = clone $view;
         
         try {
-        	$module = substr(get_class($this), 0, strpos(get_class($this), "_"));
-        	if (file_exists(ZfApplication::$_base_path."/app/".$module."/Language")) {
-	        	Zoo::getService('translator')->addTranslation(
+            $module = substr(get_class($this), 0, strpos(get_class($this), "_"));
+            if (file_exists(ZfApplication::$_base_path."/app/".$module."/Language")) {
+	        Zoo::getService('translator')->addTranslation(
 	            	    ZfApplication::$_base_path."/app/".$module."/Language",
 	                	null,
 	                	array('scan' => Zend_Translate::LOCALE_FILENAME ));
-        	}
+            }
         }
         catch (Zoo_Exception_Service $e) {
         	// No translation service - doesn't matter
@@ -77,8 +77,7 @@ abstract class Zoo_Hook_Abstract {
      * @param  boolean $encode
      * @return string Url for the link href attribute.
      */
-    public function url($urlOptions = array(), $name = null, $reset = false, $encode = true)
-    {
+    public function url($urlOptions = array(), $name = null, $reset = false, $encode = true) {
         $router = Zend_Controller_Front::getInstance()->getRouter();
         return $router->assemble($urlOptions, $name, $reset, $encode);
     }
