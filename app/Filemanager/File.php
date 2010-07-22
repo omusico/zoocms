@@ -121,7 +121,7 @@ class Filemanager_File extends Zend_Db_Table_Row_Abstract {
 			imagecopyresampled ( $image_p, $image, 0, 0, 0, 0, $w, $h, $width_orig, $height_orig );
 			
 			// Write to file
-			imagepng ( $image_p, $thumbpath, 0 );
+			imagepng ( $image_p, $thumbpath, 3 );
 		}
 		return $thumbpath;
 	}
