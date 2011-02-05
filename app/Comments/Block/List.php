@@ -22,15 +22,15 @@ class Comments_Block_List extends Zoo_Block_Abstract  {
     function getCacheId() {
         try {
             $roles = Zoo::getService('user')->getCurrentUser()->getGroups();
-            $groups = "_".implode('_',array_keys($roles));
+            $groups = "_" . implode('_', array_keys($roles));
         }
         catch (Zoo_Exception_Service $e) {
             $groups = "";
         }
-        if (Zend_Registry::isRegistered('content_id')) {
-            return get_class($this)."_".Zend_Registry::get('content_id')."_".$groups;
+        if ($node = Zend_Registry::get('context')->node) {
+            return get_class($this) . "_" . $node->nid . "_" . $groups;
         }
-        return get_class($this)."_".$this->id;
+        return get_class($this) . "_" . $this->id;
     }
 
     /**

@@ -1,0 +1,40 @@
+<?php
+// $Id$
+/**
+ * @file
+ * Template for a grid layout.
+ *
+ */
+
+if ($this->layout->settings['add_container'] || $this->is_admin_page) :
+  $container = array(
+    'class' => 'container_' . $this->layout->settings['columns'],
+  );
+  if (!$this->layout->settings['alphaomega']) {
+    $container['class'] .= ' container_' . $this->layout->settings['column_layout'] . '_image';
+  }
+  if (!empty($css_class)) {
+    $container['class'] .= ' ' . $css_class;
+  }
+  if (!empty($css_id)) {
+    $container['id'] = $css_id;
+  }
+  $attributes = '';
+  foreach ($container AS $att => $value) {
+    $attributes .= ' ' . $att . '="' . $value .'"';
+  }
+  ?>
+  <div<?php echo $attributes; ?>>
+<?php endif;
+
+if ($this->layout->settings['structure'] && !empty($this->layout->settings['structure'])) {
+  echo $this->layout->renderElement($this->regions,
+                                    $this->layout->settings['structure'],
+                                    $this->layout->settings['columns'],
+                                    !$this->layout->settings['alphaomega']);
+}
+
+
+if ($this->layout->settings['add_container'] || $this->is_admin_page) : ?>
+  </div>
+<?php endif;
