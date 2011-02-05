@@ -19,13 +19,9 @@ class Content_Plugin_Headcache extends Zend_Controller_Plugin_Abstract {
      */
     public function postDispatch(Zend_Controller_Request_Abstract $request)
     {
-        $tag = Zend_Registry::isRegistered('content_id')
-                ? "node_".Zend_Registry::get('content_id')
+        $tag = Zend_Registry::get('context')->node
+                ? "node_" . Zend_Registry::get('context')->node->nid
                 : $request->getModuleName()."_".$request->getControllerName();
-        //$this->manageHeaders('headScript', $tag);
-        //$this->manageHeaders('headLink', $tag);
-        //$this->manageHeaders('headMeta', $tag);
-        //$this->manageHeaders('headStyle', $tag);
         $this->addHead($tag);
         $this->addJquery();
     }

@@ -1,0 +1,26 @@
+<table>
+	<tr>
+		<th>id</th>
+		<th>type</th>
+		<th>name</th>
+		<th>title</th>
+		<th>position</th>
+		<th>weight</th>
+		<th>cache</th>
+	</tr>
+	<?php
+	    foreach ($this->flexblocks as $block) {
+	        ?>
+	        <tr>
+	        	<td><?php echo $this->escape($block->id);?></td>
+	        	<td><?php echo $this->escape($block->type);?></td>
+	        	<td><?php echo $this->escape($block->name);?></td>
+	        	<td><?php echo $this->escape($block->title);?></td>
+	        	<td><?php echo $this->escape($block->position);?></td>
+	        	<td><?php echo $this->escape($block->weight);?></td>
+	        	<td><?php echo $this->escape($block->cache_time/60);?></td>
+	        </tr>
+	        <?php 
+	    } 
+	?>
+</table>

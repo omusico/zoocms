@@ -16,8 +16,8 @@ class Content_Block_Nodemenu extends Zoo_Block_Abstract  {
      * @see Zoo_Block_Abstract#getCacheId()
      */   
     function getCacheId() {
-        if (Zend_Registry::isRegistered('content_id') && Zend_Registry::get('content_id') > 0 ) {
-            return get_class($this)."_".Zend_Registry::get('content_id'); 
+        if (Zend_Registry::get('context')->node && Zend_Registry::get('context')->node->nid > 0 ) {
+            return get_class($this) . "_" . Zend_Registry::get('context')->node->nid;
         }
         return false;
     }
