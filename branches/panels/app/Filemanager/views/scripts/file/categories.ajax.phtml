@@ -1,0 +1,5 @@
+<?php
+echo "<h2>".$this->translate('Folders')."</h2>"; 
+foreach ( $this->tree as $ele ) {
+	echo $this->partial('file/category.ajax.phtml', array('ele' => $ele, 'first' => true));
+}

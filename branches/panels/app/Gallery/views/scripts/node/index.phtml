@@ -1,0 +1,57 @@
+<?php if ($this->can_edit) {
+    echo $this->render('gallery/top');
+}?>
+<div class="gallery-node-item">
+	<?php if (isset($this->item->hooks['top_image'])) {?>
+		<div class="gallery-top-image"><img src="<?php echo $this->item->hooks['top_image']->hooks['filemanager_file']->getUrl(600);?>" /></div>
+	<?php 
+	}
+	if ($this->item->content) {?>
+		<div class="content-item"><?php echo $this->escape($this->item);?></div>
+	<?php 
+	}
+	if ($this->item->hooks['subgalleries']) {?>
+		<div class="gallery-subgalleries">
+			<?php foreach ($this->item->hooks['subgalleries'] as $subgallery) {
+				echo $subgallery;
+			}
+			unset($this->item->hooks['subgalleries']);?>
+			<br class="clear" />
+		</div>
+	<?php 
+	}
+	if ($this->item->hooks['gallery_nodes'] && count($this->item->hooks['gallery_nodes']) > 0) {
+	    $i = 0;
+	    echo "<h2>".sprintf($this->translate('%s images'), count($this->item->hooks['gallery_nodes']))."</h2>";
+	    foreach ($this->item->hooks['gallery_nodes'] as $image) {?>
+	    	<?php if (($i % 4) == 0) {echo '<br class="clear" />';} ?>
+	        <div class="content-item gallery_node_list">
+	            <p>
+	                <?php 
+	                if ($this->item->hooks['gallery_config']->lightbox == 1) { ?>
+	                	<a rel="lightbox[gallery]" href="<?php echo $image->hooks['filemanager_file']->getUrl(800,600);?>" title="<?php echo $image['content'] ? str_replace('"', "'", $this->escape($image)) : ""; ?>">
+	                <?php }
+	                else {?>
+	                    <a href="<?php echo $this->url(array('id' => $this->item->id, 'file_id' => $image->id), 'gallery_image', true);?>" title="<?php echo $image['content'] ? str_replace('"', "'", $this->escape($image)) : ""; ?>">
+	                <?php }?>
+	                    <img src="<?php echo $image->hooks['filemanager_file']->getUrl(135, 135);?>"
+	                         alt="<?php echo $this->translate('Image').': '.$image['title'];?>" />
+	                </a>
+	            </p>
+	        </div>
+	<?php 
+	        $i++;
+	    }
+	}
+	unset($this->item->hooks['gallery_nodes'], $this->item->hooks['top_image'], $this->item->hooks['gallery_config']);
+	?>
+	<br class="clear" />
+</div>
+<?php 
+if($this->item->hooks) {
+    foreach ($this->item->hooks as $name => $hook) {
+    	if ($hook) {
+      		echo $hook;
+    	}
+    }
+}

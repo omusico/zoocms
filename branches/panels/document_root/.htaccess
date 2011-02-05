@@ -1,0 +1,18 @@
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME} !-s
+
+RewriteRule !\.(pdf|js|ico|txt|gif|jpg|png|css|rss|zip|tar\.gz)$ index.php
+
+<IfModule mod_expires.c>
+        ExpiresActive on
+        ExpiresByType image/gif "access plus 1 years"
+        ExpiresByType image/jpeg "access plus 1 years"
+        ExpiresByType image/png "access plus 1 years"
+        ExpiresByType text/css "access plus 1 years"
+        ExpiresByType text/js "access plus 1 years"
+        ExpiresByType text/javascript "access plus 1 years"
+        ExpiresByType application/javascript "access plus 1 years"
+        ExpiresByType application/x-javascript "access plus 1 years"
+        #ExpiresDefault "access plus 1 days"
+</IfModule>

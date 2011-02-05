@@ -1,0 +1,13 @@
+<div class="content-item content-<?php echo $this->item['type'];?>">
+    <h2>
+        <a href="<?php echo $this->item->url();?>">
+            <?php echo $this->escape($this->item['title']);?>
+        </a>
+    </h2>
+    <p><?php echo $this->filter($this->item, 'content', 350); ?></p>
+    <?php
+    foreach ($this->item->hooks as $hook) {
+        echo $hook;
+    }
+?>
+</div>

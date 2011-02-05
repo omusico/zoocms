@@ -1,0 +1,10 @@
+<a href="<?php echo Zend_Controller_Front::getInstance()->getBaseUrl();?>/" class="home" id="home-link">Home</a>
+<a href="<?php echo $this->url(array(), 'content');?>" class="home" id="articles-link">Articles</a>
+<a href="<?php echo $this->url(array(), 'estate_search');?>" class="home" id="estates-link">Boligsøgning</a>
+<?php if (Zend_Auth::getInstance()->hasIdentity()) {
+  echo '<a href="'.$this->url(array(), 'auth_logout').'">Logout ('.$this->escape(Zend_Auth::getInstance()->getIdentity()->username).')</a>';
+}
+else {
+    echo '<a href="'.$this->url(array(), 'auth_login').'">Login</a>';
+}
+?>

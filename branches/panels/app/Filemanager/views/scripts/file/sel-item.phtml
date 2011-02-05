@@ -1,0 +1,18 @@
+<?php $image = $this->image;?>
+<div class="content-item filemanager_file_list filemanager-file-selected" id="selected-file-list-image-<?php echo $image->id;?>">
+	<div>
+    	<div class="fl-reorderer-image-inner-container">
+          	<a href="<?php echo $image->hooks['filemanager_file']->getUrl();?>" 
+          	   title="<?php echo $image['content'] ? $this->escape($image->content) : "*"; ?>"
+          	   onclick="editDialog(<?php echo $image->id;?>); return false;">
+                <img src="<?php echo $image->hooks['filemanager_file']->getUrl(135, 135);?>"
+                     alt="<?php echo $this->translate('Image: ').$image['title'];?>" />
+            </a>
+            	
+        </div>
+        <div class="flc-reorderer-imageTitle fl-reorderer-imageTitle">
+            <?php echo $image['title'];?>
+        </div>
+    </div>
+	<input id="gallery:::gallery-thumbs:::lightbox-cell:<?php echo $image->id;?>:reorder-index" name="image[]" value="<?php echo $image->id;?>" type="hidden"/>
+</div>

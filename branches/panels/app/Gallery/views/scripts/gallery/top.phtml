@@ -1,0 +1,5 @@
+<div class="gallery_edit_navigation">
+	<a href="<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'edit', 'id' => $this->item['id']), 'default', true);?>"><?php echo $this->translate('Edit');?></a>
+	| 
+	<a href="#" onclick="window.open('<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'browse', 'connectTo' => $this->item['id'], 'type' => 'gallery_image'), 'default', true);?>', 'filebrowser-window', 'location=0,status=1,scrollbars=1,width=950,height=800')"><?php echo $this->translate('Images');?></a>
+</div>

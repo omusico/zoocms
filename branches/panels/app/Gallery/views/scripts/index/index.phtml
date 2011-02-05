@@ -1,0 +1,27 @@
+<h1><?php echo $this->translate('Galleries');?></h1>
+<?php
+$i = 0;
+foreach ($this->items as $item) {
+    $i++;
+?>
+    <div class="content-item filemanager_file_list<?php if ($i % 4 == 0) {echo " clear";} ?>">
+    
+    <p>
+        <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
+            <?php echo $this->item['title'];?>
+        </a>
+    </p>
+    
+    <?php
+    if($item->hooks) {
+        foreach ($item->hooks as $name => $hook) {
+            if ($name != "gallery_nodes") {
+                echo $hook;
+            }
+        }
+    }
+    ?>
+    </div>
+<?php
+}
+?>

@@ -1,0 +1,5 @@
+<?php
+if ($this->can_edit) {?>
+	<a href="<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'edit', 'id' => $this->id), 'default', true);?>"><?php echo $this->translate('Edit');?></a>
+<?php }
+echo ($this->item);

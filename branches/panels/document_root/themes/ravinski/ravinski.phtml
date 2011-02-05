@@ -1,0 +1,147 @@
+<?php echo $this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><?php echo $this->escape($this->sitename). ($this->pagetitle ? " - ".$this->escape($this->pagetitle) : "")?></title>
+    <?php echo $this->headMeta();?>
+    <?php echo $this->headLink();?>
+    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->themeurl;?>/css/style.css" />
+    <?php echo $this->headScript();?>
+    <?php echo $this->headStyle();?>
+    <?php echo $this->jQuery(); ?>
+</head>
+<body>
+<div id="maincontainer">
+  <?php if (isset($this->blocks[Zoo_Block::POSITION_TOP])):
+    echo '<div id="topcontainer">';
+    foreach ($this->blocks[Zoo_Block::POSITION_TOP] as $block):
+        echo '<div class="block">';
+        if ($block['title']):
+            echo '<div class="block-title">'.$block['title']."</div>";
+        endif;
+        echo $block['content']."</div>";
+    endforeach;
+    echo "</div>";
+  endif;?>
+  
+  <div id="logo" onclick="window.location.href='<?php echo $this->url(array(),'default');?>';">
+    <?php echo $this->escape($this->sitename);?>
+    <div class="pagetitle"><?php echo ($this->pagetitle ? $this->escape($this->pagetitle) : ""); ?></div>
+    <br class="clear" />
+  </div>
+  
+  <?php if (isset($this->blocks[Zoo_Block::POSITION_NAV])):
+    echo '<div id="navcontainer">';
+    foreach ($this->blocks[Zoo_Block::POSITION_NAV] as $block):
+        echo '<div class="block">';
+        if ($block['title']):
+            echo '<div class="block-title">'.$block['title']."</div>";
+        endif;
+        echo $block['content']."</div>";
+    endforeach;
+    echo "</div>";
+  endif;?>
+  
+  <?php if (isset($this->blocks[Zoo_Block::POSITION_FULL])):
+    echo '<div id="fullcontainer">';
+    foreach ($this->blocks[Zoo_Block::POSITION_FULL] as $block):
+        echo '<div class="block">';
+        if ($block['title']):
+            echo '<div class="block-title">'.$block['title']."</div>";
+        endif;
+        echo $block['content']."</div>";
+    endforeach;
+    echo "</div>";
+  endif;?>
+  
+  <!--MAINCONTENT-->
+  <div id="contentcontainer">
+      <div class="rcleft">
+        <?php if (isset($this->blocks[Zoo_Block::POSITION_LEFT])):
+                foreach ($this->blocks[Zoo_Block::POSITION_LEFT] as $block):
+                    echo '<div class="rcleftcontent">';
+                    if ($block['title']):
+                        echo '<div class="block-title">'.$block['title']."</div>";
+                    endif;
+                    echo $block['content']."</div>";
+                endforeach;
+              endif;?>
+        &nbsp;
+      </div>
+
+    <?php if (isset($this->blocks[Zoo_Block::POSITION_RCCENTER])): ?>
+        <div class="rccenter">
+            <?php foreach ($this->blocks[Zoo_Block::POSITION_RCCENTER] as $block):
+                if ($block['title']):
+                    echo "<div class='block-title'>".$block['title']."</div>";
+                endif;
+                echo $block['content'];
+            endforeach; ?>
+    	</div>
+	<?php endif; ?>
+
+    <div id="maincontent">
+      <?php 
+      if (isset($this->blocks[1])):
+        foreach ($this->blocks[1] as $block):
+            if ($block['title']):
+                echo "<div class='block-title'>".$block['title']."</div>";
+            endif;
+            echo $block['content'];
+        endforeach;
+      endif;
+      echo $this->layout()->content;?>
+    </div>
+    <!--RIGHT COLUM-->
+
+    <div id="rightcolumcont">
+        <?php if (isset($this->blocks[Zoo_Block::POSITION_RCLEFT])):
+                foreach ($this->blocks[Zoo_Block::POSITION_RCLEFT] as $block):
+                    echo '<div class="rcleftcontent">';
+                    if ($block['title']):
+                        echo '<div class="block-title">'.$block['title']."</div>";
+                    endif;
+                    echo $block['content']."</div>";
+                endforeach;
+              endif;?>
+        <?php if (isset($this->blocks[Zoo_Block::POSITION_RCRIGHT])):?>
+            <div class="rcright">
+                <?php foreach ($this->blocks[Zoo_Block::POSITION_RCRIGHT] as $block):
+                    echo '<div class="rcrightcontent">';
+                    if ($block['title']):
+                        echo '<div class="block-title">'.$block['title']."</div>";
+                    endif;
+                    echo $block['content']."</div>";
+                endforeach;
+            ?></div>
+        <?php endif;?>
+        &nbsp;
+      <div class="clear"></div>
+    </div>
+    <div style="clear: both;">&nbsp;</div>
+  </div>
+  <div id="footer">
+  	<?php if (isset($this->blocks[Zoo_Block::POSITION_FOOTER])):?>
+        <?php foreach ($this->blocks[Zoo_Block::POSITION_FOOTER] as $block):?>
+            <div>
+                <?php if ($block['title']):
+                    echo '<div class="block-title">'.$block['title']."</div>";
+                endif;
+                echo $block['content'];?>
+            </div>
+        <?php endforeach;
+    endif;?>
+  	<div class="clear"><?php echo $this->footer;?></div>
+  </div>
+</div>
+
+<?php if ($this->debug) {
+    echo "<div class='debug'>".$this->debug.'</div>';
+}
+?>
+<!-- 
+Page delivered in <?php echo (round((microtime(true)-$_SERVER['REQUEST_TIME']), 4));?> seconds
+Page generated in <?php echo (round((microtime(true)-ZfApplication::$_started), 4));?> seconds
+-->
+</body>
+</html>

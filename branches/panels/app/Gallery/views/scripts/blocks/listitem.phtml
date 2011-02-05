@@ -1,0 +1,18 @@
+<?php
+$ele = $this->gallery;
+if (isset ( $ele ['element'] )) {
+	echo "<li><a href='".$ele['element']->url()."'>" . $this->escape($ele ['element'] ['title']) . "</a>";
+}
+if (isset ( $ele ['children'] )) {
+	echo "<ul".($this->i == 1 ? " id='treeview'" : "").">";
+	foreach ( $ele ['children'] as $child ) {
+		echo $this->partial ( 'blocks/listitem.phtml', array ('gallery' => $child ) );
+	}
+	if ($this->i == 1) {
+		echo "<li><a href='".$this->url(array(), 'guestbook_entry')."'>Gæstebog</a></li>";
+	}
+	echo "</ul>";
+}
+if (isset ( $ele ['element'] )) {
+	echo "</li>";
+}

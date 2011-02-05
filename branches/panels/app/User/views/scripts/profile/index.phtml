@@ -1,0 +1,9 @@
+<h1><?php echo $this->profile->name ?></h1>
+<h2><?php echo $this->translate('Content');?></h2>
+<?php foreach ($this->content as $item):
+    echo $item;
+endforeach;?>
+<h2><?php echo $this->translate('Comments');?></h2>
+<?php foreach ($this->comments as $item):
+    echo $item;
+endforeach;?>

@@ -1,0 +1,90 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZooCMS\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-12-27 19:26+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Jan <jkp@cusix.dk>\n"
+"Language-Team: ZooCMS Crew\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Danish\n"
+"X-Poedit-Country: DENMARK\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: E:\\Dokumenter\\Xoops\\webserver\\ZooCMS SVN\\app\n"
+"X-Poedit-KeywordsList: setLegend;_;Zend_Controller_Action_Exception;translate;setLabel;addMessage\n"
+"X-Poedit-SearchPath-0: Gallery\n"
+
+#: Gallery/Controllers/GalleryController.php:28
+msgid "Content not found"
+msgstr "Indhold ikke fundet"
+
+#: Gallery/Controllers/GalleryController.php:34
+msgid "Access denied - insufficient privileges"
+msgstr "Du har ikke adgang til dette indhold"
+
+#: Gallery/Hook/Node.php:62
+msgid "Image"
+msgstr "Billede"
+
+#: Gallery/Hook/Node.php:62
+msgid "of"
+msgstr "af"
+
+#: Gallery/Hook/Node.php:122
+msgid "Background colour"
+msgstr "Baggrundsfarve"
+
+#: Gallery/Hook/Node.php:138
+msgid "Top image"
+msgstr "Topbillede"
+
+#: Gallery/Hook/Node.php:141
+msgid "Background image"
+msgstr "Baggrundsbillede"
+
+#: Gallery/Hook/Node.php:145
+msgid "Gallery extras"
+msgstr "Extra indstillinger"
+
+#: Gallery/Views/scripts/gallery/reorder.phtml:21
+msgid "Image: "
+msgstr "Billede:"
+
+#: Gallery/Views/scripts/gallery/reorder.phtml:28
+#: Gallery/Views/scripts/gallery/reorder.phtml:30
+#, php-format
+msgid "Remove %s"
+msgstr "Fjern %s"
+
+#: Gallery/Views/scripts/gallery/top.phtml:2
+msgid "Edit"
+msgstr "Rediger"
+
+#: Gallery/Views/scripts/gallery/top.phtml:4
+msgid "Images"
+msgstr "Billeder"
+
+#: Gallery/Views/scripts/index/index.phtml:1
+msgid "Galleries"
+msgstr "Gallerier"
+
+#: Gallery/Views/scripts/node/index.phtml:25
+#, php-format
+msgid "%s images"
+msgstr "%s billeder"
+
+#: Gallery/Views/scripts/node/list.phtml:13
+msgid "images"
+msgstr "Billeder"
+
+#~ msgid "Image removed"
+#~ msgstr "Billedet er fjernet"
+#~ msgid "Are you sure, you want to remove %s from the gallery?"
+#~ msgstr "Er du sikker på, at du vil fjerne %s fra galleriet?"
+#~ msgid "Reorder"
+#~ msgstr "Rækkefølge"
+#~ msgid "Billede: "
+#~ msgstr "Billede:"
+

@@ -1,0 +1,9 @@
+<h1><?php echo $this->translate('Hooks');?></h1>
+<?php echo $this->form;
+
+foreach ($this->hooks as $hook) {
+    ?>
+    <div><?php echo $hook->class." - ".$hook->type." - ".$hook->action;?>(<?php echo $hook->weight;?>)</div>
+    <?php
+}
+?>
