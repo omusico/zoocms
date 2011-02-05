@@ -1,0 +1,31 @@
+<div class="content-item content-<?php echo $this->item['type'];?>">
+    <?php if ($this->item->hooks['filemanager_file']->isImage()):?>
+        <p>
+            <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
+                <img src="<?php echo $this->item->hooks['filemanager_file']->getUrl(145);?>"
+                     alt="<?php echo $this->translate('Image').': '.$this->item['title'];?>" />
+            </a>
+        </p>
+    <?php else:?>
+        <p>
+            <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
+                <img src="<?php echo $this->getTypeImage($this->item->hooks['filemanager_file']->mimetype);?>"
+                     alt="<?php echo $this->translate('File').': '.$this->item['title'];?>" />
+            </a>
+        </p>
+    <?php endif;?>
+    <h2>
+        <a href="<?php echo $this->url(array('id' => $this->item['id']), $this->item['type']);?>">
+            <?php echo $this->escape($this->item['title']);?>
+        </a>
+    </h2>
+    <p><?php echo $this->filter($this->item, 'content', 350); ?></p>
+    <?php if($this->item->hooks) {
+      foreach ($this->item->hooks as $name => $hook) {
+          if ($name != "filemanager_file") {
+              echo $hook;
+          }
+      }
+    }
+?>
+</div>

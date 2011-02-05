@@ -1,0 +1,211 @@
+<div id="filemanager">
+	<div id="folder-list">
+		<h2><?php echo $this->translate('Folders');?></h2>
+		<?php
+		foreach ( $this->tree as $ele ) {
+			echo $this->partial('file/category.ajax.phtml', array('ele' => $ele, 'first' => true));
+		}
+		?>
+	</div>
+	
+	<div id="uploader-contents">
+		<div class="filemanager-toolbar">
+			<span class="toolbar-upload" onclick="toggleUploader();"><?php echo $this->translate('Upload');?></span>
+			<span class="toolbar-refresh" onclick="selectCategory();"><?php echo $this->translate('Refresh');?></span>
+			<span class="toolbar-configure" onclick="toggleConfigure();"><?php echo $this->translate('Settings');?></span>
+			<?php if (isset($this->connectTo)) {?>
+				<span class="toolbar-selected" onclick="$('#selected').toggle(100);"><?php echo $this->translate('Show Selected');?></span>
+				<span class="toolbar-reorder" onclick="enableReorder();"><?php echo $this->translate('Reorder');?></span>
+			<?php }?>
+		</div>
+		<div id="filemanager-configure-form">
+			<?php echo $this->configureform;?>
+		</div>
+		<div id="filemanager-upload-form"></div>
+	
+		<div id="portlet-reorderer-root">
+			<div id="selected">
+				<?php echo $this->partial('file/sel-list.phtml', array('item' => $this->item));?>
+			</div>
+			<div id="folder-contents">
+			</div>
+			<div id="image-space"></div>
+			<br class="clear" />
+		</div>
+	</div>
+	<br class="clear" />
+</div>
+ <script type="text/javascript">
+ 	var catId = 0;
+ 	
+	function selectCategory(id) {
+		if (!id) {
+			id = catId;
+		}
+		else {
+			catId = id;
+		}
+		if (id > 0) {
+			$('#filemanager-upload-form').hide();
+			loadCategory("<?php echo $this->url ( array ('module' => 'filemanager', 'controller' => 'file', 'action' => 'list', 'format' => 'html' ), 'default', true );?>/id/" + id + "?" + $("#configure-form").serialize());
+		}
+	}
+
+	function loadCategory(url) {
+		$("#folder-contents").load(url, null, setContext);
+	}
+
+	function toggleConfigure() {
+		$('#filemanager-upload-form').hide();
+		$('#filemanager-configure-form').toggle(100);
+	}
+
+	function toggleUploader() {
+		if (catId > 0) {
+			$('#filemanager-configure-form').hide();
+			$('#filemanager-upload-form').show();
+			$('#filemanager-upload-form').html('<iframe src="/filemanager/file/upload/catid/' + catId + '/connectTo/<?php echo $this->connectTo; ?>" width="100%" height="310"></iframe>');
+		}
+		else {
+			alert("<?php echo $this->translate('Please select a folder');?>");
+		}
+	}
+
+	function enableReorder() {
+		var reorderer = fluid.reorderImages(".flc-imageReorderer", {
+	    	selectors: {
+	        	movables: ".content-item"
+	    	},
+	    	listeners: {
+	        	afterMove: afterMoveListener
+	    	}
+		});
+	}
+
+	function afterUpload() {
+		selectCategory();
+		$("#selected").load("<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'selected', 'connectTo' => $this->connectTo, 'type' => $this->type), 'default', true);?>", null, setContext);
+	}
+
+	function selectImage(id, ele) {
+		var fileUrl = "<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'show'), 'default', true);?>/id/" + id + "/width/150/height/150";
+		<?php if (isset($_REQUEST['CKEditorFuncNum'])) {?>
+			window.opener.CKEDITOR.tools.callFunction( <?php echo $this->escape($_REQUEST['CKEditorFuncNum']);?>, fileUrl);
+			window.close();
+		<?php } elseif (isset($_REQUEST['elementid'])) {?>
+			window.opener.callFunction(id, fileUrl, '<?php echo $this->escape($_REQUEST['elementid']);?>');
+			window.close();
+		<?php } elseif (isset($this->connectTo)) {?>
+			$.ajax({
+		        type: "POST",
+		        data: "image=" + id + "&id=<?php echo $this->connectTo;?>&type=<?php echo $this->escape($this->type);?>",
+		        url: "<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'connect'), 'default', true);?>", 
+		        complete: function (data, ajaxStatus) {
+					$("#selected-file-list").append(data.responseText);
+					$("#selected").show();
+					setContext();
+		        }
+		    });
+		<?php }?>
+	}
+
+	function editDialog(id) {
+		$("#editDialog").load("<?php echo $this->url ( array ('module' => 'content', 'controller' => 'node', 'action' => 'edit', 'format' => 'html'), 'default', true );?>/id/" + id);
+		$("#editDialog").dialog('open');
+	}
+
+	function removeDialog(id) {
+		$("#editDialog").load("<?php echo $this->url ( array('module' => 'filemanager', 'controller' => 'file', 'action' => 'remove'), 'default', true );?>/id/" + id);
+		$("#editDialog").dialog('option', 'buttons', { "Cancel": function() { $("#editDialog").html(''); $(this).dialog("close"); },
+													   "Remove": function() { removeAction(id); $("#editDialog").html(''); $(this).dialog("close"); }
+													    } );
+		$("#editDialog").dialog('open');
+	}
+<?php if ($this->item) {?>
+	function removeAction(id) {
+		$.ajax({
+	        type: "POST",
+	        data: "type=<?php echo $this->escape($this->type);?>",
+	        url: "<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'remove', 'id' => $this->item->id), 'default', true);?>/image/" + id, 
+	        complete: function (data, ajaxStatus) {
+				var str = "#selected-file-list-image-" + id;
+				$(str).remove();
+	        }
+	    });
+	}
+<?php }?>
+	function submitForm(form_ele) {
+		request = $(form_ele).serialize();
+		$.ajax({
+	        type: "POST",
+	        url: form_ele.action, 
+	        data: request, 
+	        complete: function (data, ajaxStatus) {
+	            // Handle success or failure by being nice to the user.
+				$("#editDialog").dialog('close');
+	        }
+	    });
+	}
+
+	var afterMoveListener = function (movedItem, position, allItems) {
+		if (typeof movedItem.children != 'function') {
+			var movedItem = $(movedItem);
+		}
+		var movedId = movedItem.children("input").attr("value");
+	    // POST it back to the server.
+	    postOrder(movedId, position);
+	};
+
+	//Serialize the form and post it back to the server.
+	var postOrder = function (movedId, position) {
+	    var form = $("#reorderform"); // Get the form out of the DOM
+	    var request = "movedId=" + movedId + "&position=" + position.position + "&target=" + position.element.id + "&type=<?php echo $this->escape($this->type);?>";
+	    // Send it back to the server via an AJAX POST request.
+	    $.ajax({
+	        type: "POST",
+	        url: document.getElementById('reorderform').action, 
+	        data: request, 
+	        complete: function (data, ajaxStatus) {
+	            // Handle success or failure by being nice to the user.
+	        }
+	    });
+	};
+
+	function extractId(idstring) {
+		var id = idstring.lastIndexOf("-") + 1;
+		id = parseInt(idstring.substr(id));
+		return id;
+	}
+
+	var menu = [
+	             {'<?php echo $this->translate('Edit');?>':function(menuItem,menu) { editDialog(extractId(this.id)); } },
+	             $.contextMenu.separator,
+	             {'<?php echo $this->translate('Remove');?>':function(menuItem,menu) { removeDialog(extractId(this.id)); } }
+	           ];
+  
+	var menu2 = [
+	             {'<?php echo $this->translate('Edit');?>':function(menuItem,menu) { editDialog(extractId(this.id)); } },
+	             $.contextMenu.separator,
+	             {'<?php echo $this->translate('Select');?>':function(menuItem,menu) { selectImage(extractId(this.id)); } }
+	           ];
+
+	var menu3 = [
+		         	{'<?php echo $this->translate('Edit');?>':function(menuItem,menu) { editDialog(extractId(this.id)); } },
+		         	{'<?php echo $this->translate('Delete');?>':function(menuItem,menu) { deleteImage(extractId(this.id)); } }
+		         	];
+    
+	function setContext() {
+		$('.filemanager-file-listed').contextMenu(menu2,{theme:'vista'});
+		$('.filemanager-file-selected').contextMenu(menu,{theme:'vista'});
+	};
+	
+	$('.filemanager-file-selected').contextMenu(menu,{theme:'vista'});  
+	$('#filemanager-upload-form').hide();
+	$('#filemanager-configure-form').hide();
+	$("#editDialog").dialog({width: 620, autoOpen: false});
+
+	<?php if (isset($this->connectTo)) {?>
+		selectCategory(<?php echo $this->connectTo;?>);
+	<?php }?>
+
+</script>

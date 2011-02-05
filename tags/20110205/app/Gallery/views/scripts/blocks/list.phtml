@@ -1,0 +1,9 @@
+<div>
+    <?php
+    $i = 0; 
+    foreach ($this->galleries as $gallery) {
+    	$i++;
+      	echo $this->partial('blocks/listitem.phtml', array('gallery' => $gallery, 'i' => $i));
+    }
+    ?>
+</div>

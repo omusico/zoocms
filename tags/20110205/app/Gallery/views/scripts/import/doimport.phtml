@@ -1,0 +1,6 @@
+<?php
+echo "<div><h2>".count($this->urls)." galleries</h2><ul>";
+foreach ($this->urls as $i => $url) {
+	echo $url['title']." - ".count($url['ids'])." images";
+}
+echo "</ul></div>";

@@ -1,0 +1,26 @@
+<h1><?php echo $this->escape($this->item['title']);?></h1>
+<a href="<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'edit', 'id' => $this->item['id']), 'default', true);?>"><?php echo $this->translate('Edit');?></a>
+<table class="estate-display-node">
+    <tr>
+        <td><?php echo $this->translate('Price');?></td><td><?php echo $this->NumberFormat($this->item->hooks['estate_node']->price); ?></td>
+        <td><?php echo $this->translate('Area');?></td><td><?php echo $this->item->hooks['estate_node']->area; ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->translate('Rooms');?></td><td><?php echo $this->item->hooks['estate_node']->rooms; ?></td>
+        <td><?php echo $this->translate('Floors');?></td><td><?php echo $this->item->hooks['estate_node']->floors; ?></td>
+    </tr>
+    <tr>
+        <td><?php echo $this->translate('Built Year');?></td><td><?php echo $this->item->hooks['estate_node']->year; ?></td>
+        <td><?php echo $this->translate('Ground area');?></td><td><?php echo $this->item->hooks['estate_node']->ground; ?></td>
+    </tr>
+</table>
+
+<p><?php echo $this->escape($this->item);?></p>
+<?php 
+unset ($this->item->hooks['estate_node']);
+
+if($this->item->hooks) {
+  foreach ($this->item->hooks as $name => $hook) {
+      echo $hook;
+  }
+}

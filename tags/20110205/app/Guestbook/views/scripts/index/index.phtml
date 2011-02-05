@@ -1,0 +1,11 @@
+<div class="guestbook-add-link">
+	<a href="<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'add', 'type' => 'guestbook_entry'), 'default', true);?>">
+		<?php echo $this->translate('Add guestbook entry');?>
+	</a>
+</div>
+<?php
+echo $this->paginator;
+foreach ($this->items as $item):
+    echo $item;
+endforeach;
+echo $this->paginator;

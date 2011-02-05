@@ -1,0 +1,7 @@
+<ul>
+<li><a href='<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'add', 'type' => 'content_node'), 'default', true);?>'>Indhold</a></li>
+<li><a href='<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'add', 'type' => 'taxonomy_category'), 'default', true);?>'>Kategori</a></li>
+<li><a href='<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'add', 'type' => 'gallery_node'), 'default', true);?>'>Galleri</a></li>
+<li><a href="#" onclick="window.open('<?php echo $this->url(array('module' => 'filemanager', 'controller' => 'file', 'action' => 'browse'), 'default', true);?>', 'filemanager', 'location=0,status=1,scrollbars=1,width=800,height=500');">Filhåndtering</a></li>
+<li><a href='<?php echo $this->url(array(), 'auth_logout');?>'>Logout</a></li>
+</ul>

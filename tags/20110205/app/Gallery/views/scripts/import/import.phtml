@@ -1,0 +1,13 @@
+<?php
+echo "<ul>";
+foreach ($this->urls as $i => $url) {
+	echo "<li><a href='#$i' onclick='ajaxGet(\"".$this->escape($this->account)."\", \"". $i ."\");'>".$url['title']."</a></li>";
+}
+echo "</ul>";
+?>
+<div id="status"></div>
+<script type="text/javascript">
+	function ajaxGet(domain, offset) {
+		$("#status").load("<?php echo $this->url ( array ('module' => 'gallery', 'controller' => 'import', 'action' => 'doimport' ), 'default', true );?>/account/" + domain + "/offset/" + offset);
+	}
+</script>

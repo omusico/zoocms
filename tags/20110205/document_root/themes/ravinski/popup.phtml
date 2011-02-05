@@ -1,0 +1,24 @@
+<?php echo $this->doctype();?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title><?php echo $this->escape($this->sitename). ($this->pagetitle ? " - ".$this->escape($this->pagetitle) : "")?></title>
+    <?php echo $this->headLink();?>
+    <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->themeurl;?>/css/style.css" />
+    <?php echo $this->headScript();?>
+    <?php echo $this->headStyle();?>
+    <?php echo $this->jQuery(); ?>
+</head>
+<body class="popup-body">
+<div id="popupcontainer">
+  <?php echo $this->layout()->content;?>
+  <?php if ($this->footer) {?><div id="footer"><?php echo $this->footer;?></div><?php }?>
+</div>
+
+<?php if ($this->debug) {
+    echo "<div class='debug'>".$this->debug.'</div>';
+}
+?>
+
+</body>
+</html>

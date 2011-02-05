@@ -1,0 +1,33 @@
+<div class="file-list">
+<h2><?php echo $this->category['title'];?></h2>
+<?php
+echo $this->paginator;
+$i = 0;
+foreach ($this->items as $item) {?>
+    <div id="file-<?php echo $item->id;?>" class="content-item filemanager_file_list filemanager-file-listed">
+    	<div class="file-image" onclick="selectImage(<?php echo $item->id;?>, this)">
+		    <?php
+		    if ($item->hooks['filemanager_file']->isImage()):?>
+		        <img src="<?php echo $item->hooks['filemanager_file']->getUrl(120, 145);?>"
+		                 alt="<?php echo $this->translate('Image: ').$item['title'];?>" />
+		    <?php else:?>
+		    <p>
+		        <img src="<?php echo $this->getTypeImage($item->hooks['filemanager_file']->mimetype);?>"
+		                 alt="<?php echo $this->translate('File: ').$item['title'];?>" />
+		    </p>
+		    <?php endif;?>
+	    </div>
+	    <div class="file-information">
+	        <?php echo $this->escape($item['title']);?><br />
+	        <?php echo date('d/m/Y H:i', $item['published']);?><br />
+	        <?php echo ceil($item->hooks['filemanager_file']->size/1024);?> KB
+	    </div>
+	    
+    </div>
+<?php
+	$i++;
+}
+?>
+<br class="clear" />
+<?php echo $this->paginator;?>
+</div>

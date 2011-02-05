@@ -1,0 +1,57 @@
+<?php if (isset($this->item->hooks['top_image'])) {?>
+	<div class="gallery-top-image"><img src="<?php echo $this->item->hooks['top_image']->hooks['filemanager_file']->getUrl(600);?>" /></div>
+<?php }?>
+<br class="clear" />
+<div class="gallery-file">
+    <div class="gallery-file-navigation">
+    	<div class="gallery-previous">&nbsp;
+        	<?php if ($this->previous) {?>
+        	    <a href='<?php echo $this->url(array('id' => $this->item->id, 'file_id' => $this->previous->id), 'gallery_image', true);?>'><?php echo $this->translate('Previous');?></a>
+        	<?php }?>
+    	</div>
+    	<div class="gallery-overview"><a href='<?php echo $this->item->url();?>'><?php echo $this->translate('Overview');?></a></div>
+    	<div class="gallery-next">&nbsp;
+    	    <?php if ($this->next) {?>
+    	    	<a href='<?php echo $this->url(array('id' => $this->item->id, 'file_id' => $this->next->id), 'gallery_image', true);?>'><?php echo $this->translate('Next');?></a>
+    	    <?php }?>
+    	</div>
+    	<br class="clear" />
+    </div>
+    <div class="clear">
+    	<a name="image"></a>
+        <?php if ($this->image->hooks['filemanager_file']->isImage()):?>
+            <img src="<?php echo $this->image->hooks['filemanager_file']->getUrl(630);?>" alt="<?php echo $this->translate('Image: ').$this->image['title'];?>" />
+        <?php else:?>
+            <a href="<?php echo $this->image->hooks['filemanager_file']->getUrl();?>">
+                <img src="<?php echo $this->getTypeImage($this->image->hooks['filemanager_file']->mimetype);?>"
+                     alt="<?php echo $this->translate('Download')." ".$this->image['title'];?>"
+                     title="<?php echo $this->translate('Download')." ".$this->image['title'];?>" />
+                <?php echo $this->translate('Download')." ".$this->image['title'];?>
+            </a>
+        <?php 
+        endif;
+        unset ($this->image->hooks['filemanager_file']);
+        ?>
+        <p><?php echo $this->escape($this->image);?></p>
+    </div>
+    <div class="gallery-file-navigation">
+    	<div class="gallery-previous">&nbsp;
+        	<?php if ($this->previous) {?>
+        	    <a href='<?php echo $this->url(array('id' => $this->item->id, 'file_id' => $this->previous->id), 'gallery_image', true);?>'><?php echo $this->translate('Previous');?></a>
+        	<?php }?>
+    	</div>
+    	<div class="gallery-overview"><a href='<?php echo $this->item->url();?>'><?php echo $this->translate('Overview');?></a></div>
+    	<div class="gallery-next">&nbsp;
+    	    <?php if ($this->next) {?>
+    	    	<a href='<?php echo $this->url(array('id' => $this->item->id, 'file_id' => $this->next->id), 'gallery_image', true);?>'><?php echo $this->translate('Next');?></a>
+    	    <?php }?>
+    	</div>
+    	<br class="clear" />
+    </div>
+</div>
+
+<?php if($this->image->hooks) {
+  foreach ($this->image->hooks as $name => $hook) {
+      echo $hook;
+  }
+}

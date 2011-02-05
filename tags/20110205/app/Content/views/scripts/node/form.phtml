@@ -1,0 +1,10 @@
+<h1>
+    <?php $legend = $this->item['id'] > 0 ? Zoo::_("Edit %s") : Zoo::_("Add %s");
+    echo sprintf($legend, mb_strtolower($this->type->name));?>
+</h1>
+<?php if ($this->item['id']) { ?>
+    <a href="<?php echo $this->item->url();?>">
+        <?php echo sprintf($this->translate("Back to'%s'"),$this->escape($this->item['title']));?>
+    </a>
+<?php } ?>
+<?php echo $this->form ?>

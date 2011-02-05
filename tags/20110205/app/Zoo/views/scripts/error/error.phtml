@@ -1,0 +1,18 @@
+<h1>An error occurred</h1>
+<?php if ($this->errormessages) {?><ul class="errors"><?php foreach ($this->errormessages as $message) { ?><li><?php echo nl2br($message) ?></li><?php }?></ul><?php } ?>
+
+<?php
+$i = 0;
+if ($this->trace): ?>
+    <table border='1' cellspacing='0' cellpadding='1'>
+        <tr><th align='left' bgcolor='#e9b96e' colspan='3'>Call Stack</th></tr>
+        <tr><th align='center' bgcolor='#eeeeec'>#</th><th align='left' bgcolor='#eeeeec'>Function</th><th align='left' bgcolor='#eeeeec'>Location</th></tr>
+        <?php foreach ($this->trace as $trace): ?>
+            <tr>
+                <td bgcolor='#eeeeec' align='center'><?php echo ++$i; ?></td>
+                <td bgcolor='#eeeeec' align='center'><?php echo $trace['class'].$trace['type'].$trace['function']." ( ".($trace['args'] ? implode(', ', $trace['args']) : "").")";?></td>
+                <td title='<?php echo $trace['file']; ?>' bgcolor='#eeeeec'><?php echo $trace['file_short']?><b>:</b><?php echo $trace['line'];?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif;?>

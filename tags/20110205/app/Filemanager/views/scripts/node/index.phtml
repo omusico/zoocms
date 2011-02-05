@@ -1,0 +1,33 @@
+<h1><?php echo $this->escape($this->item['title']);?></h1>
+<?php if ($this->can_edit) {?>
+<a href="<?php echo $this->url(array('module' => 'content', 'controller' => 'node', 'action' => 'edit', 'id' => $this->item['id']), 'default', true);?>"><?php echo $this->translate('Edit');?></a>
+<?php }?>
+
+<br class="clear" />
+
+<?php if ($this->item->hooks['filemanager_file']->isImage()):
+    /**
+     * @todo: Change to use thumbnail function
+     * @todo: CREATE thumbnail function
+     */
+?>
+    <img src="<?php echo $this->item->hooks['filemanager_file']->getUrl();?>" alt="<?php echo $this->translate('Image: ').$this->item['title'];?>" />
+<?php else:?>
+    <a href="<?php echo $this->item->hooks['filemanager_file']->getUrl();?>">
+        <img src="<?php echo $this->getTypeImage($this->item->hooks['filemanager_file']->mimetype);?>"
+             alt="<?php echo $this->translate('Download')." ".$this->item['title'];?>"
+             title="<?php echo $this->translate('Download')." ".$this->item['title'];?>" />
+        <?php echo $this->translate('Download')." ".$this->item['title'];?>
+    </a>
+<?php 
+endif;
+unset ($this->item->hooks['filemanager_file']);
+?>
+
+<p><?php echo $this->escape($this->item);?></p>
+
+<?php if($this->item->hooks) {
+  foreach ($this->item->hooks as $name => $hook) {
+      echo $hook;
+  }
+}
