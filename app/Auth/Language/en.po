@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Auth module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-13 13:23+0100\n"
+"POT-Creation-Date: 2010-04-04 22:59+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Jan <jkp@cusix.dk>\n"
 "Language-Team: Zoo Crew <jkp@cusix.dk>\n"
@@ -14,45 +14,133 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: setLabel;translate\n"
 "X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: E:\\dokumenter\\xoops\\webserver\\ZooCMS SVN\\app\\Auth\n"
+"X-Poedit-SearchPath-0: E:\\dokumenter\\xoops\\webserver\\ZooCMS SVN\\app\\Flex\n"
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
-#: SVN\app\Auth/Controllers/IndexController.php:61
-msgid "Something else happened"
-msgstr "An unspecified error occurred"
+#: SVN\app\Flex/Form/Add.php:61
+msgid "Type"
+msgstr ""
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
-#: SVN\app\Auth/Controllers/IndexController.php:86
-#: SVN\app\Auth/Service/User.php:53
-msgid "Username"
-msgstr "User name"
+#: SVN\app\Flex/Form/Add.php:67
+#: SVN\app\Flex/Form/Edit.php:41
+msgid "Name"
+msgstr ""
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
-#: SVN\app\Auth/Controllers/IndexController.php:91
-#: SVN\app\Auth/Service/User.php:57
-msgid "Password"
-msgstr "Password"
+#: SVN\app\Flex/Form/Add.php:71
+#: SVN\app\Flex/Form/Edit.php:62
+msgid "save"
+msgstr "Save"
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
-#: SVN\app\Auth/Controllers/IndexController.php:95
-msgid "Log in"
-msgstr "Log in"
+#: SVN\app\Flex/Form/Add.php:75
+msgid "Edit block"
+msgstr ""
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
-#: SVN\app\Auth/Controllers/IndexController.php:117
-msgid "You are now logged out"
-msgstr "You are now logged out"
+#: SVN\app\Flex/Form/Add.php:75
+msgid "Add block"
+msgstr ""
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
-#: SVN\app\Auth/Service/User.php:60
-msgid "Register"
-msgstr "Register"
+#: SVN\app\Flex/Form/Edit.php:38
+#, php-format
+msgid "Edit %s"
+msgstr ""
 
 #: E:\dokumenter\xoops\webserver\ZooCMS
-#: SVN\app\Auth/Service/User.php:64
-msgid "Register user"
-msgstr "Register user"
+#: SVN\app\Flex/Form/Edit.php:45
+msgid "Title"
+msgstr ""
 
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:49
+msgid "Position"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:53
+msgid "Weight"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:66
+msgid "Basic options"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:81
+msgid "RCCenter"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:82
+msgid "Center"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:83
+msgid "RCLeft"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:84
+msgid "Left"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:85
+msgid "RCRight"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:86
+msgid "Footer"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:87
+msgid "Right"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:88
+msgid "Top"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:89
+msgid "Topleft"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:90
+msgid "Toplefthalf"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:91
+msgid "Navigation"
+msgstr ""
+
+#: E:\dokumenter\xoops\webserver\ZooCMS
+#: SVN\app\Flex/Form/Edit.php:92
+msgid "Full width"
+msgstr ""
+
+#~ msgid "Something else happened"
+#~ msgstr "An unspecified error occurred"
+#~ msgid "Username"
+#~ msgstr "User name"
+#~ msgid "Password"
+#~ msgstr "Password"
+#~ msgid "Log in"
+#~ msgstr "Log in"
+#~ msgid "You are now logged out"
+#~ msgstr "You are now logged out"
+#~ msgid "Register user"
+#~ msgstr "Register user"
 #~ msgid "No corresponding user found"
 #~ msgstr "No corresponding user found"
 #~ msgid "WRONG!"
