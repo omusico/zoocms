@@ -31,7 +31,7 @@ class Navigate_Block_Breadcrumbs extends Zoo_Block_Abstract {
    * @see library/Zoo/Block/Zoo_Block_Abstract#getCacheId()
    */
   function getCacheId() {
-    if (Zend_Registry::get('context')->node && Zend_Registry::get('context')->node->nid > 0) {
+    if (Zend_Registry::get('context')->node && Zend_Registry::get('context')->node->id > 0) {
       return parent::getCacheId() . md5(Zend_Controller_Front::getInstance()->getRequest()->getRequestUri());
     }
     return false;
@@ -43,7 +43,7 @@ class Navigate_Block_Breadcrumbs extends Zoo_Block_Abstract {
    */
   function getCacheTags() {
     if (Zend_Registry::get('context')->node) {
-      return array('node_' . Zend_Registry::get('context')->node->nid);
+      return array('node_' . Zend_Registry::get('context')->node->id);
     }
     return parent::getCacheTags();
   }
