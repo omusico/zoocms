@@ -18,7 +18,6 @@ class Content_NodeController extends Zoo_Controller_Action {
 
     $context = Zend_Registry::get('context');
     $context->node = Zoo::getService('content')->load(intval($this->getRequest()->getParam('id')), 'Display');
-    Zend_Registry::set('context', $context);
   }
 
   /**
@@ -26,9 +25,7 @@ class Content_NodeController extends Zoo_Controller_Action {
    *
    */
   function indexAction() {
-    $id = intval($this->getRequest()->getParam('id'));
-
-    $item = Zoo::getService('content')->load($id, 'Display');
+    $item = Zend_Registry::get('context')->node;
     if (!$item) {
       throw new Zend_Controller_Action_Exception(Zoo::_("Content not found"), 404);
     }
@@ -44,10 +41,10 @@ class Content_NodeController extends Zoo_Controller_Action {
     }
 
 
-    $cacheid = "Content_nodeDisplay_" . $id . ($can_edit ? "_edit" : "");
+    $cacheid = "Content_nodeDisplay_" . $item->id . ($can_edit ? "_edit" : "");
     $content = $this->checkCache($cacheid);
     if (!$content) {
-      list($content) = Zoo::getService('content')->getRenderedContent($id, 'Display');
+      list($content) = Zoo::getService('content')->getRenderedContent($item->id, 'Display');
       $this->cache($content, $cacheid, array('node', 'node_' . $item->type, 'node_' . $item->id));
     }
 
@@ -87,8 +84,7 @@ class Content_NodeController extends Zoo_Controller_Action {
    *
    */
   public function editAction() {
-    $id = $this->getRequest()->getParam('id');
-    $item = Zoo::getService('content')->find($id)->current();
+    $item = Zend_Registry::get('context')->node;
     if ($item) {
       try {
         if (!Zoo::getService('acl')->checkItemAccess($item, 'edit') && !Zoo::getService('acl')->checkItemAccess($item, 'editown')) {
@@ -227,6 +223,9 @@ class Content_NodeController extends Zoo_Controller_Action {
     $this->getHelper('viewRenderer')->setNoRender();
   }
 
+  /**
+   * Lookup nodes from a partial string
+   */
   public function autocompleteAction() {
     $results = $found = array();
     try {
@@ -236,6 +235,7 @@ class Content_NodeController extends Zoo_Controller_Action {
         $found[] = Zoo::getService('content')->load($hit->nid, 'Short');
       }
     } catch (Exception $e) {
+      // Fall back to database search
       $select = Zoo::getService('content')->getContentSelect(array(), 0, $this->_request->getParam('limit'));
       $select->where('title LIKE ?', $this->_request->getParam('q') . "%");
       $found = Zoo::getService('content')->fetchAll($select);
@@ -248,7 +248,6 @@ class Content_NodeController extends Zoo_Controller_Action {
     }
     Zend_Controller_Action_HelperBroker::addHelper(new ZendX_JQuery_Controller_Action_Helper_AutoComplete());
     $this->_helper->autoComplete($results);
-    //$this->getHelper('viewRenderer')->setNoRender();
   }
 
   /**

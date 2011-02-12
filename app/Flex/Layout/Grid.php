@@ -15,12 +15,45 @@
  * @version    1.0
  */
 class Flex_Layout_Grid extends Flex_Layout_Abstract {
+  private $is_admin_page = FALSE;
 
   /**
    * Initialisation, called from parent's constructor
    */
   function init() {
     $this->template = "layout_grid";
+    if (!$this->settings) {
+      $this->settings = $this->getDefaultSettings();
+    }
+    $this->parseLayout();
+  }
+
+  /**
+   * Get default settings if no others are given
+   * @return array
+   */
+  function getDefaultSettings() {
+    return array('structure' => json_encode(array(array('name' => 'default', 'width' => '24'))),
+                 'add_css' => FALSE,
+                 'columns' => 24,
+                 'alphaomega' => TRUE,
+                 'add_container' => TRUE);
+  }
+
+  /**
+   *
+   * @param string $region
+   * @return array
+   */
+  function getRegion($region) {
+    foreach ($this->settings['structure'] as $layout_region) {
+      if ($layout_region['name'] == $region) {
+        /*
+         * @todo make recursive
+         */
+        return $layout_region;
+      }
+    }
   }
 
   /**
@@ -29,7 +62,6 @@ class Flex_Layout_Grid extends Flex_Layout_Abstract {
    * @return string
    */
   function render($blocks = array()) {
-    $this->parseLayout();
     $this->regionId(NULL, TRUE);
     if ($this->settings['add_css'] || $this->is_admin_page) {
       //drupal_add_css(drupal_get_path('module', 'bem_panels') . '/panels/layouts/grid/grid' . $settings['column_layout'] . '.css');
@@ -88,7 +120,7 @@ class Flex_Layout_Grid extends Flex_Layout_Abstract {
           $css_class .= $class . $grid_element[$idx];
         }
       }
-      $grid_element_width = ($grid_element['width'] + $grid_element['prefix'] + $grid_element['suffix']);
+      $grid_element_width = ($grid_element['width'] + @$grid_element['prefix'] + @$grid_element['suffix']);
       if (($remaining - $grid_element_width) < 0) {
         $remaining = $container_width;
         $gridhtml .= '<div class="clear"></div>';
@@ -113,7 +145,7 @@ class Flex_Layout_Grid extends Flex_Layout_Abstract {
         $name = (isset($grid_element['name']) && !empty($grid_element['name'])) ? $grid_element['name'] : NULL;
         $id = $this->regionId($name);
         $css_class .= ' panel-region ' . $id; 
-        $grid_content = $content[$id];
+        $grid_content = isset($content[$id]) ? $content[$id] : "&nbsp;";
       }
 
       $gridhtml .= '<div class="' . $css_class . '">';

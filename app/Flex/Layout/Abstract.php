@@ -13,12 +13,12 @@
  * @copyright  © 2008 ZooCMS
  * @version    1.0
  */
-class Flex_Layout_Abstract {
+abstract class Flex_Layout_Abstract {
   /**
    * Layout settings
    * @var array
    */
-  protected $settings = array();
+  public $settings = array();
 
   /**
    * Template to use for rendering this layout
@@ -37,15 +37,26 @@ class Flex_Layout_Abstract {
    * @param array $settings
    */
   function __construct($settings = array()) {
-    $this->settings = array();
+    $this->settings = $settings;
     $this->view = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer')->view;
     $this->init();
+    $layout = Zend_Layout::getMvcInstance();
+    // Add module paths to view scripts
+    $this->view->addBasePath(ZfApplication::$_base_path . "/app/Flex/views", "Flex_View");
+    $this->view->addScriptPath($layout->getLayoutPath() . "default/templates/Flex/");
+    $this->view->addScriptPath($layout->getLayoutPath() . $layout->getLayout() . "/templates/Flex/");
   }
 
   /**
    * Override in subclasses
    */
-  abstract function init() { }
+  abstract function init();
+
+  /**
+   * override in subclasses
+   * @var string $region
+   */
+  abstract function getRegion($region);
 
   /**
    * Render the layout
@@ -54,7 +65,7 @@ class Flex_Layout_Abstract {
    */
   function render($blocks = array()) {
     foreach ($blocks as $region => $regionblocks) {
-      $regions[$region] = $this->renderRegion($regionblocks);
+      $regions[$region] = $this->renderRegion($region, $regionblocks);
     }
     $this->view->assign('regions', $regions);
     $this->view->assign('layout', $this);
@@ -69,6 +80,7 @@ class Flex_Layout_Abstract {
    */
   function renderRegion($region, $blocks) {
     if ($blocks) {
+      $region = $this->getRegion($region);
       foreach ($blocks as $block) {
         $block->options['region'] = $region;
         $rendered_blocks[] = $block->render();

@@ -49,13 +49,19 @@ class Flex_Panel_Block_Factory extends Zoo_Db_Table {
         $blockids[] = $block->block_id;
       }
     }
-    // Parent blocks go first
-    $allblocks = array_merge($parent_blocks, $panel_blocks);
 
     $block_factory = new Flex_Block_Factory();
     $block_instances = $block_factory->getBlocks($blockids);
 
-    foreach ($allblocks as $block) {
+    // Parent blocks go first
+    foreach ($parent_blocks as $block) {
+      if (isset($block_instances[$block->block_id])) {
+        $block_instances[$block->block_id]->panel = $panel;
+        $block_instances[$block->block_id]->panel_block = $block;
+        $ret[$block->region][] = $block_instances[$block->block_id];
+      }
+    }
+    foreach ($panel_blocks as $block) {
       if (isset($block_instances[$block->block_id])) {
         $block_instances[$block->block_id]->panel = $panel;
         $block_instances[$block->block_id]->panel_block = $block;

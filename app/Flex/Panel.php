@@ -143,8 +143,9 @@ class Flex_Panel extends Zend_Db_Table_Row_Abstract {
   function render() {
     if ($this->blocks) {
       // Assign to general content
-      Zend_Layout::getMvcInstance()->assign(Zend_Layout::getMvcInstance()->getContentKey(), 
-                                            $this->getLayout()->render($this->blocks));
+      $layout = $this->getLayout();
+      Zend_Layout::getMvcInstance()->assign(Zend_Layout::getMvcInstance()->getContentKey(),
+                                            $layout->render($this->blocks));
     }
     return;
   }

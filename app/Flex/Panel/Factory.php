@@ -8,17 +8,19 @@ class Flex_Panel_Factory extends Zoo_Db_Table {
    * @return Flex_Panel
    */
   function getCurrentPanel() {
-    $panel = false;
-    if ($node = Zend_Registry::get('context')->node) {
-      $cacheId = "node_" . $node->nid;
+    $node = NULL;
+    $panel = $cacheId = false;
+    $context = Zend_Registry::get('context');
+    $cached = false;
+    if (isset($context->node) && $node = $context->node) {
+      $cacheId = "node_" . $node->id;
       // Look first in cache
       if (!$panel = $this->getFromCache($cacheId)) {
         // Node-to-panel relation?
-        // SELECT panel_id from panel_node_relation where nid=$nid
         $factory = new Flex_Panel_Node_Factory();
         $select = $factory->select()
-                        ->where('nid IN (?)', array(0, $node->nid))
-                        ->where('parent IN (?)', array(0, $node->parent))
+                        ->where('nid IN (?)', array(0, $node->id))
+                        ->where('parent IN (?)', array(0, $node->pid))
                         ->where('nodetype IN (?)', array('', $node->type))
                         ->order(array('nid DESC',
                             'parent DESC',
@@ -31,6 +33,7 @@ class Flex_Panel_Factory extends Zoo_Db_Table {
           // Nodetype-and-parent-to-panel relation? (recursive)
           // SELECT panel_id from panel_node_relation where parent=$pid AND nodetype=$nodetype
           $pid = $node->pid;
+          $parents = array();
           while ($pid) {
             $parents[] = $pid;
             $parent = Zoo::getService('content')->load($pid, 'list');
@@ -38,7 +41,7 @@ class Flex_Panel_Factory extends Zoo_Db_Table {
           }
           foreach ($parents as $parent) {
             $select = $factory->select()
-                            ->where('parent = ?', $parent->nid)
+                            ->where('parent = ?', $parent)
                             ->where('nodetype = ?', $node->type);
             $panel_row = $factory->fetchRow($select);
             if ($panel_row) {
@@ -51,7 +54,7 @@ class Flex_Panel_Factory extends Zoo_Db_Table {
             // SELECT panel_id from panel_node_relation where parent=$pid AND nodetype=''
             foreach ($parents as $parent) {
               $select = $factory->select()
-                              ->where('parent = ?', $parent->nid)
+                              ->where('parent = ?', $parent)
                               ->where('nodetype = ?', '');
               $panel_row = $factory->fetchRow($select);
               if ($panel_row) {
@@ -73,6 +76,9 @@ class Flex_Panel_Factory extends Zoo_Db_Table {
           }
         }
       }
+      else {
+        $cached = true;
+      }
     }
 
     if (!$panel) {
@@ -86,7 +92,10 @@ class Flex_Panel_Factory extends Zoo_Db_Table {
         $cacheId = $module . "_" . $controller . "_" . $action;
       }
 
-      if ($node || !$panel = $this->getFromCache($cacheId)) {
+      if (!$node && $panel = $this->getFromCache($cacheId)) {
+        $cached = true;
+      }
+      else {
         // Module-and-controller-and-action-to-panel relation?
         // Module-and-controller-to-panel relation?
         // Module-to-panel relation?
@@ -109,7 +118,9 @@ class Flex_Panel_Factory extends Zoo_Db_Table {
       // Fallback to default panel
       $panel = $this->getPanel();
     }
-    $this->setCache($cacheId, $panel);
+    if (!$cached) {
+      $this->setCache($cacheId, $panel);
+    }
     return $panel;
   }
 
@@ -121,7 +132,10 @@ class Flex_Panel_Factory extends Zoo_Db_Table {
   function getPanel($id = 0) {
     if ($id == 0) {
       // Fetch from configuration
-      $id = Zoo::getConfig('Flex', 'panel')->panel->default;
+      $config = Zoo::getConfig('flex', 'module');
+      if ($config && $config->panel->default) {
+        $id = $config->panel->default;
+      }
     }
     return $this->find($id)->current();
   }
@@ -133,7 +147,7 @@ class Flex_Panel_Factory extends Zoo_Db_Table {
    */
   function getFromCache($cacheId) {
     try {
-      $content = Zoo::getService("cache")->load($cacheid);
+      $content = Zoo::getService("cache")->load($cacheId);
     }
     catch (Zoo_Exception_Service $e) {
       $content = FALSE;
@@ -147,9 +161,12 @@ class Flex_Panel_Factory extends Zoo_Db_Table {
    * @param Flex_Panel $panel
    */
   function setCache($cacheId, $panel) {
+    if (!$panel) {
+      return;
+    }
     try {
       Zoo::getService('cache')->save( $panel,
-                                      $cacheid,
+                                      $cacheId,
                                       array('panel_page',
                                             'panel_' . $panel->id),
                                       NULL);
