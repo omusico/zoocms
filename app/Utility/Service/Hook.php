@@ -59,24 +59,45 @@ class Utility_Service_Hook extends Zoo_Service {
    * @throws Zend_Db_Exception if trouble with database or tables
    */
   protected function getHooks($type, $action) {
-    static $hook_cache = array();
-    if (!isset($hook_cache[$type][$action])) {
+    $cacheId = "flex_hooks_{$type}_{$action}";
+    $ret = array();
+    try {
+      $ret = Zoo::getService("cache")->load($cacheId);
+      if ($ret == array('none')) {
+        return array();
+      }
+    }
+    catch (Zoo_Exception_Service $e) {
+      // No cache service
+    }
+    if (!$ret) {
       $factory = new Utility_Hook_Factory();
       $hooks = $factory->fetchAll(
                       array('type = ?' => $type,
                           'action = ?' => $action),
-                      'weight ASC'
+                          'weight ASC'
       );
       if ($hooks->count() > 0) {
         foreach ($hooks as $hook) {
           $class = $hook->class . "_Hook_" . $type;
-          $hook_cache[$type][$action][] = new $class();
+          $ret[] = new $class();
         }
-      } else {
-        $hook_cache[$type][$action] = array();
+      }
+      if (!$ret) {
+        $ret = array('none');
+      }
+      try {
+        Zoo::getService("cache")->save($ret,
+                                      $cacheId,
+                                      array('hooks'));
+      } catch (Zoo_Exception_Service $e) {
+        // No cache service
       }
     }
-    return $hook_cache[$type][$action];
+    if ($ret == array('none')) {
+      return array();
+    }
+    return $ret;
   }
 
 }

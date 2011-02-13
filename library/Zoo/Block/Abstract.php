@@ -66,6 +66,12 @@ abstract class Zoo_Block_Abstract {
   public $options = array ();
 
   /**
+   * Block style (wrapper template)
+   * @var string
+   */
+  public $style = "";
+
+  /**
    * Block ID
    *
    * @var int
