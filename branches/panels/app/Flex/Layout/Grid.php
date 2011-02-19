@@ -15,8 +15,6 @@
  * @version    1.0
  */
 class Flex_Layout_Grid extends Flex_Layout_Abstract {
-  private $is_admin_page = FALSE;
-
   /**
    * Initialisation, called from parent's constructor
    */
@@ -42,18 +40,19 @@ class Flex_Layout_Grid extends Flex_Layout_Abstract {
 
   /**
    *
-   * @param string $region
    * @return array
    */
-  function getRegion($region) {
-    foreach ($this->settings['structure'] as $layout_region) {
-      if ($layout_region['name'] == $region) {
-        /*
-         * @todo make recursive
-         */
-        return $layout_region;
+  function getAllRegions($structure = array(), $regions = array()) {
+    if (!$structure) {
+      $structure = $this->settings['structure'];
+    }
+    foreach ($structure as $layout_region) {
+      $regions[$layout_region['name']] = $layout_region;
+      if (isset($layout_region['children'])) {
+        $this->getAllRegions($layout_region['children'], $regions);
       }
     }
+    return $regions;
   }
 
   /**

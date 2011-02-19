@@ -12,6 +12,33 @@ a {
 b {
 	font-size: 12px;
 }
+
+.drag-container {
+  background-color: grey;
+  border: 1px solid #333;
+  padding: 5px;
+  margin: 5px;
+}
+
+.draggable {
+  background-color: #ccc;
+  border: 1px solid #333;
+  padding: 5px;
+  margin: 5px;
+}
+
+.ui-state-default {
+  background-color: #83BB2F;
+}
+
+.ui-state-hover {
+  background-color: #E8C81C;
+  padding-bottom: 40px;
+}
+
+.grabber {
+  cursor: move;
+}
 /*********************************************************
 HEADERS
 *********************************************************/

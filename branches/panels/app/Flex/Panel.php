@@ -140,7 +140,7 @@ class Flex_Panel extends Zend_Db_Table_Row_Abstract {
    * Render a panel - i.e. sub-panels and blocks in this panel
    * Assigns to the viewRenderer's view
    */
-  function render() {
+  function render($admin = false) {
     if ($this->blocks) {
       // Assign to general content
       $layout = $this->getLayout();
