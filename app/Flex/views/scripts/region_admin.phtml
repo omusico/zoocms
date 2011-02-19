@@ -1,0 +1,23 @@
+<div class="drag-container">
+  <h2 class="region-name"><?php echo $this->region['name'];?></h2>
+  <input type="hidden" name="block[]" value="<?php echo $this->region['name'];?>" />
+  <?php foreach ($this->blocks as $key => $block): ?>
+    <div class="draggable">
+      <div class="grabber"><?php echo $this->translate('Move');?></div>
+      <div class="delete">
+        <a href="#" onclick="if (confirm('<?php echo $this->translate('Do you really want to delete this block?');?>')) {deleteBlock(<?php echo $key;?>);} return false;">
+          <?php echo $this->translate('Delete');?>
+        </a>
+      </div>
+      <div class="configure">
+        <a href="#" onclick="configure(<?php echo $key;?>); return false;">
+          <?php echo $this->translate('Configure');?>
+        </a></div>
+      <div class="visibility">
+        <a href="#" onclick="toggle(<?php echo $key;?>); return false;">
+          <?php echo $this->translate('Toggle visibility');?>
+        </a></div>
+      <?php echo $block;?>
+    </div>
+  <?php endforeach;?>
+</div>

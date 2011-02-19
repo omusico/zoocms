@@ -31,6 +31,13 @@ class Flex_Plugin_Panel extends Zend_Controller_Plugin_Abstract {
       return;
     }
     $panel->loadBlocks()->render();
+    $module = ucfirst(Zend_Controller_Front::getInstance()->getRequest()->getModuleName());
+    $controller = ucfirst(Zend_Controller_Front::getInstance()->getRequest()->getControllerName());
+    $action = ucfirst(Zend_Controller_Front::getInstance()->getRequest()->getActionName());
+    $pagetitle = str_replace(array('%module', '%controller', '%action'),
+                             array($module, $controller, $action),
+                             $panel->title);
+    Zend_Layout::getMvcInstance()->getView()->assign('pagetitle', $pagetitle);
   }
 
 }
