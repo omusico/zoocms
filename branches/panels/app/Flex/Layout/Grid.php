@@ -38,6 +38,22 @@ class Flex_Layout_Grid extends Flex_Layout_Abstract {
                  'add_container' => TRUE);
   }
 
+  function getSettingsFormElements() {
+    $structure = new Zend_Form_Element_Textarea('structure');
+    $structure->setLabel('Structure')->setAllowEmpty(false);
+
+    $add_css = new Zend_Form_Element_Checkbox('add_css');
+    $add_css->setLabel('Add css')->setOptions(array('1' => 'Add css'));
+    $alphaomega = new Zend_Form_Element_Checkbox('alphaomega');
+    $alphaomega->setLabel('Add alpha and omega')->setOptions(array('1' => 'Add alpha and omega'));
+    $add_container = new Zend_Form_Element_Checkbox('add_container');
+    $add_container->setLabel('Add container element')->setOptions(array('1' => 'Add container element'));
+    $columns = new Zend_Form_Element_Select('columns');
+    $columns->setLabel('Columns')->setMultiOptions(array(1 => 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24));
+
+    return array($structure, $add_css, $alphaomega, $add_container, $columns);
+  }
+
   /**
    *
    * @return array
@@ -47,6 +63,9 @@ class Flex_Layout_Grid extends Flex_Layout_Abstract {
       $structure = $this->settings['structure'];
     }
     foreach ($structure as $layout_region) {
+      if (isset($this->settings['region_' . $layout_region['name']])) {
+        $layout_region['template'] = $this->settings['region_' . $layout_region['name']];
+      }
       $regions[$layout_region['name']] = $layout_region;
       if (isset($layout_region['children'])) {
         $this->getAllRegions($layout_region['children'], $regions);

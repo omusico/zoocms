@@ -8,7 +8,7 @@
  * @package Flex
  * @subpackage Form
  */
-class Flex_Form_Edit extends Zend_Form {
+class Flex_Form_Block extends Zend_Form {
     /**
      * Object /edited by the form
      *
@@ -45,14 +45,6 @@ class Flex_Form_Edit extends Zend_Form {
         $title->setLabel('Title');
         $title->setDescription('User-visible title of block');
         
-        $position = new Zend_Form_Element_Select('position');
-        $position->setLabel('Position');
-        $position->setMultiOptions($this->getPositions());
-        
-        $weight = new Zend_Form_Element_Text ( 'weight' );
-        $weight->setLabel ( 'Weight' )->setAttrib ( 'size', 2 );
-        $weight->setRequired ( true )->addValidator ( new Zend_Validate_Int ( ) );
-        
         $options = $this->getOptionsForm();
         if ($options) {
             $options->setLegend('Options');
@@ -62,10 +54,10 @@ class Flex_Form_Edit extends Zend_Form {
         $submit = new Zend_Form_Element_Submit ( 'save' );
         $submit->setLabel ( 'save' )->setOrder(100);
         
-        $this->addElements ( array ($name, $title, $position, $weight ) );
+        $this->addElements ( array ($name, $title) );
         
         $legend = Zoo::_ ( "Basic options" );
-        $this->addDisplayGroup ( array ('name', 'title', 'position', 'weight' ), 'block_form', array ('legend' => $legend ) );
+        $this->addDisplayGroup ( array ('name', 'title' ), 'block_form', array ('legend' => $legend ) );
         
         $this->addElement ( $submit );
         if ($this->target->id > 0) {
@@ -75,22 +67,6 @@ class Flex_Form_Edit extends Zend_Form {
         }
         $this->populate ( $this->target->toArray () );
     
-    }
-    
-    function getPositions() {
-        //@todo change to read from layout
-        return array(Zoo_Block::POSITION_RCCENTER => Zoo::_('RCCenter'),
-                     Zoo_Block::POSITION_CENTER => Zoo::_('Center'),
-                     Zoo_Block::POSITION_RCLEFT => Zoo::_('RCLeft'),
-                     Zoo_Block::POSITION_LEFT => Zoo::_('Left'),
-                     Zoo_Block::POSITION_RCRIGHT => Zoo::_('RCRight'),
-                     Zoo_Block::POSITION_FOOTER => Zoo::_('Footer'),
-                     Zoo_Block::POSITION_RIGHT => Zoo::_('Right'),
-                     Zoo_Block::POSITION_TOP => Zoo::_('Top'),
-                     Zoo_Block::POSITION_TOPLEFT => Zoo::_('Topleft'),
-                     Zoo_Block::POSITION_TOPLEFTHALF => Zoo::_('Toplefthalf'),
-                     Zoo_Block::POSITION_NAV => Zoo::_('Navigation'),
-                     Zoo_Block::POSITION_FULL => Zoo::_('Full width'));
     }
     
     /**

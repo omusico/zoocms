@@ -67,6 +67,14 @@ abstract class Flex_Layout_Abstract {
   abstract function getAllRegions();
 
   /**
+   * Return layout-specific settings to the layout edit form
+   * @return void
+   */
+  public function getSettingsFormElements() {
+    return;
+  }
+
+  /**
    * Render the layout
    * @param array $blocks
    * @return string
@@ -110,7 +118,7 @@ abstract class Flex_Layout_Abstract {
         $template = "region_admin";
       }
       else {
-        $template = isset($region['template']) && $region['template'] != "" ? $region['template'] : "region_standard";
+        $template = "region_" . (isset($region['template']) && $region['template'] != "" ? $region['template'] : "standard");
       }
       return $this->view->render($template);
     }

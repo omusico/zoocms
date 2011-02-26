@@ -43,6 +43,7 @@ class Flex_PanelController extends Zoo_Controller_Action {
       $panel = $this->panel;
     }
     else {
+      $factory = new Flex_Panel_Factory();
       $panel = $factory->createRow();
     }
     $form = new Flex_Form_Panel($panel);
@@ -52,20 +53,25 @@ class Flex_PanelController extends Zoo_Controller_Action {
       $panel->name = $values['name'];
       $panel->title = $values['title'];
       $panel->layout = $values['layout'];
-      $panel->settings = $values['settings'];
+      //$panel->settings = $values['settings'];
       $panel->category = $values['category'];
 
       $panel->save();
 
       Zoo::getService('cache')->clean(Zend_Cache::CLEANING_MODE_MATCHING_TAG, array('panel_' . $panel->id));
-      $url = Zend_Controller_Front::getInstance ()->getRouter()->assemble(array('module' => "flex", 'controller' => 'panel', 'action' => 'index'), 'default');
-
-      $this->_redirect($url);
+      $this->_redirect(Zend_Controller_Front::getInstance ()
+                              ->getRouter()
+                              ->assemble(array('module' => "flex",
+                                               'controller' => 'panel',
+                                               'action' => 'index'),
+                                         'default',
+                                         true));
     }
 
     $this->view->form = $form;
     $this->view->form->populate($_REQUEST);
     $this->render('form');
+    
   }
 
   /**
@@ -88,12 +94,40 @@ class Flex_PanelController extends Zoo_Controller_Action {
    * Set layout settings for panel
    */
   public function layoutAction() {
-    // Layout selector
-
+    if (!$this->panel) {
+      $this->_redirect(Zend_Controller_Front::getInstance ()
+                                    ->getRouter()
+                                    ->assemble(array('module' => "flex",
+                                                     'controller' => 'panel',
+                                                     'action' => 'index'),
+                                               'default',
+                                               true));
+    }
     // Get layout settings form
+    $this->view->form = new Flex_Form_Layout($this->panel);
+    if ($this->getRequest()->isPost()) {
+      if ($this->view->form->isValid($_REQUEST)) {
+        $values = $this->view->form->getValues();
+        unset($values['id']);
 
-    // Get layout-specific settings
-    
+        foreach ($values as $key => $value) {
+          $settings[$key] = $value;
+        }
+        $this->panel->settings = $settings;
+        if ($this->panel->save()) {
+          $this->_redirect(Zend_Controller_Front::getInstance ()
+                                ->getRouter()
+                                ->assemble(array('module' => "flex",
+                                                 'controller' => 'panel',
+                                                 'action' => 'content',
+                                                 'id' => $this->panel->id),
+                                           'default',
+                                           true));
+        }
+      }
+    }
+    $this->render('form');
+
     // Get regions
 
     // Get region templates

@@ -15,16 +15,6 @@
  * @version    1.0
  */
 class Flex_Panel extends Zend_Db_Table_Row_Abstract {
-  /*
-   * id
-   * parent_id
-   * name
-   * title
-   * layout
-   * settings
-   * category
-   */
-
   /**
    *
    * @var array
