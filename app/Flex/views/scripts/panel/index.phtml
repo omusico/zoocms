@@ -1,0 +1,14 @@
+<ul>
+  <?php foreach ($this->panels as $panel):?>
+    <li>
+      <a href="<?php echo $this->url(array('module' => "flex",
+                                           'controller' => 'panel',
+                                           'action' => 'form',
+                                           'id' => $panel->id),
+                                     'default',
+                                     true); ?>">
+         <?php echo $panel->name;?>
+      </a>
+    </li>
+  <?php endforeach;?>
+</ul>
