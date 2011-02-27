@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title><?php echo $this->escape($this->sitename) . ($this->pagetitle ? " - " . $this->escape($this->pagetitle) : "") ?></title>
+    <?php echo $this->headTitle(); ?>
     <?php echo $this->headMeta(); ?>
     <?php echo $this->headLink(); ?>
     <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $this->themeurl; ?>/css/grid.css" />

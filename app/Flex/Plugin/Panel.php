@@ -41,7 +41,34 @@ class Flex_Plugin_Panel extends Zend_Controller_Plugin_Abstract {
    * Fetch and assign block content to view
    *
    */
-  public function dispatchLoopShutdown() {
+  public function postDispatch(Zend_Controller_Request_Abstract $request) {
+    if (!Zend_Layout::getMvcInstance ()->isEnabled()) {
+      // No layout, no panel content
+      return;
+    }
+    if (!$this->panel) {
+      // No panel to display
+      return;
+    }
+    $module = ucfirst($request->getModuleName());
+    $controller = ucfirst($request->getControllerName());
+    $action = ucfirst($request->getActionName());
+    $content = "";
+    $context = Zend_Registry::get('context');
+    if (isset($context->node) && $context->node->id > 0) {
+      $content = $context->node->title;
+    }
+    $pagetitle = str_replace(array('%module', '%controller', '%action', '%content'),
+                             array($module, $controller, $action, $content),
+                             $this->panel->title);
+    Zend_Layout::getMvcInstance()->getView()->headTitle($pagetitle);
+  }
+
+  /**
+   * Render panel blocks
+   * @return void
+   */
+  public function  dispatchLoopShutdown() {
     if (!Zend_Layout::getMvcInstance ()->isEnabled()) {
       // No layout, no panel content
       return;
@@ -51,13 +78,5 @@ class Flex_Plugin_Panel extends Zend_Controller_Plugin_Abstract {
       return;
     }
     $this->panel->loadBlocks()->render();
-    $module = ucfirst(Zend_Controller_Front::getInstance()->getRequest()->getModuleName());
-    $controller = ucfirst(Zend_Controller_Front::getInstance()->getRequest()->getControllerName());
-    $action = ucfirst(Zend_Controller_Front::getInstance()->getRequest()->getActionName());
-    $pagetitle = str_replace(array('%module', '%controller', '%action'),
-                             array($module, $controller, $action),
-                             $this->panel->title);
-    Zend_Layout::getMvcInstance()->getView()->assign('pagetitle', $pagetitle);
   }
-
 }
