@@ -135,11 +135,11 @@ class ZfApplication {
 
       if (PHP_SAPI != "cli") {
         self::$_environment = $config->mode;
-        $frontController->registerPlugin(new Zoo_Plugin_Boot_Http(), 1);
+        $frontController->registerPlugin(new Zoo_Plugin_Boot_Http(), 5);
       } else {
         $frontController->throwExceptions(true);
         self::$_environment = "cli";
-        $frontController->registerPlugin(new Zoo_Plugin_Boot_Cli(), 1);
+        $frontController->registerPlugin(new Zoo_Plugin_Boot_Cli(), 5);
 
         Zend_Registry::set("Zend_Locale", new Zend_Locale("en_US"));
         $frontController->setResponse(new Zend_Controller_Response_Cli());

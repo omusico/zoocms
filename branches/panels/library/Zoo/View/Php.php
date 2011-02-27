@@ -22,17 +22,11 @@ class Zoo_View_Php extends Zend_View_Abstract {
         $module = ucfirst(Zend_Controller_Front::getInstance()->getRequest()->getModuleName());
         $controller = Zend_Controller_Front::getInstance()->getRequest()->getControllerName();
         if ($layout) {
-
-            $pagetitle = $module != "Zoo" ? ucwords($module." ".$controller) : ($controller != "index" ? ucfirst($controller) : "" );
-
-            $sitename = Zend_Registry::isRegistered('config') ? Zend_Registry::get('config')->site->sitename : "ZooCMS";
             $this->assign( array(
             'base_rootpath' => ZfApplication::$_base_path,
             'themepath' => $layout->getLayoutPath().$layout->getLayout(),
             'themeurl' => Zend_Controller_Front::getInstance()->getBaseUrl()."/themes/".$layout->getLayout(),
             //			'langcode' => _LANGCODE,
-            'pagetitle' => $pagetitle,
-            'sitename' => $sitename,
             ) );
 
             if (Zend_Registry::isRegistered('config')) {
