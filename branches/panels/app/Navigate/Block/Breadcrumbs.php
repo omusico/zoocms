@@ -14,7 +14,7 @@
 class Navigate_Block_Breadcrumbs extends Zoo_Block_Abstract {
 
   /**
-   * Retrieve galleries listing
+   * Retrieve node listing
    *
    * @return array
    */
