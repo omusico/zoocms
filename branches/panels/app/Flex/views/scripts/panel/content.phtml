@@ -1,0 +1,43 @@
+<div id="dialog" title="<?php echo $this->translate('Edit block');?>" style="display: none;"></div>
+<form method="post">
+  <?php echo $this->content; ?>
+  <input type="submit" name="submit" value="<?php echo $this->translate('Save'); ?>" />
+</form>
+
+<script type="text/javascript">
+  $(function() {
+    $( ".draggable" ).draggable({
+      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+      revert: "invalid", // when not dropped, the item will revert back to its initial position
+      containment: $( ".container-24" ).length ? ".container-24" : "document", 
+      helper: "clone",
+      cursor: "move",
+      handle: ".grabber"
+    });
+    $( ".drag-container" ).droppable({
+      activeClass: "ui-state-default",
+      hoverClass: "ui-state-hover",
+      accept: ":not(.ui-sortable-helper)",
+      drop: function( event, ui ) {
+        ui.draggable.appendTo( this );
+      }
+    })
+  });
+  function editDialog(id) {
+    $("#dialog").load("<?php echo $this->url(array('module' => 'flex', 'controller' => 'block', 'action' => 'form', 'format' => 'html'), 'default', true); ?>/id/" + id);
+    $("#dialog").dialog('open');
+  }
+  function submitForm(form_ele) {
+    request = $(form_ele).serialize();
+    $.ajax({
+      type: "POST",
+      url: form_ele.action, 
+      data: request, 
+      complete: function (data, ajaxStatus) {
+        // Handle success or failure by being nice to the user.
+        $("#dialog").dialog('close');
+      }
+    });
+  }
+  $("#dialog").dialog({width: 620, autoOpen: false, modal: true, position: 'top', draggable: false });
+</script>

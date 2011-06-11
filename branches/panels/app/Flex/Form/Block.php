@@ -48,11 +48,11 @@ class Flex_Form_Block extends Zend_Form {
         $options = $this->getOptionsForm();
         if ($options) {
             $options->setLegend('Options');
-            $this->addSubForm($this->getOptionsForm(), 'options', 5);
+            $this->addSubForm($options, 'options', 5);
         }
         
         $submit = new Zend_Form_Element_Submit ( 'save' );
-        $submit->setLabel ( 'save' )->setOrder(100);
+        $submit->setLabel ( 'Save' )->setOrder(100);
         
         $this->addElements ( array ($name, $title) );
         
