@@ -13,6 +13,13 @@
  */
 class Flex_BlockController extends Zoo_Controller_Action {
 
+  public function init() {
+    $ajaxContext = $this->_helper->getHelper('AjaxContext');
+    $ajaxContext->addActionContext('form', 'html')
+                ->initContext();
+
+  }
+  
   /**
    * Show the block listing
    */
@@ -54,6 +61,9 @@ class Flex_BlockController extends Zoo_Controller_Action {
     $this->view->type = $block->type;
     $this->view->form = $form;
     $this->view->form->populate($_REQUEST);
+    if ($this->getRequest()->isXmlHttpRequest()) {
+      $this->view->form->setAttrib('onsubmit', 'submitForm(this);return false;');
+    }
     $this->render('form');
   }
 

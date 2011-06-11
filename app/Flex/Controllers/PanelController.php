@@ -139,6 +139,8 @@ class Flex_PanelController extends Zoo_Controller_Action {
    * Configure content for a panel
    */
   public function contentAction() {
+    $this->view->jQuery()->enable()
+                          ->uiEnable();
     if ($this->getRequest()->isPost()) {
       $blocks = $this->getRequest()->getParam('block', array());
       $panel_block_factory = new Flex_Panel_Block_Factory();
@@ -155,8 +157,6 @@ class Flex_PanelController extends Zoo_Controller_Action {
           else {
             if (is_numeric($block)) {
               $block_obj = $block_factory->find($block)->current();
-              $block_obj->options = isset($block_options[$block]) ? $block_options[$block] : array();
-              $block_obj->save();
               $panel_block = $panel_block_factory->fetchRow($panel_block_factory->select()
                                                               ->where('panel_id = ?', $this->panel->id)
                                                               ->where('block_id = ?', $block_obj->id)
@@ -164,7 +164,6 @@ class Flex_PanelController extends Zoo_Controller_Action {
             }
             else {
               $block_obj = $block_factory->createRow();
-              $block_obj->options = isset($block_options[$block]) ? $block_options[$block] : array();
               $block_obj->save();
               $panel_block = $panel_block_factory->createRow(array('panel_id' => $this->panel->id,
                                                                    'block_id' => $block_obj->id)
@@ -193,8 +192,7 @@ class Flex_PanelController extends Zoo_Controller_Action {
     // Render blocks on the panel in admin view
     $layout = $this->panel->loadBlocks()->getLayout();
     $layout->is_admin_page = true;
-    echo $layout->render($this->panel->blocks);
-    $this->_helper->viewRenderer->setNoRender();
+    $this->view->content = $layout->render($this->panel->blocks);
   }
 
   /**
