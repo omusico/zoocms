@@ -102,6 +102,10 @@ class Zoo_Plugin_Boot_Http extends Zoo_Plugin_Boot {
 
     // Add JQuery support
     $viewRenderer->view->addHelperPath('ZendX/JQuery/View/Helper/', 'ZendX_JQuery_View_Helper');
+    
+    $viewRenderer->view->jQuery()->setVersion('1.5')
+                          ->setUIVersion('1.8')
+                          ->addStylesheet('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/smoothness/jquery-ui.css');
   }
 
   /**
